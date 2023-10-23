@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SPPC.Tadbir.Web.Api.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -42,7 +42,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Finance",
                 columns: table => new
                 {
-                    CategoryID = table.Column<int>(type: "int", nullable: false)
+                    AccountCollectionCategoryId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     rowguid = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
@@ -50,7 +50,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AccountCollectionCategory", x => x.CategoryID);
+                    table.PrimaryKey("PK_AccountCollectionCategory", x => x.AccountCollectionCategoryId);
                 });
 
             migrationBuilder.CreateTable(
@@ -58,7 +58,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Finance",
                 columns: table => new
                 {
-                    GroupID = table.Column<int>(type: "int", nullable: false)
+                    AccountGroupId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     InventoryMode = table.Column<short>(type: "smallint", nullable: false),
@@ -69,7 +69,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AccountGroup", x => x.GroupID);
+                    table.PrimaryKey("PK_AccountGroup", x => x.AccountGroupId);
                 });
 
             migrationBuilder.CreateTable(
@@ -77,7 +77,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Corporate",
                 columns: table => new
                 {
-                    BranchID = table.Column<int>(type: "int", nullable: false)
+                    BranchId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ParentId = table.Column<int>(type: "int", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
@@ -88,13 +88,13 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Branch", x => x.BranchID);
+                    table.PrimaryKey("PK_Branch", x => x.BranchId);
                     table.ForeignKey(
                         name: "FK_Branch_Branch_ParentId",
                         column: x => x.ParentId,
                         principalSchema: "Corporate",
                         principalTable: "Branch",
-                        principalColumn: "BranchID",
+                        principalColumn: "BranchId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -103,7 +103,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Metadata",
                 columns: table => new
                 {
-                    CustomFormID = table.Column<int>(type: "int", nullable: false)
+                    CustomFormId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
@@ -112,7 +112,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CustomForm", x => x.CustomFormID);
+                    table.PrimaryKey("PK_CustomForm", x => x.CustomFormId);
                 });
 
             migrationBuilder.CreateTable(
@@ -120,7 +120,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Reporting",
                 columns: table => new
                 {
-                    DashboardID = table.Column<int>(type: "int", nullable: false)
+                    DashboardId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     rowguid = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
@@ -128,7 +128,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Dashboard", x => x.DashboardID);
+                    table.PrimaryKey("PK_Dashboard", x => x.DashboardId);
                 });
 
             migrationBuilder.CreateTable(
@@ -136,7 +136,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Core",
                 columns: table => new
                 {
-                    StatusID = table.Column<int>(type: "int", nullable: false)
+                    DocumentStatusId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     rowguid = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
@@ -144,7 +144,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DocumentStatus", x => x.StatusID);
+                    table.PrimaryKey("PK_DocumentStatus", x => x.DocumentStatusId);
                 });
 
             migrationBuilder.CreateTable(
@@ -152,7 +152,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Core",
                 columns: table => new
                 {
-                    TypeID = table.Column<int>(type: "int", nullable: false)
+                    DocumentTypeId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     rowguid = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
@@ -160,7 +160,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DocumentType", x => x.TypeID);
+                    table.PrimaryKey("PK_DocumentType", x => x.DocumentTypeId);
                 });
 
             migrationBuilder.CreateTable(
@@ -168,7 +168,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Metadata",
                 columns: table => new
                 {
-                    EntityTypeID = table.Column<int>(type: "int", nullable: false)
+                    EntityTypeId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
@@ -177,7 +177,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EntityType", x => x.EntityTypeID);
+                    table.PrimaryKey("PK_EntityType", x => x.EntityTypeId);
                 });
 
             migrationBuilder.CreateTable(
@@ -185,7 +185,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "ProductScope",
                 columns: table => new
                 {
-                    FileID = table.Column<int>(type: "int", nullable: false)
+                    FileId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: true),
                     Description = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: true),
@@ -206,7 +206,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_File", x => x.FileID);
+                    table.PrimaryKey("PK_File", x => x.FileId);
                 });
 
             migrationBuilder.CreateTable(
@@ -214,7 +214,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Core",
                 columns: table => new
                 {
-                    FilterID = table.Column<int>(type: "int", nullable: false)
+                    FilterId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ViewId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
@@ -226,7 +226,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Filter", x => x.FilterID);
+                    table.PrimaryKey("PK_Filter", x => x.FilterId);
                 });
 
             migrationBuilder.CreateTable(
@@ -234,7 +234,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Finance",
                 columns: table => new
                 {
-                    FiscalPeriodID = table.Column<int>(type: "int", nullable: false)
+                    FiscalPeriodId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -245,7 +245,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FiscalPeriod", x => x.FiscalPeriodID);
+                    table.PrimaryKey("PK_FiscalPeriod", x => x.FiscalPeriodId);
                 });
 
             migrationBuilder.CreateTable(
@@ -253,7 +253,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Reporting",
                 columns: table => new
                 {
-                    FunctionParameterID = table.Column<int>(type: "int", nullable: false)
+                    FunctionParameterId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     Alias = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
@@ -265,7 +265,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FunctionParameter", x => x.FunctionParameterID);
+                    table.PrimaryKey("PK_FunctionParameter", x => x.FunctionParameterId);
                 });
 
             migrationBuilder.CreateTable(
@@ -273,7 +273,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Metadata",
                 columns: table => new
                 {
-                    OperationID = table.Column<int>(type: "int", nullable: false)
+                    OperationId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
@@ -282,7 +282,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Operation", x => x.OperationID);
+                    table.PrimaryKey("PK_Operation", x => x.OperationId);
                 });
 
             migrationBuilder.CreateTable(
@@ -290,7 +290,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Metadata",
                 columns: table => new
                 {
-                    OperationSourceID = table.Column<int>(type: "int", nullable: false)
+                    OperationSourceId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
@@ -299,7 +299,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OperationSource", x => x.OperationSourceID);
+                    table.PrimaryKey("PK_OperationSource", x => x.OperationSourceId);
                 });
 
             migrationBuilder.CreateTable(
@@ -307,7 +307,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Metadata",
                 columns: table => new
                 {
-                    OperationSourceListID = table.Column<int>(type: "int", nullable: false)
+                    OperationSourceListId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
@@ -316,7 +316,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OperationSourceList", x => x.OperationSourceListID);
+                    table.PrimaryKey("PK_OperationSourceList", x => x.OperationSourceListId);
                 });
 
             migrationBuilder.CreateTable(
@@ -324,7 +324,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Metadata",
                 columns: table => new
                 {
-                    OperationSourceTypeID = table.Column<int>(type: "int", nullable: false)
+                    OperationSourceTypeId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     rowguid = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
@@ -332,7 +332,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OperationSourceType", x => x.OperationSourceTypeID);
+                    table.PrimaryKey("PK_OperationSourceType", x => x.OperationSourceTypeId);
                 });
 
             migrationBuilder.CreateTable(
@@ -340,7 +340,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Metadata",
                 columns: table => new
                 {
-                    ProvinceID = table.Column<int>(type: "int", nullable: false)
+                    ProvinceId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     Code = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: true),
@@ -349,7 +349,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Province", x => x.ProvinceID);
+                    table.PrimaryKey("PK_Province", x => x.ProvinceId);
                 });
 
             migrationBuilder.CreateTable(
@@ -357,7 +357,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Config",
                 columns: table => new
                 {
-                    SettingID = table.Column<int>(type: "int", nullable: false)
+                    SettingId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Subsystem = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
                     TitleKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
@@ -374,13 +374,13 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Setting", x => x.SettingID);
+                    table.PrimaryKey("PK_Setting", x => x.SettingId);
                     table.ForeignKey(
                         name: "FK_Config_Setting_Config_Parent",
                         column: x => x.ParentID,
                         principalSchema: "Config",
                         principalTable: "Setting",
-                        principalColumn: "SettingID",
+                        principalColumn: "SettingId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -389,7 +389,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Metadata",
                 columns: table => new
                 {
-                    SubsystemID = table.Column<int>(type: "int", nullable: false)
+                    SubsystemId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     rowguid = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
@@ -397,7 +397,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Subsystem", x => x.SubsystemID);
+                    table.PrimaryKey("PK_Subsystem", x => x.SubsystemId);
                 });
 
             migrationBuilder.CreateTable(
@@ -405,7 +405,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Finance",
                 columns: table => new
                 {
-                    TaxCurrencyID = table.Column<int>(type: "int", nullable: false)
+                    TaxCurrencyId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Code = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
@@ -414,7 +414,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TaxCurrency", x => x.TaxCurrencyID);
+                    table.PrimaryKey("PK_TaxCurrency", x => x.TaxCurrencyId);
                 });
 
             migrationBuilder.CreateTable(
@@ -422,7 +422,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Config",
                 columns: table => new
                 {
-                    CategoryID = table.Column<int>(type: "int", nullable: false)
+                    UserValueCategoryId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NameKey = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     rowguid = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
@@ -430,7 +430,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserValueCategory", x => x.CategoryID);
+                    table.PrimaryKey("PK_UserValueCategory", x => x.UserValueCategoryId);
                 });
 
             migrationBuilder.CreateTable(
@@ -454,7 +454,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Config",
                 columns: table => new
                 {
-                    ViewSettingID = table.Column<int>(type: "int", nullable: false)
+                    ViewSettingId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SettingId = table.Column<int>(type: "int", nullable: false),
                     ViewId = table.Column<int>(type: "int", nullable: false),
@@ -466,7 +466,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ViewSetting", x => x.ViewSettingID);
+                    table.PrimaryKey("PK_ViewSetting", x => x.ViewSettingId);
                 });
 
             migrationBuilder.CreateTable(
@@ -474,7 +474,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Finance",
                 columns: table => new
                 {
-                    OriginID = table.Column<int>(type: "int", nullable: false)
+                    VoucherOriginId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     rowguid = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
@@ -482,7 +482,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_VoucherOrigin", x => x.OriginID);
+                    table.PrimaryKey("PK_VoucherOrigin", x => x.VoucherOriginId);
                 });
 
             migrationBuilder.CreateTable(
@@ -490,7 +490,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Reporting",
                 columns: table => new
                 {
-                    WidgetFunctionID = table.Column<int>(type: "int", nullable: false)
+                    WidgetFunctionId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
@@ -499,7 +499,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WidgetFunction", x => x.WidgetFunctionID);
+                    table.PrimaryKey("PK_WidgetFunction", x => x.WidgetFunctionId);
                 });
 
             migrationBuilder.CreateTable(
@@ -507,7 +507,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Reporting",
                 columns: table => new
                 {
-                    WidgetTypeID = table.Column<int>(type: "int", nullable: false)
+                    WidgetTypeId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
@@ -516,7 +516,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WidgetType", x => x.WidgetTypeID);
+                    table.PrimaryKey("PK_WidgetType", x => x.WidgetTypeId);
                 });
 
             migrationBuilder.CreateTable(
@@ -524,7 +524,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Finance",
                 columns: table => new
                 {
-                    CollectionID = table.Column<int>(type: "int", nullable: false)
+                    AccountCollectionId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     MultiSelect = table.Column<bool>(type: "bit", nullable: false),
@@ -536,13 +536,13 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AccountCollection", x => x.CollectionID);
+                    table.PrimaryKey("PK_AccountCollection", x => x.AccountCollectionId);
                     table.ForeignKey(
                         name: "FK_Finance_AccountCollection_Finance_Category",
                         column: x => x.CategoryID,
                         principalSchema: "Finance",
                         principalTable: "AccountCollectionCategory",
-                        principalColumn: "CategoryID",
+                        principalColumn: "AccountCollectionCategoryId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -551,7 +551,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "ProductScope",
                 columns: table => new
                 {
-                    AttributeID = table.Column<int>(type: "int", nullable: false)
+                    AttributeId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
                     EnName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
@@ -571,13 +571,13 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Attribute", x => x.AttributeID);
+                    table.PrimaryKey("PK_Attribute", x => x.AttributeId);
                     table.ForeignKey(
                         name: "FK_Attribute_Branch_BranchId",
                         column: x => x.BranchId,
                         principalSchema: "Corporate",
                         principalTable: "Branch",
-                        principalColumn: "BranchID",
+                        principalColumn: "BranchId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -586,7 +586,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "ProductScope",
                 columns: table => new
                 {
-                    BrandID = table.Column<int>(type: "int", nullable: false)
+                    BrandId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
                     EnName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
@@ -608,13 +608,13 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Brand", x => x.BrandID);
+                    table.PrimaryKey("PK_Brand", x => x.BrandId);
                     table.ForeignKey(
                         name: "FK_Brand_Branch_BranchId",
                         column: x => x.BranchId,
                         principalSchema: "Corporate",
                         principalTable: "Branch",
-                        principalColumn: "BranchID",
+                        principalColumn: "BranchId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -623,7 +623,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "ProductScope",
                 columns: table => new
                 {
-                    PropertyID = table.Column<int>(type: "int", nullable: false)
+                    PropertyId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
                     EnName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
@@ -645,13 +645,13 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Property", x => x.PropertyID);
+                    table.PrimaryKey("PK_Property", x => x.PropertyId);
                     table.ForeignKey(
                         name: "FK_Property_Branch_BranchId",
                         column: x => x.BranchId,
                         principalSchema: "Corporate",
                         principalTable: "Branch",
-                        principalColumn: "BranchID",
+                        principalColumn: "BranchId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -660,7 +660,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Auth",
                 columns: table => new
                 {
-                    RoleBranchID = table.Column<int>(type: "int", nullable: false)
+                    RoleBranchId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RoleId = table.Column<int>(type: "int", nullable: false),
                     BranchId = table.Column<int>(type: "int", nullable: false),
@@ -669,14 +669,14 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RoleBranch", x => x.RoleBranchID);
+                    table.PrimaryKey("PK_RoleBranch", x => x.RoleBranchId);
                     table.UniqueConstraint("AK_RoleBranch_RoleId_BranchId", x => new { x.RoleId, x.BranchId });
                     table.ForeignKey(
                         name: "FK_RoleBranch_Branch_BranchId",
                         column: x => x.BranchId,
                         principalSchema: "Corporate",
                         principalTable: "Branch",
-                        principalColumn: "BranchID",
+                        principalColumn: "BranchId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -685,7 +685,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "ProductScope",
                 columns: table => new
                 {
-                    UnitID = table.Column<int>(type: "int", nullable: false)
+                    UnitId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
                     EnName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
@@ -706,13 +706,13 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Unit", x => x.UnitID);
+                    table.PrimaryKey("PK_Unit", x => x.UnitId);
                     table.ForeignKey(
                         name: "FK_Unit_Branch_BranchId",
                         column: x => x.BranchId,
                         principalSchema: "Corporate",
                         principalTable: "Branch",
-                        principalColumn: "BranchID",
+                        principalColumn: "BranchId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -721,7 +721,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Reporting",
                 columns: table => new
                 {
-                    DashboardTabID = table.Column<int>(type: "int", nullable: false)
+                    DashboardTabId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DashboardId = table.Column<int>(type: "int", nullable: false),
                     Index = table.Column<int>(type: "int", nullable: false),
@@ -731,13 +731,13 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DashboardTab", x => x.DashboardTabID);
+                    table.PrimaryKey("PK_DashboardTab", x => x.DashboardTabId);
                     table.ForeignKey(
                         name: "FK_Reporting_DashboardTab_Reporting_Dashboard",
                         column: x => x.DashboardId,
                         principalSchema: "Reporting",
                         principalTable: "Dashboard",
-                        principalColumn: "DashboardID",
+                        principalColumn: "DashboardId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -746,7 +746,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Finance",
                 columns: table => new
                 {
-                    AccountID = table.Column<int>(type: "int", nullable: false)
+                    AccountId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     GroupId = table.Column<int>(type: "int", nullable: true),
                     IsCurrencyAdjustable = table.Column<bool>(type: "bit", nullable: false),
@@ -770,34 +770,34 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Account", x => x.AccountID);
+                    table.PrimaryKey("PK_Account", x => x.AccountId);
                     table.ForeignKey(
                         name: "FK_Finance_Account_Corporate_Branch",
                         column: x => x.BranchId,
                         principalSchema: "Corporate",
                         principalTable: "Branch",
-                        principalColumn: "BranchID",
+                        principalColumn: "BranchId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Finance_Account_Finance_FiscalPeriod",
                         column: x => x.FiscalPeriodId,
                         principalSchema: "Finance",
                         principalTable: "FiscalPeriod",
-                        principalColumn: "FiscalPeriodID",
+                        principalColumn: "FiscalPeriodId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Finance_Account_Finance_Group",
                         column: x => x.GroupId,
                         principalSchema: "Finance",
                         principalTable: "AccountGroup",
-                        principalColumn: "GroupID",
+                        principalColumn: "AccountGroupId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Finance_Account_Finance_Parent",
                         column: x => x.ParentId,
                         principalSchema: "Finance",
                         principalTable: "Account",
-                        principalColumn: "AccountID",
+                        principalColumn: "AccountId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -806,7 +806,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "CashFlow",
                 columns: table => new
                 {
-                    CashRegisterID = table.Column<int>(type: "int", nullable: false)
+                    CashRegisterId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -823,20 +823,20 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CashRegister", x => x.CashRegisterID);
+                    table.PrimaryKey("PK_CashRegister", x => x.CashRegisterId);
                     table.ForeignKey(
                         name: "FK_CashFlow_CashRegister_Corporate_Branch",
                         column: x => x.BranchId,
                         principalSchema: "Corporate",
                         principalTable: "Branch",
-                        principalColumn: "BranchID",
+                        principalColumn: "BranchId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CashFlow_CashRegister_Finance_FiscalPeriod",
                         column: x => x.FiscalPeriodId,
                         principalSchema: "Finance",
                         principalTable: "FiscalPeriod",
-                        principalColumn: "FiscalPeriodID",
+                        principalColumn: "FiscalPeriodId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -845,7 +845,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Finance",
                 columns: table => new
                 {
-                    CostCenterID = table.Column<int>(type: "int", nullable: false)
+                    CostCenterId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     rowguid = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
                     ModifiedDate = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "(getdate())"),
@@ -866,27 +866,27 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CostCenter", x => x.CostCenterID);
+                    table.PrimaryKey("PK_CostCenter", x => x.CostCenterId);
                     table.ForeignKey(
                         name: "FK_Finance_CostCenter_Corporate_Branch",
                         column: x => x.BranchId,
                         principalSchema: "Corporate",
                         principalTable: "Branch",
-                        principalColumn: "BranchID",
+                        principalColumn: "BranchId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Finance_CostCenter_Finance_FiscalPeriod",
                         column: x => x.FiscalPeriodId,
                         principalSchema: "Finance",
                         principalTable: "FiscalPeriod",
-                        principalColumn: "FiscalPeriodID",
+                        principalColumn: "FiscalPeriodId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Finance_CostCenter_Finance_Parent",
                         column: x => x.ParentId,
                         principalSchema: "Finance",
                         principalTable: "CostCenter",
-                        principalColumn: "CostCenterID",
+                        principalColumn: "CostCenterId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -923,14 +923,14 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         column: x => x.FiscalPeriodId,
                         principalSchema: "Finance",
                         principalTable: "FiscalPeriod",
-                        principalColumn: "FiscalPeriodID",
+                        principalColumn: "FiscalPeriodId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Finance_Currency_Corporate_Branch",
                         column: x => x.BranchId,
                         principalSchema: "Corporate",
                         principalTable: "Branch",
-                        principalColumn: "BranchID",
+                        principalColumn: "BranchId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -939,7 +939,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Core",
                 columns: table => new
                 {
-                    InactiveEntityID = table.Column<int>(type: "int", nullable: false)
+                    InactiveEntityId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EntityId = table.Column<int>(type: "int", nullable: false),
                     EntityName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
@@ -950,20 +950,20 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_InactiveEntity", x => x.InactiveEntityID);
+                    table.PrimaryKey("PK_InactiveEntity", x => x.InactiveEntityId);
                     table.ForeignKey(
                         name: "FK_Core_InactiveEntity_Corporate_Branch",
                         column: x => x.BranchId,
                         principalSchema: "Corporate",
                         principalTable: "Branch",
-                        principalColumn: "BranchID",
+                        principalColumn: "BranchId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Core_InactiveEntity_Finance_FiscalPeriod",
                         column: x => x.FiscalPeriodId,
                         principalSchema: "Finance",
                         principalTable: "FiscalPeriod",
-                        principalColumn: "FiscalPeriodID",
+                        principalColumn: "FiscalPeriodId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -972,7 +972,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Finance",
                 columns: table => new
                 {
-                    ProjectID = table.Column<int>(type: "int", nullable: false)
+                    ProjectId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     rowguid = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
                     ModifiedDate = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "(getdate())"),
@@ -993,27 +993,27 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Project", x => x.ProjectID);
+                    table.PrimaryKey("PK_Project", x => x.ProjectId);
                     table.ForeignKey(
                         name: "FK_Finance_Project_Corporate_Branch",
                         column: x => x.BranchId,
                         principalSchema: "Corporate",
                         principalTable: "Branch",
-                        principalColumn: "BranchID",
+                        principalColumn: "BranchId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Finance_Project_Finance_FiscalPeriod",
                         column: x => x.FiscalPeriodId,
                         principalSchema: "Finance",
                         principalTable: "FiscalPeriod",
-                        principalColumn: "FiscalPeriodID",
+                        principalColumn: "FiscalPeriodId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Finance_Project_Finance_Parent",
                         column: x => x.ParentId,
                         principalSchema: "Finance",
                         principalTable: "Project",
-                        principalColumn: "ProjectID",
+                        principalColumn: "ProjectId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1022,7 +1022,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Auth",
                 columns: table => new
                 {
-                    RoleFiscalPeriodID = table.Column<int>(type: "int", nullable: false)
+                    RoleFiscalPeriodId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RoleId = table.Column<int>(type: "int", nullable: false),
                     FiscalPeriodId = table.Column<int>(type: "int", nullable: false),
@@ -1031,14 +1031,14 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RoleFiscalPeriod", x => x.RoleFiscalPeriodID);
+                    table.PrimaryKey("PK_RoleFiscalPeriod", x => x.RoleFiscalPeriodId);
                     table.UniqueConstraint("AK_RoleFiscalPeriod_RoleId_FiscalPeriodId", x => new { x.RoleId, x.FiscalPeriodId });
                     table.ForeignKey(
                         name: "FK_RoleFiscalPeriod_FiscalPeriod_FiscalPeriodId",
                         column: x => x.FiscalPeriodId,
                         principalSchema: "Finance",
                         principalTable: "FiscalPeriod",
-                        principalColumn: "FiscalPeriodID",
+                        principalColumn: "FiscalPeriodId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -1047,7 +1047,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "CashFlow",
                 columns: table => new
                 {
-                    SourceAppID = table.Column<int>(type: "int", nullable: false)
+                    SourceAppId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Code = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
@@ -1066,20 +1066,20 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SourceApp", x => x.SourceAppID);
+                    table.PrimaryKey("PK_SourceApp", x => x.SourceAppId);
                     table.ForeignKey(
                         name: "FK_CashFlow_SourceApp_Corporate_Branch",
                         column: x => x.BranchId,
                         principalSchema: "Corporate",
                         principalTable: "Branch",
-                        principalColumn: "BranchID",
+                        principalColumn: "BranchId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CashFlow_SourceApp_Finance_FiscalPeriod",
                         column: x => x.FiscalPeriodId,
                         principalSchema: "Finance",
                         principalTable: "FiscalPeriod",
-                        principalColumn: "FiscalPeriodID",
+                        principalColumn: "FiscalPeriodId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1088,7 +1088,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Core",
                 columns: table => new
                 {
-                    OperationLogID = table.Column<int>(type: "int", nullable: false)
+                    OperationLogId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OperationId = table.Column<int>(type: "int", nullable: false),
                     EntityTypeId = table.Column<int>(type: "int", nullable: true),
@@ -1114,48 +1114,48 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OperationLog", x => x.OperationLogID);
+                    table.PrimaryKey("PK_OperationLog", x => x.OperationLogId);
                     table.ForeignKey(
                         name: "FK_Core_OperationLog_Corporate_Branch",
                         column: x => x.BranchId,
                         principalSchema: "Corporate",
                         principalTable: "Branch",
-                        principalColumn: "BranchID",
+                        principalColumn: "BranchId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Core_OperationLog_Finance_FiscalPeriod",
                         column: x => x.FiscalPeriodId,
                         principalSchema: "Finance",
                         principalTable: "FiscalPeriod",
-                        principalColumn: "FiscalPeriodID",
+                        principalColumn: "FiscalPeriodId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Core_OperationLog_Metadata_EntityType",
                         column: x => x.EntityTypeId,
                         principalSchema: "Metadata",
                         principalTable: "EntityType",
-                        principalColumn: "EntityTypeID",
+                        principalColumn: "EntityTypeId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Core_OperationLog_Metadata_Operation",
                         column: x => x.OperationId,
                         principalSchema: "Metadata",
                         principalTable: "Operation",
-                        principalColumn: "OperationID",
+                        principalColumn: "OperationId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Core_OperationLog_Metadata_Source",
                         column: x => x.SourceId,
                         principalSchema: "Metadata",
                         principalTable: "OperationSource",
-                        principalColumn: "OperationSourceID",
+                        principalColumn: "OperationSourceId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Core_OperationLog_Metadata_SourceList",
                         column: x => x.SourceListId,
                         principalSchema: "Metadata",
                         principalTable: "OperationSourceList",
-                        principalColumn: "OperationSourceListID",
+                        principalColumn: "OperationSourceListId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1164,7 +1164,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Core",
                 columns: table => new
                 {
-                    OperationLogArchiveID = table.Column<int>(type: "int", nullable: false)
+                    OperationLogArchiveId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OperationId = table.Column<int>(type: "int", nullable: false),
                     EntityTypeId = table.Column<int>(type: "int", nullable: true),
@@ -1190,48 +1190,48 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OperationLogArchive", x => x.OperationLogArchiveID);
+                    table.PrimaryKey("PK_OperationLogArchive", x => x.OperationLogArchiveId);
                     table.ForeignKey(
                         name: "FK_Core_OperationLogArchive_Corporate_Branch",
                         column: x => x.BranchId,
                         principalSchema: "Corporate",
                         principalTable: "Branch",
-                        principalColumn: "BranchID",
+                        principalColumn: "BranchId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Core_OperationLogArchive_Finance_FiscalPeriod",
                         column: x => x.FiscalPeriodId,
                         principalSchema: "Finance",
                         principalTable: "FiscalPeriod",
-                        principalColumn: "FiscalPeriodID",
+                        principalColumn: "FiscalPeriodId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Core_OperationLogArchive_Metadata_EntityType",
                         column: x => x.EntityTypeId,
                         principalSchema: "Metadata",
                         principalTable: "EntityType",
-                        principalColumn: "EntityTypeID",
+                        principalColumn: "EntityTypeId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Core_OperationLogArchive_Metadata_Operation",
                         column: x => x.OperationId,
                         principalSchema: "Metadata",
                         principalTable: "Operation",
-                        principalColumn: "OperationID",
+                        principalColumn: "OperationId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Core_OperationLogArchive_Metadata_Source",
                         column: x => x.SourceId,
                         principalSchema: "Metadata",
                         principalTable: "OperationSource",
-                        principalColumn: "OperationSourceID",
+                        principalColumn: "OperationSourceId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Core_OperationLogArchive_Metadata_SourceList",
                         column: x => x.SourceListId,
                         principalSchema: "Metadata",
                         principalTable: "OperationSourceList",
-                        principalColumn: "OperationSourceListID",
+                        principalColumn: "OperationSourceListId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1240,7 +1240,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Metadata",
                 columns: table => new
                 {
-                    CityID = table.Column<int>(type: "int", nullable: false)
+                    CityId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProvinceId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
@@ -1250,13 +1250,13 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_City", x => x.CityID);
+                    table.PrimaryKey("PK_City", x => x.CityId);
                     table.ForeignKey(
                         name: "FK_Metadata_City_Metadata_Province",
                         column: x => x.ProvinceId,
                         principalSchema: "Metadata",
                         principalTable: "Province",
-                        principalColumn: "ProvinceID",
+                        principalColumn: "ProvinceId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -1265,7 +1265,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Config",
                 columns: table => new
                 {
-                    LabelSettingID = table.Column<int>(type: "int", nullable: false)
+                    LabelSettingId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ModelType = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     Values = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -1278,20 +1278,20 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LabelSetting", x => x.LabelSettingID);
+                    table.PrimaryKey("PK_LabelSetting", x => x.LabelSettingId);
                     table.ForeignKey(
                         name: "FK_Config_LabelSetting_Config_Setting",
                         column: x => x.SettingID,
                         principalSchema: "Config",
                         principalTable: "Setting",
-                        principalColumn: "SettingID",
+                        principalColumn: "SettingId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Config_LabelSetting_Metadata_CustomForm",
                         column: x => x.CustomFormID,
                         principalSchema: "Metadata",
                         principalTable: "CustomForm",
-                        principalColumn: "CustomFormID",
+                        principalColumn: "CustomFormId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1300,7 +1300,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Config",
                 columns: table => new
                 {
-                    UserSettingID = table.Column<int>(type: "int", nullable: false)
+                    UserSettingId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: true),
                     RoleId = table.Column<int>(type: "int", nullable: true),
@@ -1313,13 +1313,13 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserSetting", x => x.UserSettingID);
+                    table.PrimaryKey("PK_UserSetting", x => x.UserSettingId);
                     table.ForeignKey(
                         name: "FK_Config_UserSetting_Config_Setting",
                         column: x => x.SettingId,
                         principalSchema: "Config",
                         principalTable: "Setting",
-                        principalColumn: "SettingID",
+                        principalColumn: "SettingId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1328,54 +1328,54 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Config",
                 columns: table => new
                 {
-                    LogSettingID = table.Column<int>(type: "int", nullable: false)
+                    LogSettingId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SubsystemID = table.Column<int>(type: "int", nullable: false),
-                    SourceTypeID = table.Column<int>(type: "int", nullable: false),
-                    SourceID = table.Column<int>(type: "int", nullable: true),
-                    EntityTypeID = table.Column<int>(type: "int", nullable: true),
-                    OperationID = table.Column<int>(type: "int", nullable: false),
+                    SubsystemId = table.Column<int>(type: "int", nullable: false),
+                    SourceTypeId = table.Column<int>(type: "int", nullable: false),
+                    SourceId = table.Column<int>(type: "int", nullable: true),
+                    EntityTypeId = table.Column<int>(type: "int", nullable: true),
+                    OperationId = table.Column<int>(type: "int", nullable: false),
                     IsEnabled = table.Column<bool>(type: "bit", nullable: false),
                     rowguid = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
                     ModifiedDate = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "(getdate())")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LogSetting", x => x.LogSettingID);
+                    table.PrimaryKey("PK_LogSetting", x => x.LogSettingId);
                     table.ForeignKey(
                         name: "FK_Config_LogSetting_Metadata_EntityType",
-                        column: x => x.EntityTypeID,
+                        column: x => x.EntityTypeId,
                         principalSchema: "Metadata",
                         principalTable: "EntityType",
-                        principalColumn: "EntityTypeID",
+                        principalColumn: "EntityTypeId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Config_LogSetting_Metadata_Operation",
-                        column: x => x.OperationID,
+                        column: x => x.OperationId,
                         principalSchema: "Metadata",
                         principalTable: "Operation",
-                        principalColumn: "OperationID",
+                        principalColumn: "OperationId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Config_LogSetting_Metadata_Source",
-                        column: x => x.SourceID,
+                        column: x => x.SourceId,
                         principalSchema: "Metadata",
                         principalTable: "OperationSource",
-                        principalColumn: "OperationSourceID",
+                        principalColumn: "OperationSourceId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Config_LogSetting_Metadata_SourceType",
-                        column: x => x.SourceTypeID,
+                        column: x => x.SourceTypeId,
                         principalSchema: "Metadata",
                         principalTable: "OperationSourceType",
-                        principalColumn: "OperationSourceTypeID",
+                        principalColumn: "OperationSourceTypeId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Config_LogSetting_Metadata_Subsystem",
-                        column: x => x.SubsystemID,
+                        column: x => x.SubsystemId,
                         principalSchema: "Metadata",
                         principalTable: "Subsystem",
-                        principalColumn: "SubsystemID",
+                        principalColumn: "SubsystemId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1384,7 +1384,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Config",
                 columns: table => new
                 {
-                    ValueID = table.Column<int>(type: "int", nullable: false)
+                    UserValueId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
@@ -1393,13 +1393,13 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserValue", x => x.ValueID);
+                    table.PrimaryKey("PK_UserValue", x => x.UserValueId);
                     table.ForeignKey(
                         name: "FK_Config_UserValue_Config_Category",
                         column: x => x.CategoryId,
                         principalSchema: "Config",
                         principalTable: "UserValueCategory",
-                        principalColumn: "CategoryID",
+                        principalColumn: "UserValueCategoryId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1408,9 +1408,9 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Finance",
                 columns: table => new
                 {
-                    VoucherID = table.Column<int>(type: "int", nullable: false)
+                    VoucherId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    StatusID = table.Column<int>(type: "int", nullable: false),
+                    StatusId = table.Column<int>(type: "int", nullable: false),
                     OriginId = table.Column<int>(type: "int", nullable: false),
                     No = table.Column<int>(type: "int", nullable: false),
                     DailyNo = table.Column<int>(type: "int", nullable: false),
@@ -1419,10 +1419,10 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     Type = table.Column<short>(type: "smallint", nullable: false),
                     SubjectType = table.Column<short>(type: "smallint", nullable: false),
                     SaveCount = table.Column<int>(type: "int", nullable: false),
-                    IssuedByID = table.Column<int>(type: "int", nullable: false),
-                    ModifiedByID = table.Column<int>(type: "int", nullable: false),
-                    ConfirmedByID = table.Column<int>(type: "int", nullable: true),
-                    ApprovedByID = table.Column<int>(type: "int", nullable: true),
+                    CreatedById = table.Column<int>(type: "int", nullable: false),
+                    ModifiedById = table.Column<int>(type: "int", nullable: false),
+                    ConfirmedById = table.Column<int>(type: "int", nullable: true),
+                    ApprovedById = table.Column<int>(type: "int", nullable: true),
                     IssuerName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     ModifierName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     ConfirmerName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
@@ -1437,34 +1437,34 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Voucher", x => x.VoucherID);
+                    table.PrimaryKey("PK_Voucher", x => x.VoucherId);
                     table.ForeignKey(
                         name: "FK_Finance_Voucher_Core_Status",
-                        column: x => x.StatusID,
+                        column: x => x.StatusId,
                         principalSchema: "Core",
                         principalTable: "DocumentStatus",
-                        principalColumn: "StatusID",
+                        principalColumn: "DocumentStatusId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Finance_Voucher_Corporate_Branch",
                         column: x => x.BranchId,
                         principalSchema: "Corporate",
                         principalTable: "Branch",
-                        principalColumn: "BranchID",
+                        principalColumn: "BranchId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Finance_Voucher_Finance_FiscalPeriod",
                         column: x => x.FiscalPeriodId,
                         principalSchema: "Finance",
                         principalTable: "FiscalPeriod",
-                        principalColumn: "FiscalPeriodID",
+                        principalColumn: "FiscalPeriodId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Finance_Voucher_Finance_VoucherOrigin",
                         column: x => x.OriginId,
                         principalSchema: "Finance",
                         principalTable: "VoucherOrigin",
-                        principalColumn: "OriginID",
+                        principalColumn: "VoucherOriginId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1488,14 +1488,14 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         column: x => x.FunctionId,
                         principalSchema: "Reporting",
                         principalTable: "WidgetFunction",
-                        principalColumn: "WidgetFunctionID",
+                        principalColumn: "WidgetFunctionId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Reporting_UsedParameter_Reporting_Parameter",
                         column: x => x.ParameterId,
                         principalSchema: "Reporting",
                         principalTable: "FunctionParameter",
-                        principalColumn: "FunctionParameterID",
+                        principalColumn: "FunctionParameterId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1504,7 +1504,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Reporting",
                 columns: table => new
                 {
-                    WidgetID = table.Column<int>(type: "int", nullable: false)
+                    WidgetId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FunctionId = table.Column<int>(type: "int", nullable: false),
                     TypeId = table.Column<int>(type: "int", nullable: false),
@@ -1517,20 +1517,20 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Widget", x => x.WidgetID);
+                    table.PrimaryKey("PK_Widget", x => x.WidgetId);
                     table.ForeignKey(
                         name: "FK_Reporting_Widget_Reporting_Function",
                         column: x => x.FunctionId,
                         principalSchema: "Reporting",
                         principalTable: "WidgetFunction",
-                        principalColumn: "WidgetFunctionID",
+                        principalColumn: "WidgetFunctionId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Reporting_Widget_Reporting_Type",
                         column: x => x.TypeId,
                         principalSchema: "Reporting",
                         principalTable: "WidgetType",
-                        principalColumn: "WidgetTypeID",
+                        principalColumn: "WidgetTypeId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1539,7 +1539,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Finance",
                 columns: table => new
                 {
-                    AccountCollectionAccountID = table.Column<int>(type: "int", nullable: false)
+                    AccountCollectionAccountId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AccountId = table.Column<int>(type: "int", nullable: false),
                     CollectionId = table.Column<int>(type: "int", nullable: false),
@@ -1550,34 +1550,34 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AccountCollectionAccount", x => x.AccountCollectionAccountID);
+                    table.PrimaryKey("PK_AccountCollectionAccount", x => x.AccountCollectionAccountId);
                     table.ForeignKey(
                         name: "FK_Finance_AccountCollectionAccount_Finance_Account",
                         column: x => x.AccountId,
                         principalSchema: "Finance",
                         principalTable: "Account",
-                        principalColumn: "AccountID",
+                        principalColumn: "AccountId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Finance_AccountCollectionAccount_Finance_Branch",
                         column: x => x.BranchId,
                         principalSchema: "Corporate",
                         principalTable: "Branch",
-                        principalColumn: "BranchID",
+                        principalColumn: "BranchId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Finance_AccountCollectionAccount_Finance_Collection",
                         column: x => x.CollectionId,
                         principalSchema: "Finance",
                         principalTable: "AccountCollection",
-                        principalColumn: "CollectionID",
+                        principalColumn: "AccountCollectionId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Finance_AccountCollectionAccount_Finance_FiscalPeriod",
                         column: x => x.FiscalPeriodId,
                         principalSchema: "Finance",
                         principalTable: "FiscalPeriod",
-                        principalColumn: "FiscalPeriodID",
+                        principalColumn: "FiscalPeriodId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1586,9 +1586,9 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Finance",
                 columns: table => new
                 {
-                    AccountOwnerID = table.Column<int>(type: "int", nullable: false)
+                    AccountOwnerId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AccountID = table.Column<int>(type: "int", nullable: false),
+                    AccountId = table.Column<int>(type: "int", nullable: false),
                     BankName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     AccountType = table.Column<int>(type: "int", nullable: false),
                     BankBranchName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
@@ -1602,13 +1602,13 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AccountOwner", x => x.AccountOwnerID);
+                    table.PrimaryKey("PK_AccountOwner", x => x.AccountOwnerId);
                     table.ForeignKey(
                         name: "FK_Finance_AccountOwner_Finance_Account",
-                        column: x => x.AccountID,
+                        column: x => x.AccountId,
                         principalSchema: "Finance",
                         principalTable: "Account",
-                        principalColumn: "AccountID",
+                        principalColumn: "AccountId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1617,9 +1617,9 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Finance",
                 columns: table => new
                 {
-                    CustomerTaxInfoID = table.Column<int>(type: "int", nullable: false)
+                    CustomerTaxInfoId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AccountID = table.Column<int>(type: "int", nullable: false),
+                    AccountId = table.Column<int>(type: "int", nullable: false),
                     CustomerFirstName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
                     CustomerName = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     PersonType = table.Column<int>(type: "int", nullable: false),
@@ -1639,13 +1639,13 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CustomerTaxInfo", x => x.CustomerTaxInfoID);
+                    table.PrimaryKey("PK_CustomerTaxInfo", x => x.CustomerTaxInfoId);
                     table.ForeignKey(
                         name: "FK_Finance_CustomerTaxInfo_Finance_Account",
-                        column: x => x.AccountID,
+                        column: x => x.AccountId,
                         principalSchema: "Finance",
                         principalTable: "Account",
-                        principalColumn: "AccountID",
+                        principalColumn: "AccountId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1654,7 +1654,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "CashFlow",
                 columns: table => new
                 {
-                    UserCashRegisterID = table.Column<int>(type: "int", nullable: false)
+                    UserCashRegisterId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CashRegisterId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
@@ -1663,13 +1663,13 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserCashRegister", x => x.UserCashRegisterID);
+                    table.PrimaryKey("PK_UserCashRegister", x => x.UserCashRegisterId);
                     table.ForeignKey(
                         name: "FK_CashFlow_UserCashRegister_CashFlow_CashRegister",
                         column: x => x.CashRegisterId,
                         principalSchema: "CashFlow",
                         principalTable: "CashRegister",
-                        principalColumn: "CashRegisterID",
+                        principalColumn: "CashRegisterId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1678,7 +1678,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Finance",
                 columns: table => new
                 {
-                    AccountCostCenterID = table.Column<int>(type: "int", nullable: false)
+                    AccountCostCenterId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AccountId = table.Column<int>(type: "int", nullable: false),
                     CostCenterId = table.Column<int>(type: "int", nullable: false),
@@ -1687,21 +1687,21 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AccountCostCenter", x => x.AccountCostCenterID);
+                    table.PrimaryKey("PK_AccountCostCenter", x => x.AccountCostCenterId);
                     table.UniqueConstraint("AK_AccountCostCenter_AccountId_CostCenterId", x => new { x.AccountId, x.CostCenterId });
                     table.ForeignKey(
                         name: "FK_AccountCostCenter_Account_AccountId",
                         column: x => x.AccountId,
                         principalSchema: "Finance",
                         principalTable: "Account",
-                        principalColumn: "AccountID",
+                        principalColumn: "AccountId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AccountCostCenter_CostCenter_CostCenterId",
                         column: x => x.CostCenterId,
                         principalSchema: "Finance",
                         principalTable: "CostCenter",
-                        principalColumn: "CostCenterID",
+                        principalColumn: "CostCenterId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -1726,14 +1726,14 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         column: x => x.AccountId,
                         principalSchema: "Finance",
                         principalTable: "Account",
-                        principalColumn: "AccountID",
+                        principalColumn: "AccountId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AccountCurrency_Branch_BranchId",
                         column: x => x.BranchId,
                         principalSchema: "Corporate",
                         principalTable: "Branch",
-                        principalColumn: "BranchID",
+                        principalColumn: "BranchId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AccountCurrency_Currency_CurrencyId",
@@ -1749,7 +1749,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Finance",
                 columns: table => new
                 {
-                    CurrencyRateID = table.Column<int>(type: "int", nullable: false)
+                    CurrencyRateId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CurrencyId = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -1769,7 +1769,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CurrencyRate", x => x.CurrencyRateID);
+                    table.PrimaryKey("PK_CurrencyRate", x => x.CurrencyRateId);
                     table.ForeignKey(
                         name: "FK_CurrencyRate_Currency_CurrencyId",
                         column: x => x.CurrencyId,
@@ -1782,14 +1782,14 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         column: x => x.FiscalPeriodId,
                         principalSchema: "Finance",
                         principalTable: "FiscalPeriod",
-                        principalColumn: "FiscalPeriodID",
+                        principalColumn: "FiscalPeriodId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Finance_CurrencyRate_Corporate_Branch",
                         column: x => x.BranchId,
                         principalSchema: "Corporate",
                         principalTable: "Branch",
-                        principalColumn: "BranchID",
+                        principalColumn: "BranchId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1798,7 +1798,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Finance",
                 columns: table => new
                 {
-                    DetailAccountID = table.Column<int>(type: "int", nullable: false)
+                    DetailAccountId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CurrencyId = table.Column<int>(type: "int", nullable: true),
                     rowguid = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
@@ -1820,13 +1820,13 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DetailAccount", x => x.DetailAccountID);
+                    table.PrimaryKey("PK_DetailAccount", x => x.DetailAccountId);
                     table.ForeignKey(
                         name: "FK_Finance_DetailAccount_Corporate_Branch",
                         column: x => x.BranchId,
                         principalSchema: "Corporate",
                         principalTable: "Branch",
-                        principalColumn: "BranchID",
+                        principalColumn: "BranchId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Finance_DetailAccount_Finance_Currency",
@@ -1840,14 +1840,14 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         column: x => x.FiscalPeriodId,
                         principalSchema: "Finance",
                         principalTable: "FiscalPeriod",
-                        principalColumn: "FiscalPeriodID",
+                        principalColumn: "FiscalPeriodId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Finance_DetailAccount_Finance_Parent",
                         column: x => x.ParentId,
                         principalSchema: "Finance",
                         principalTable: "DetailAccount",
-                        principalColumn: "DetailAccountID",
+                        principalColumn: "DetailAccountId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1856,7 +1856,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "CashFlow",
                 columns: table => new
                 {
-                    PayReceiveID = table.Column<int>(type: "int", nullable: false)
+                    PayReceiveId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CurrencyId = table.Column<int>(type: "int", nullable: true),
                     IssuedById = table.Column<int>(type: "int", nullable: false),
@@ -1881,13 +1881,13 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PayReceive", x => x.PayReceiveID);
+                    table.PrimaryKey("PK_PayReceive", x => x.PayReceiveId);
                     table.ForeignKey(
                         name: "FK_CashFlow_PayReceive_Corporate_Branch",
                         column: x => x.BranchId,
                         principalSchema: "Corporate",
                         principalTable: "Branch",
-                        principalColumn: "BranchID",
+                        principalColumn: "BranchId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CashFlow_PayReceive_Finance_Currency",
@@ -1901,7 +1901,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         column: x => x.FiscalPeriodId,
                         principalSchema: "Finance",
                         principalTable: "FiscalPeriod",
-                        principalColumn: "FiscalPeriodID",
+                        principalColumn: "FiscalPeriodId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1910,7 +1910,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Finance",
                 columns: table => new
                 {
-                    AccountProjectID = table.Column<int>(type: "int", nullable: false)
+                    AccountProjectId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AccountId = table.Column<int>(type: "int", nullable: false),
                     ProjectId = table.Column<int>(type: "int", nullable: false),
@@ -1919,21 +1919,21 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AccountProject", x => x.AccountProjectID);
+                    table.PrimaryKey("PK_AccountProject", x => x.AccountProjectId);
                     table.UniqueConstraint("AK_AccountProject_AccountId_ProjectId", x => new { x.AccountId, x.ProjectId });
                     table.ForeignKey(
                         name: "FK_AccountProject_Account_AccountId",
                         column: x => x.AccountId,
                         principalSchema: "Finance",
                         principalTable: "Account",
-                        principalColumn: "AccountID",
+                        principalColumn: "AccountId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AccountProject_Project_ProjectId",
                         column: x => x.ProjectId,
                         principalSchema: "Finance",
                         principalTable: "Project",
-                        principalColumn: "ProjectID",
+                        principalColumn: "ProjectId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -1942,7 +1942,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Auth",
                 columns: table => new
                 {
-                    RoleWidgetID = table.Column<int>(type: "int", nullable: false)
+                    RoleWidgetId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     WidgetId = table.Column<int>(type: "int", nullable: false),
                     RoleId = table.Column<int>(type: "int", nullable: false),
@@ -1951,13 +1951,13 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RoleWidget", x => x.RoleWidgetID);
+                    table.PrimaryKey("PK_RoleWidget", x => x.RoleWidgetId);
                     table.ForeignKey(
                         name: "FK_Auth_RoleWidget_Reporting_Widget",
                         column: x => x.WidgetId,
                         principalSchema: "Reporting",
                         principalTable: "Widget",
-                        principalColumn: "WidgetID",
+                        principalColumn: "WidgetId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -1966,7 +1966,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Reporting",
                 columns: table => new
                 {
-                    TabWidgetID = table.Column<int>(type: "int", nullable: false)
+                    TabWidgetId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TabId = table.Column<int>(type: "int", nullable: false),
                     WidgetId = table.Column<int>(type: "int", nullable: false),
@@ -1977,20 +1977,20 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TabWidget", x => x.TabWidgetID);
+                    table.PrimaryKey("PK_TabWidget", x => x.TabWidgetId);
                     table.ForeignKey(
                         name: "FK_Reporting_TabWidget_Reporting_DashboardTab",
                         column: x => x.TabId,
                         principalSchema: "Reporting",
                         principalTable: "DashboardTab",
-                        principalColumn: "DashboardTabID",
+                        principalColumn: "DashboardTabId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Reporting_TabWidget_Reporting_Widget",
                         column: x => x.WidgetId,
                         principalSchema: "Reporting",
                         principalTable: "Widget",
-                        principalColumn: "WidgetID",
+                        principalColumn: "WidgetId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -1999,7 +1999,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Finance",
                 columns: table => new
                 {
-                    AccountHolderID = table.Column<int>(type: "int", nullable: false)
+                    AccountHolderId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AccountOwnerId = table.Column<int>(type: "int", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
@@ -2010,13 +2010,13 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AccountHolder", x => x.AccountHolderID);
+                    table.PrimaryKey("PK_AccountHolder", x => x.AccountHolderId);
                     table.ForeignKey(
                         name: "FK_AccountHolder_AccountOwner_AccountOwnerId",
                         column: x => x.AccountOwnerId,
                         principalSchema: "Finance",
                         principalTable: "AccountOwner",
-                        principalColumn: "AccountOwnerID",
+                        principalColumn: "AccountOwnerId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -2025,7 +2025,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Finance",
                 columns: table => new
                 {
-                    AccountDetailAccountID = table.Column<int>(type: "int", nullable: false)
+                    AccountDetailAccountId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AccountId = table.Column<int>(type: "int", nullable: false),
                     DetailAccountId = table.Column<int>(type: "int", nullable: false),
@@ -2034,21 +2034,21 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AccountDetailAccount", x => x.AccountDetailAccountID);
+                    table.PrimaryKey("PK_AccountDetailAccount", x => x.AccountDetailAccountId);
                     table.UniqueConstraint("AK_AccountDetailAccount_AccountId_DetailAccountId", x => new { x.AccountId, x.DetailAccountId });
                     table.ForeignKey(
                         name: "FK_AccountDetailAccount_Account_AccountId",
                         column: x => x.AccountId,
                         principalSchema: "Finance",
                         principalTable: "Account",
-                        principalColumn: "AccountID",
+                        principalColumn: "AccountId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AccountDetailAccount_DetailAccount_DetailAccountId",
                         column: x => x.DetailAccountId,
                         principalSchema: "Finance",
                         principalTable: "DetailAccount",
-                        principalColumn: "DetailAccountID",
+                        principalColumn: "DetailAccountId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -2057,7 +2057,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Check",
                 columns: table => new
                 {
-                    CheckBookID = table.Column<int>(type: "int", nullable: false)
+                    CheckBookId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AccountId = table.Column<int>(type: "int", nullable: false),
                     DetailAccountId = table.Column<int>(type: "int", nullable: true),
@@ -2082,48 +2082,48 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CheckBook", x => x.CheckBookID);
+                    table.PrimaryKey("PK_CheckBook", x => x.CheckBookId);
                     table.ForeignKey(
                         name: "FK_Check_CheckBook_Corporate_Branch",
                         column: x => x.BranchId,
                         principalSchema: "Corporate",
                         principalTable: "Branch",
-                        principalColumn: "BranchID",
+                        principalColumn: "BranchId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Check_CheckBook_Finance_Account",
                         column: x => x.AccountId,
                         principalSchema: "Finance",
                         principalTable: "Account",
-                        principalColumn: "AccountID",
+                        principalColumn: "AccountId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Check_CheckBook_Finance_CostCenter",
                         column: x => x.CostCenterId,
                         principalSchema: "Finance",
                         principalTable: "CostCenter",
-                        principalColumn: "CostCenterID",
+                        principalColumn: "CostCenterId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Check_CheckBook_Finance_DetailAccount",
                         column: x => x.DetailAccountId,
                         principalSchema: "Finance",
                         principalTable: "DetailAccount",
-                        principalColumn: "DetailAccountID",
+                        principalColumn: "DetailAccountId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Check_CheckBook_Finance_Project",
                         column: x => x.ProjectId,
                         principalSchema: "Finance",
                         principalTable: "Project",
-                        principalColumn: "ProjectID",
+                        principalColumn: "ProjectId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CheckBook_FiscalPeriod_FiscalPeriodId",
                         column: x => x.FiscalPeriodId,
                         principalSchema: "Finance",
                         principalTable: "FiscalPeriod",
-                        principalColumn: "FiscalPeriodID",
+                        principalColumn: "FiscalPeriodId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -2132,7 +2132,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Finance",
                 columns: table => new
                 {
-                    VoucherLineID = table.Column<int>(type: "int", nullable: false)
+                    VoucherLineId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     VoucherId = table.Column<int>(type: "int", nullable: false),
                     AccountId = table.Column<int>(type: "int", nullable: false),
@@ -2158,34 +2158,34 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_VoucherLine", x => x.VoucherLineID);
+                    table.PrimaryKey("PK_VoucherLine", x => x.VoucherLineId);
                     table.ForeignKey(
                         name: "FK_Finance_VoucherLine_CashFlow_SourceApp",
                         column: x => x.SourceAppId,
                         principalSchema: "CashFlow",
                         principalTable: "SourceApp",
-                        principalColumn: "SourceAppID",
+                        principalColumn: "SourceAppId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Finance_VoucherLine_Corporate_Branch",
                         column: x => x.BranchId,
                         principalSchema: "Corporate",
                         principalTable: "Branch",
-                        principalColumn: "BranchID",
+                        principalColumn: "BranchId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Finance_VoucherLine_Finance_Account",
                         column: x => x.AccountId,
                         principalSchema: "Finance",
                         principalTable: "Account",
-                        principalColumn: "AccountID",
+                        principalColumn: "AccountId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Finance_VoucherLine_Finance_CostCenter",
                         column: x => x.CostCenterId,
                         principalSchema: "Finance",
                         principalTable: "CostCenter",
-                        principalColumn: "CostCenterID",
+                        principalColumn: "CostCenterId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Finance_VoucherLine_Finance_Currency",
@@ -2199,28 +2199,28 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         column: x => x.DetailAccountId,
                         principalSchema: "Finance",
                         principalTable: "DetailAccount",
-                        principalColumn: "DetailAccountID",
+                        principalColumn: "DetailAccountId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Finance_VoucherLine_Finance_FiscalPeriod",
                         column: x => x.FiscalPeriodId,
                         principalSchema: "Finance",
                         principalTable: "FiscalPeriod",
-                        principalColumn: "FiscalPeriodID",
+                        principalColumn: "FiscalPeriodId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Finance_VoucherLine_Finance_Project",
                         column: x => x.ProjectId,
                         principalSchema: "Finance",
                         principalTable: "Project",
-                        principalColumn: "ProjectID",
+                        principalColumn: "ProjectId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Finance_VoucherLine_Finance_Voucher",
                         column: x => x.VoucherId,
                         principalSchema: "Finance",
                         principalTable: "Voucher",
-                        principalColumn: "VoucherID",
+                        principalColumn: "VoucherId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -2229,7 +2229,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Reporting",
                 columns: table => new
                 {
-                    WidgetAccountID = table.Column<int>(type: "int", nullable: false)
+                    WidgetAccountId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     WidgetId = table.Column<int>(type: "int", nullable: false),
                     AccountId = table.Column<int>(type: "int", nullable: true),
@@ -2241,41 +2241,41 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WidgetAccount", x => x.WidgetAccountID);
+                    table.PrimaryKey("PK_WidgetAccount", x => x.WidgetAccountId);
                     table.ForeignKey(
                         name: "FK_Reporting_WidgetAccount_Finance_Account",
                         column: x => x.AccountId,
                         principalSchema: "Finance",
                         principalTable: "Account",
-                        principalColumn: "AccountID",
+                        principalColumn: "AccountId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Reporting_WidgetAccount_Finance_CostCenter",
                         column: x => x.CostCenterId,
                         principalSchema: "Finance",
                         principalTable: "CostCenter",
-                        principalColumn: "CostCenterID",
+                        principalColumn: "CostCenterId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Reporting_WidgetAccount_Finance_DetailAccount",
                         column: x => x.DetailAccountId,
                         principalSchema: "Finance",
                         principalTable: "DetailAccount",
-                        principalColumn: "DetailAccountID",
+                        principalColumn: "DetailAccountId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Reporting_WidgetAccount_Finance_Project",
                         column: x => x.ProjectId,
                         principalSchema: "Finance",
                         principalTable: "Project",
-                        principalColumn: "ProjectID",
+                        principalColumn: "ProjectId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Reporting_WidgetAccount_Reporting_Widget",
                         column: x => x.WidgetId,
                         principalSchema: "Reporting",
                         principalTable: "Widget",
-                        principalColumn: "WidgetID",
+                        principalColumn: "WidgetId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -2284,7 +2284,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "CashFlow",
                 columns: table => new
                 {
-                    PayReceiveAccountID = table.Column<int>(type: "int", nullable: false)
+                    PayReceiveAccountId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PayReceiveId = table.Column<int>(type: "int", nullable: false),
                     AccountId = table.Column<int>(type: "int", nullable: true),
@@ -2298,41 +2298,41 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PayReceiveAccount", x => x.PayReceiveAccountID);
+                    table.PrimaryKey("PK_PayReceiveAccount", x => x.PayReceiveAccountId);
                     table.ForeignKey(
                         name: "FK_CashFlow_PayReceiveAccount_CashFlow_PayReceive",
                         column: x => x.PayReceiveId,
                         principalSchema: "CashFlow",
                         principalTable: "PayReceive",
-                        principalColumn: "PayReceiveID",
+                        principalColumn: "PayReceiveId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_CashFlow_PayReceiveAccount_Finance_Account",
                         column: x => x.AccountId,
                         principalSchema: "Finance",
                         principalTable: "Account",
-                        principalColumn: "AccountID",
+                        principalColumn: "AccountId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CashFlow_PayReceiveAccount_Finance_CostCenter",
                         column: x => x.CostCenterId,
                         principalSchema: "Finance",
                         principalTable: "CostCenter",
-                        principalColumn: "CostCenterID",
+                        principalColumn: "CostCenterId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CashFlow_PayReceiveAccount_Finance_DetailAccount",
                         column: x => x.DetailAccountId,
                         principalSchema: "Finance",
                         principalTable: "DetailAccount",
-                        principalColumn: "DetailAccountID",
+                        principalColumn: "DetailAccountId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CashFlow_PayReceiveAccount_Finance_Project",
                         column: x => x.ProjectId,
                         principalSchema: "Finance",
                         principalTable: "Project",
-                        principalColumn: "ProjectID",
+                        principalColumn: "ProjectId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -2341,7 +2341,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "CashFlow",
                 columns: table => new
                 {
-                    PayReceiveCashAccountID = table.Column<int>(type: "int", nullable: false)
+                    PayReceiveCashAccountId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PayReceiveId = table.Column<int>(type: "int", nullable: false),
                     AccountId = table.Column<int>(type: "int", nullable: true),
@@ -2358,48 +2358,48 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PayReceiveCashAccount", x => x.PayReceiveCashAccountID);
+                    table.PrimaryKey("PK_PayReceiveCashAccount", x => x.PayReceiveCashAccountId);
                     table.ForeignKey(
                         name: "FK_CashFlow_PayReceiveCashAccount_CashFlow_PayReceive",
                         column: x => x.PayReceiveId,
                         principalSchema: "CashFlow",
                         principalTable: "PayReceive",
-                        principalColumn: "PayReceiveID",
+                        principalColumn: "PayReceiveId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_CashFlow_PayReceiveCashAccount_CashFlow_SourceApp",
                         column: x => x.SourceAppId,
                         principalSchema: "CashFlow",
                         principalTable: "SourceApp",
-                        principalColumn: "SourceAppID",
+                        principalColumn: "SourceAppId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CashFlow_PayReceiveCashAccount_Finance_Account",
                         column: x => x.AccountId,
                         principalSchema: "Finance",
                         principalTable: "Account",
-                        principalColumn: "AccountID",
+                        principalColumn: "AccountId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CashFlow_PayReceiveCashAccount_Finance_CostCenter",
                         column: x => x.CostCenterId,
                         principalSchema: "Finance",
                         principalTable: "CostCenter",
-                        principalColumn: "CostCenterID",
+                        principalColumn: "CostCenterId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CashFlow_PayReceiveCashAccount_Finance_DetailAccount",
                         column: x => x.DetailAccountId,
                         principalSchema: "Finance",
                         principalTable: "DetailAccount",
-                        principalColumn: "DetailAccountID",
+                        principalColumn: "DetailAccountId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CashFlow_PayReceiveCashAccount_Finance_Project",
                         column: x => x.ProjectId,
                         principalSchema: "Finance",
                         principalTable: "Project",
-                        principalColumn: "ProjectID",
+                        principalColumn: "ProjectId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -2408,7 +2408,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Check",
                 columns: table => new
                 {
-                    CheckBookPageID = table.Column<int>(type: "int", nullable: false)
+                    CheckBookPageId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CheckBookId = table.Column<int>(type: "int", nullable: false),
                     SerialNo = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
@@ -2420,13 +2420,13 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CheckBookPage", x => x.CheckBookPageID);
+                    table.PrimaryKey("PK_CheckBookPage", x => x.CheckBookPageId);
                     table.ForeignKey(
                         name: "FK_Check_CheckBookPage_Check_CheckBook",
                         column: x => x.CheckBookId,
                         principalSchema: "Check",
                         principalTable: "CheckBook",
-                        principalColumn: "CheckBookID",
+                        principalColumn: "CheckBookId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -2435,7 +2435,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "CashFlow",
                 columns: table => new
                 {
-                    PayReceiveVoucherLineID = table.Column<int>(type: "int", nullable: false)
+                    PayReceiveVoucherLineId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PayReceiveId = table.Column<int>(type: "int", nullable: false),
                     VoucherLineId = table.Column<int>(type: "int", nullable: false),
@@ -2444,21 +2444,21 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PayReceiveVoucherLine", x => x.PayReceiveVoucherLineID);
+                    table.PrimaryKey("PK_PayReceiveVoucherLine", x => x.PayReceiveVoucherLineId);
                     table.UniqueConstraint("AK_PayReceiveVoucherLine_PayReceiveId_VoucherLineId", x => new { x.PayReceiveId, x.VoucherLineId });
                     table.ForeignKey(
                         name: "FK_PayReceiveVoucherLine_PayReceive_PayReceiveId",
                         column: x => x.PayReceiveId,
                         principalSchema: "CashFlow",
                         principalTable: "PayReceive",
-                        principalColumn: "PayReceiveID",
+                        principalColumn: "PayReceiveId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PayReceiveVoucherLine_VoucherLine_VoucherLineId",
                         column: x => x.VoucherLineId,
                         principalSchema: "Finance",
                         principalTable: "VoucherLine",
-                        principalColumn: "VoucherLineID",
+                        principalColumn: "VoucherLineId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -2471,13 +2471,13 @@ namespace SPPC.Tadbir.Web.Api.Migrations
             migrationBuilder.InsertData(
                 schema: "Corporate",
                 table: "Branch",
-                columns: new[] { "BranchID", "Description", "Name", "ParentId" },
+                columns: new[] { "BranchId", "Description", "Name", "ParentId" },
                 values: new object[] { 1, "", "دفتر مرکزی", null });
 
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "EntityType",
-                columns: new[] { "EntityTypeID", "Description", "Name" },
+                columns: new[] { "EntityTypeId", "Description", "Name" },
                 values: new object[,]
                 {
                     { 2, "", "AccountCollectionAccount" },
@@ -2509,7 +2509,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Operation",
-                columns: new[] { "OperationID", "Description", "Name" },
+                columns: new[] { "OperationId", "Description", "Name" },
                 values: new object[,]
                 {
                     { 71, "", "CreateAccountLine" },
@@ -2533,7 +2533,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Operation",
-                columns: new[] { "OperationID", "Description", "Name" },
+                columns: new[] { "OperationId", "Description", "Name" },
                 values: new object[,]
                 {
                     { 72, "", "EditAccountLine" },
@@ -2583,7 +2583,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Operation",
-                columns: new[] { "OperationID", "Description", "Name" },
+                columns: new[] { "OperationId", "Description", "Name" },
                 values: new object[,]
                 {
                     { 2, "", "Create" },
@@ -2616,7 +2616,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "OperationSource",
-                columns: new[] { "OperationSourceID", "Description", "Name" },
+                columns: new[] { "OperationSourceId", "Description", "Name" },
                 values: new object[,]
                 {
                     { 15, "", "CheckBookReport" },
@@ -2636,7 +2636,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "OperationSourceType",
-                columns: new[] { "OperationSourceTypeID", "Name" },
+                columns: new[] { "OperationSourceTypeId", "Name" },
                 values: new object[,]
                 {
                     { 1, "BaseData" },
@@ -2647,7 +2647,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Subsystem",
-                columns: new[] { "SubsystemID", "Name" },
+                columns: new[] { "SubsystemId", "Name" },
                 values: new object[,]
                 {
                     { 100000, "ProductScope" },
@@ -2657,19 +2657,19 @@ namespace SPPC.Tadbir.Web.Api.Migrations
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Subsystem",
-                columns: new[] { "SubsystemID", "Name" },
+                columns: new[] { "SubsystemId", "Name" },
                 values: new object[] { 2, "Accounting" });
 
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Subsystem",
-                columns: new[] { "SubsystemID", "Name" },
+                columns: new[] { "SubsystemId", "Name" },
                 values: new object[] { 3, "Treasury" });
 
             migrationBuilder.InsertData(
                 schema: "Config",
                 table: "LogSetting",
-                columns: new[] { "LogSettingID", "EntityTypeID", "IsEnabled", "OperationID", "SourceID", "SourceTypeID", "SubsystemID" },
+                columns: new[] { "LogSettingId", "EntityTypeId", "IsEnabled", "OperationId", "SourceId", "SourceTypeId", "SubsystemId" },
                 values: new object[,]
                 {
                     { 167, null, true, 5, 4, 3, 2 },
@@ -2719,7 +2719,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
             migrationBuilder.InsertData(
                 schema: "Config",
                 table: "LogSetting",
-                columns: new[] { "LogSettingID", "EntityTypeID", "IsEnabled", "OperationID", "SourceID", "SourceTypeID", "SubsystemID" },
+                columns: new[] { "LogSettingId", "EntityTypeId", "IsEnabled", "OperationId", "SourceId", "SourceTypeId", "SubsystemId" },
                 values: new object[,]
                 {
                     { 307, 7, true, 90, null, 1, 2 },
@@ -2769,7 +2769,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
             migrationBuilder.InsertData(
                 schema: "Config",
                 table: "LogSetting",
-                columns: new[] { "LogSettingID", "EntityTypeID", "IsEnabled", "OperationID", "SourceID", "SourceTypeID", "SubsystemID" },
+                columns: new[] { "LogSettingId", "EntityTypeId", "IsEnabled", "OperationId", "SourceId", "SourceTypeId", "SubsystemId" },
                 values: new object[,]
                 {
                     { 234, 23, true, 4, null, 1, 3 },
@@ -2819,7 +2819,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
             migrationBuilder.InsertData(
                 schema: "Config",
                 table: "LogSetting",
-                columns: new[] { "LogSettingID", "EntityTypeID", "IsEnabled", "OperationID", "SourceID", "SourceTypeID", "SubsystemID" },
+                columns: new[] { "LogSettingId", "EntityTypeId", "IsEnabled", "OperationId", "SourceId", "SourceTypeId", "SubsystemId" },
                 values: new object[,]
                 {
                     { 273, 24, false, 74, null, 2, 3 },
@@ -2869,7 +2869,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
             migrationBuilder.InsertData(
                 schema: "Config",
                 table: "LogSetting",
-                columns: new[] { "LogSettingID", "EntityTypeID", "IsEnabled", "OperationID", "SourceID", "SourceTypeID", "SubsystemID" },
+                columns: new[] { "LogSettingId", "EntityTypeId", "IsEnabled", "OperationId", "SourceId", "SourceTypeId", "SubsystemId" },
                 values: new object[,]
                 {
                     { 166, null, true, 1, 4, 3, 2 },
@@ -2919,7 +2919,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
             migrationBuilder.InsertData(
                 schema: "Config",
                 table: "LogSetting",
-                columns: new[] { "LogSettingID", "EntityTypeID", "IsEnabled", "OperationID", "SourceID", "SourceTypeID", "SubsystemID" },
+                columns: new[] { "LogSettingId", "EntityTypeId", "IsEnabled", "OperationId", "SourceId", "SourceTypeId", "SubsystemId" },
                 values: new object[,]
                 {
                     { 39, 6, true, 58, null, 1, 2 },
@@ -2969,7 +2969,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
             migrationBuilder.InsertData(
                 schema: "Config",
                 table: "LogSetting",
-                columns: new[] { "LogSettingID", "EntityTypeID", "IsEnabled", "OperationID", "SourceID", "SourceTypeID", "SubsystemID" },
+                columns: new[] { "LogSettingId", "EntityTypeId", "IsEnabled", "OperationId", "SourceId", "SourceTypeId", "SubsystemId" },
                 values: new object[,]
                 {
                     { 84, 12, true, 1, null, 1, 2 },
@@ -3019,7 +3019,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
             migrationBuilder.InsertData(
                 schema: "Config",
                 table: "LogSetting",
-                columns: new[] { "LogSettingID", "EntityTypeID", "IsEnabled", "OperationID", "SourceID", "SourceTypeID", "SubsystemID" },
+                columns: new[] { "LogSettingId", "EntityTypeId", "IsEnabled", "OperationId", "SourceId", "SourceTypeId", "SubsystemId" },
                 values: new object[,]
                 {
                     { 124, 18, true, 4, null, 2, 2 },
@@ -3068,7 +3068,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
             migrationBuilder.InsertData(
                 schema: "Corporate",
                 table: "Branch",
-                columns: new[] { "BranchID", "Description", "Level", "Name", "ParentId" },
+                columns: new[] { "BranchId", "Description", "Level", "Name", "ParentId" },
                 values: new object[] { 2, "", 1, "نمایشگاه شمال تهران", 1 });
 
             migrationBuilder.CreateIndex(
@@ -3162,10 +3162,10 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 column: "AccountOwnerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AccountOwner_AccountID",
+                name: "IX_AccountOwner_AccountId",
                 schema: "Finance",
                 table: "AccountOwner",
-                column: "AccountID",
+                column: "AccountId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -3301,10 +3301,10 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 column: "FiscalPeriodId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CustomerTaxInfo_AccountID",
+                name: "IX_CustomerTaxInfo_AccountId",
                 schema: "Finance",
                 table: "CustomerTaxInfo",
-                column: "AccountID",
+                column: "AccountId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -3362,34 +3362,34 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 column: "SettingID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LogSetting_EntityTypeID",
+                name: "IX_LogSetting_EntityTypeId",
                 schema: "Config",
                 table: "LogSetting",
-                column: "EntityTypeID");
+                column: "EntityTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LogSetting_OperationID",
+                name: "IX_LogSetting_OperationId",
                 schema: "Config",
                 table: "LogSetting",
-                column: "OperationID");
+                column: "OperationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LogSetting_SourceID",
+                name: "IX_LogSetting_SourceId",
                 schema: "Config",
                 table: "LogSetting",
-                column: "SourceID");
+                column: "SourceId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LogSetting_SourceTypeID",
+                name: "IX_LogSetting_SourceTypeId",
                 schema: "Config",
                 table: "LogSetting",
-                column: "SourceTypeID");
+                column: "SourceTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LogSetting_SubsystemID",
+                name: "IX_LogSetting_SubsystemId",
                 schema: "Config",
                 table: "LogSetting",
-                column: "SubsystemID");
+                column: "SubsystemId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OperationLog_BranchId",
@@ -3681,10 +3681,10 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 column: "OriginId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Voucher_StatusID",
+                name: "IX_Voucher_StatusId",
                 schema: "Finance",
                 table: "Voucher",
-                column: "StatusID");
+                column: "StatusId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_VoucherLine_AccountId",

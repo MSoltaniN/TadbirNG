@@ -24,7 +24,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("PermissionID")
+                        .HasColumnName("PermissionId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
@@ -37,7 +37,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("((0))");
 
                     b.Property<int>("GroupId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("GroupId");
 
                     b.Property<DateTime>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -3279,7 +3280,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("PermissionGroupID")
+                        .HasColumnName("PermissionGroupId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
@@ -3307,10 +3308,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(newid())");
 
                     b.Property<int>("SourceTypeId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("SourceTypeId");
 
                     b.Property<int>("SubsystemId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("SubsystemId");
 
                     b.HasKey("Id");
 
@@ -3845,7 +3848,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("RoleID")
+                        .HasColumnName("RoleId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
@@ -3878,11 +3881,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("RoleCompanyID")
+                        .HasColumnName("RoleCompanyId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("CompanyId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CompanyId");
 
                     b.Property<DateTime>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -3890,7 +3894,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("RoleId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -3912,7 +3917,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("RolePermissionID")
+                        .HasColumnName("RolePermissionId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("ModifiedDate")
@@ -3921,10 +3926,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int>("PermissionId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("PermissionId");
 
                     b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("RoleId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -3946,7 +3953,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("SessionID")
+                        .HasColumnName("SessionId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Browser")
@@ -3990,7 +3997,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasColumnType("nvarchar(32)");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("UserId");
 
                     b.HasKey("Id");
 
@@ -4004,7 +4012,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("UserID")
+                        .HasColumnName("UserId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("IsEnabled")
@@ -4057,7 +4065,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("UserRoleID")
+                        .HasColumnName("UserRoleId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("ModifiedDate")
@@ -4066,7 +4074,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("RoleId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -4075,7 +4084,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(newid())");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("UserId");
 
                     b.HasKey("Id");
 
@@ -4091,7 +4101,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("RowPermissionID")
+                        .HasColumnName("ViewRowPermissionId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AccessMode")
@@ -4109,7 +4119,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("RoleId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -4128,7 +4139,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasColumnType("float");
 
                     b.Property<int>("ViewID")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ViewId");
 
                     b.HasKey("Id");
 
@@ -4144,7 +4156,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("CompanyID")
+                        .HasColumnName("CompanyDbId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("DbName")
@@ -4199,7 +4211,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DbName = "NGTadbirMG2",
                             Description = "",
                             IsActive = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 33, DateTimeKind.Local).AddTicks(911),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "شرکت نمونه",
                             Password = "$$$%%%",
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
@@ -4213,7 +4225,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("SettingID")
+                        .HasColumnName("SettingId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("DefaultValues")
@@ -4279,11 +4291,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("SysLogSettingID")
+                        .HasColumnName("SysLogSettingId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("EntityTypeId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("EntityTypeId");
 
                     b.Property<bool>("IsEnabled")
                         .HasColumnType("bit");
@@ -4294,7 +4307,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int>("OperationId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("OperationId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -4303,7 +4317,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(newid())");
 
                     b.Property<int?>("SourceId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("SourceId");
 
                     b.HasKey("Id");
 
@@ -4321,7 +4336,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 1,
                             EntityTypeId = 1,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 75, DateTimeKind.Local).AddTicks(9888),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 1,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4330,7 +4345,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 2,
                             EntityTypeId = 1,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1322),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 2,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4339,7 +4354,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 3,
                             EntityTypeId = 1,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1332),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 3,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4348,7 +4363,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 4,
                             EntityTypeId = 1,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1335),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 4,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4357,7 +4372,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 5,
                             EntityTypeId = 1,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1340),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 21,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4366,7 +4381,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 6,
                             EntityTypeId = 1,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1348),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 5,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4375,7 +4390,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 7,
                             EntityTypeId = 1,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1351),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 58,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4384,7 +4399,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 8,
                             EntityTypeId = 1,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1353),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 6,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4393,7 +4408,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 9,
                             EntityTypeId = 1,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1356),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 54,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4402,7 +4417,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 10,
                             EntityTypeId = 1,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1360),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 35,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4411,7 +4426,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 11,
                             EntityTypeId = 6,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1364),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 1,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4420,7 +4435,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 12,
                             EntityTypeId = 6,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1367),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 2,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4429,7 +4444,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 13,
                             EntityTypeId = 6,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1370),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 3,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4438,7 +4453,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 14,
                             EntityTypeId = 6,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1373),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 5,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4447,7 +4462,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 15,
                             EntityTypeId = 6,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1376),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 58,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4456,7 +4471,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 16,
                             EntityTypeId = 6,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1379),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 6,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4465,7 +4480,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 17,
                             EntityTypeId = 6,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1381),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 54,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4474,7 +4489,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 18,
                             EntityTypeId = 6,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1385),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 26,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4483,7 +4498,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 19,
                             EntityTypeId = 2,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1388),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 1,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4492,7 +4507,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 20,
                             EntityTypeId = 2,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1391),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 2,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4501,7 +4516,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 21,
                             EntityTypeId = 2,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1393),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 3,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4510,7 +4525,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 22,
                             EntityTypeId = 2,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1396),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 4,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4519,7 +4534,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 23,
                             EntityTypeId = 2,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1399),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 21,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4528,7 +4543,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 24,
                             EntityTypeId = 2,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1402),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 5,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4537,7 +4552,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 25,
                             EntityTypeId = 2,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1405),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 58,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4546,7 +4561,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 26,
                             EntityTypeId = 2,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1407),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 6,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4555,7 +4570,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 27,
                             EntityTypeId = 2,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1410),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 54,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4564,7 +4579,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 28,
                             EntityTypeId = 2,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1413),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 27,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4573,7 +4588,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 29,
                             EntityTypeId = 2,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1416),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 28,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4582,7 +4597,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 30,
                             EntityTypeId = 2,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1496),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 29,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4591,7 +4606,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 31,
                             EntityTypeId = 2,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1501),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 57,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4600,7 +4615,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 32,
                             EntityTypeId = 4,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1504),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 1,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4609,7 +4624,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 33,
                             EntityTypeId = 4,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1507),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 7,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4618,7 +4633,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 34,
                             EntityTypeId = 5,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1511),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 1,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4627,7 +4642,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 35,
                             EntityTypeId = 5,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1513),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 4,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4636,7 +4651,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 36,
                             EntityTypeId = 5,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1516),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 21,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4645,7 +4660,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 37,
                             EntityTypeId = 5,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1519),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 5,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4654,7 +4669,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 38,
                             EntityTypeId = 5,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1522),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 58,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4663,7 +4678,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 39,
                             EntityTypeId = 5,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1524),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 6,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4672,7 +4687,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 40,
                             EntityTypeId = 5,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1528),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 54,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4681,7 +4696,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 41,
                             EntityTypeId = 5,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1531),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 8,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4690,7 +4705,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 42,
                             EntityTypeId = 5,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1534),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 30,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4699,7 +4714,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 43,
                             EntityTypeId = 8,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1536),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 1,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4708,7 +4723,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 44,
                             EntityTypeId = 8,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1539),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 7,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4716,7 +4731,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         {
                             Id = 45,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1542),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 22,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
                             SourceId = 7
@@ -4725,7 +4740,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         {
                             Id = 46,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1545),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 23,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
                             SourceId = 8
@@ -4734,7 +4749,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         {
                             Id = 47,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1547),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 24,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
                             SourceId = 8
@@ -4743,7 +4758,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         {
                             Id = 48,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1550),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 25,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
                             SourceId = 8
@@ -4753,7 +4768,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 49,
                             EntityTypeId = 9,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 76, DateTimeKind.Local).AddTicks(1553),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 10,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         });
@@ -4764,7 +4779,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("UserSettingID")
+                        .HasColumnName("UserSettingId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ModelType")
@@ -4778,7 +4793,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int?>("RoleId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("RoleId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -4787,10 +4803,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(newid())");
 
                     b.Property<int>("SettingId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("SettingId");
 
                     b.Property<int?>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("UserId");
 
                     b.Property<string>("Values")
                         .IsRequired()
@@ -4799,7 +4817,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasColumnName("Values");
 
                     b.Property<int?>("ViewId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ViewId");
 
                     b.HasKey("Id");
 
@@ -4819,7 +4838,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("PersonID")
+                        .HasColumnName("PersonId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("FullName")
@@ -4840,7 +4859,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
 
                     b.Property<int>("UserId")
                         .HasColumnType("int")
-                        .HasColumnName("UserID");
+                        .HasColumnName("UserId");
 
                     b.HasKey("Id");
 
@@ -4865,11 +4884,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("SysOperationLogID")
+                        .HasColumnName("SysOperationLogId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("CompanyId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CompanyId");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -4889,7 +4909,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasColumnType("nvarchar(1024)");
 
                     b.Property<int?>("EntityId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("EntityId");
 
                     b.Property<string>("EntityName")
                         .HasMaxLength(256)
@@ -4899,7 +4920,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasColumnType("int");
 
                     b.Property<int?>("EntityTypeId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("EntityTypeId");
 
                     b.Property<DateTime>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -4907,7 +4929,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int>("OperationId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("OperationId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -4916,16 +4939,19 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(newid())");
 
                     b.Property<int?>("SourceId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("SourceId");
 
                     b.Property<int?>("SourceListId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("SourceListId");
 
                     b.Property<TimeSpan>("Time")
                         .HasColumnType("time");
 
                     b.Property<int?>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("UserId");
 
                     b.HasKey("Id");
 
@@ -4949,11 +4975,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("SysOperationLogArchiveID")
+                        .HasColumnName("SysOperationLogArchiveId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("CompanyId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CompanyId");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -4973,7 +5000,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasColumnType("nvarchar(1024)");
 
                     b.Property<int?>("EntityId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("EntityId");
 
                     b.Property<string>("EntityName")
                         .HasMaxLength(256)
@@ -4983,7 +5011,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasColumnType("int");
 
                     b.Property<int?>("EntityTypeId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("EntityTypeId");
 
                     b.Property<DateTime>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -4991,7 +5020,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int>("OperationId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("OperationId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -5000,16 +5030,19 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(newid())");
 
                     b.Property<int?>("SourceId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("SourceId");
 
                     b.Property<int?>("SourceListId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("SourceListId");
 
                     b.Property<TimeSpan>("Time")
                         .HasColumnType("time");
 
                     b.Property<int?>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("UserId");
 
                     b.HasKey("Id");
 
@@ -5033,17 +5066,19 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("SystemErrorID")
+                        .HasColumnName("SystemErrorId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("BranchId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("BranchId");
 
                     b.Property<int>("Code")
                         .HasColumnType("int");
 
                     b.Property<int?>("CompanyId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CompanyId");
 
                     b.Property<string>("FaultType")
                         .IsRequired()
@@ -5056,7 +5091,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasColumnType("nvarchar(64)");
 
                     b.Property<int?>("FiscalPeriodId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("FiscalPeriodId");
 
                     b.Property<string>("Message")
                         .IsRequired()
@@ -5094,7 +5130,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ColumnID")
+                        .HasColumnName("ColumnId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("AllowFiltering")
@@ -25205,7 +25241,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("CommandID")
+                        .HasColumnName("CommandId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("HotKey")
@@ -25225,10 +25261,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int?>("ParentId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ParentId");
 
                     b.Property<int?>("PermissionId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("PermissionId");
 
                     b.Property<string>("RouteUrl")
                         .HasMaxLength(256)
@@ -26124,7 +26162,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("EntityTypeID")
+                        .HasColumnName("EntityTypeId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
@@ -26215,7 +26253,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("LocaleID")
+                        .HasColumnName("LocaleId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Code")
@@ -26292,7 +26330,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("OperationID")
+                        .HasColumnName("OperationId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
@@ -26511,7 +26549,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("OperationSourceID")
+                        .HasColumnName("OperationSourceId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
@@ -26570,7 +26608,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("OperationSourceTypeID")
+                        .HasColumnName("OperationSourceTypeId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("ModifiedDate")
@@ -26622,7 +26660,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ViewID")
+                        .HasColumnName("ReportViewId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
@@ -26655,7 +26693,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ShortcutCommandID")
+                        .HasColumnName("ShortcutCommandId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("HotKey")
@@ -26679,7 +26717,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasColumnType("nvarchar(128)");
 
                     b.Property<int?>("PermissionId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("PermissionId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -26703,7 +26742,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("SubsystemID")
+                        .HasColumnName("SubsystemId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("ModifiedDate")
@@ -26762,7 +26801,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ValidRowPermissionID")
+                        .HasColumnName("ValidRowPermissionId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AccessMode")
@@ -26796,7 +26835,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ViewID")
+                        .HasColumnName("ViewId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("EntityName")
@@ -27962,7 +28001,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("LocalReportID")
+                        .HasColumnName("LocalReportId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Caption")
@@ -27971,7 +28010,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasColumnType("nvarchar(128)");
 
                     b.Property<int>("LocaleId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("LocaleId");
 
                     b.Property<DateTime>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -27979,7 +28019,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int>("ReportId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ReportId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -31186,7 +31227,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ParamID")
+                        .HasColumnName("ParameterId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("CaptionKey")
@@ -31241,7 +31282,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasColumnType("nvarchar(16)");
 
                     b.Property<int>("ReportId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ReportId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -31268,7 +31310,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(2604),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 27,
@@ -31283,7 +31325,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3214),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 27,
@@ -31298,7 +31340,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3229),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 28,
@@ -31313,7 +31355,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3317),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 28,
@@ -31328,7 +31370,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3323),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 29,
@@ -31343,7 +31385,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3337),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 29,
@@ -31358,7 +31400,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3342),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 30,
@@ -31373,7 +31415,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3346),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 30,
@@ -31388,7 +31430,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3351),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 31,
@@ -31403,7 +31445,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3357),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 31,
@@ -31418,7 +31460,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3361),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 32,
@@ -31433,7 +31475,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3365),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 32,
@@ -31448,7 +31490,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "FromNo",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3369),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromNo",
                             Operator = "EQ",
                             ReportId = 33,
@@ -31463,7 +31505,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "ToNo",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3373),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toNo",
                             Operator = "EQ",
                             ReportId = 33,
@@ -31478,7 +31520,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "FromNo",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3377),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromNo",
                             Operator = "EQ",
                             ReportId = 34,
@@ -31493,7 +31535,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "ToNo",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3382),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toNo",
                             Operator = "EQ",
                             ReportId = 34,
@@ -31508,7 +31550,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "FromNo",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3386),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromNo",
                             Operator = "EQ",
                             ReportId = 35,
@@ -31523,7 +31565,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "ToNo",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3392),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toNo",
                             Operator = "EQ",
                             ReportId = 35,
@@ -31538,7 +31580,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "FromNo",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3396),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromNo",
                             Operator = "EQ",
                             ReportId = 36,
@@ -31553,7 +31595,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "ToNo",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3400),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toNo",
                             Operator = "EQ",
                             ReportId = 36,
@@ -31568,7 +31610,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "FromNo",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3404),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromNo",
                             Operator = "EQ",
                             ReportId = 37,
@@ -31583,7 +31625,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "ToNo",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3408),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toNo",
                             Operator = "EQ",
                             ReportId = 37,
@@ -31598,7 +31640,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3412),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 38,
@@ -31613,7 +31655,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3416),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 38,
@@ -31628,7 +31670,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "VoucherNo",
                             FieldName = "no",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3420),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "no",
                             Operator = "EQ",
                             ReportId = 40,
@@ -31643,7 +31685,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3425),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 46,
@@ -31658,7 +31700,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3429),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 46,
@@ -31673,7 +31715,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "FromNo",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3433),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromNo",
                             Operator = "EQ",
                             ReportId = 46,
@@ -31688,7 +31730,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "ToNo",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3436),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toNo",
                             Operator = "EQ",
                             ReportId = 46,
@@ -31703,7 +31745,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3453),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 47,
@@ -31718,7 +31760,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3477),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 47,
@@ -31733,7 +31775,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "FromNo",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3481),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromNo",
                             Operator = "EQ",
                             ReportId = 47,
@@ -31748,7 +31790,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "ToNo",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3554),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toNo",
                             Operator = "EQ",
                             ReportId = 47,
@@ -31763,7 +31805,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3561),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 48,
@@ -31778,7 +31820,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3565),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 48,
@@ -31793,7 +31835,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "FromNo",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3569),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromNo",
                             Operator = "EQ",
                             ReportId = 48,
@@ -31808,7 +31850,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "ToNo",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3575),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toNo",
                             Operator = "EQ",
                             ReportId = 48,
@@ -31823,7 +31865,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3579),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 49,
@@ -31838,7 +31880,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3583),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 49,
@@ -31853,7 +31895,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "FromNo",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3587),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromNo",
                             Operator = "EQ",
                             ReportId = 49,
@@ -31868,7 +31910,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "ToNo",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3592),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toNo",
                             Operator = "EQ",
                             ReportId = 49,
@@ -31883,7 +31925,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3596),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 50,
@@ -31898,7 +31940,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3600),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 50,
@@ -31913,7 +31955,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "FromNo",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3604),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromNo",
                             Operator = "EQ",
                             ReportId = 50,
@@ -31928,7 +31970,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "ToNo",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3609),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toNo",
                             Operator = "EQ",
                             ReportId = 50,
@@ -31943,7 +31985,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3612),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 51,
@@ -31958,7 +32000,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3616),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 51,
@@ -31973,7 +32015,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "FromNo",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3620),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromNo",
                             Operator = "EQ",
                             ReportId = 51,
@@ -31988,7 +32030,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "ToNo",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3624),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toNo",
                             Operator = "EQ",
                             ReportId = 51,
@@ -32003,7 +32045,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3628),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 52,
@@ -32018,7 +32060,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3633),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 52,
@@ -32033,7 +32075,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "FromNo",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3637),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromNo",
                             Operator = "EQ",
                             ReportId = 52,
@@ -32048,7 +32090,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "ToNo",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3641),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toNo",
                             Operator = "EQ",
                             ReportId = 52,
@@ -32063,7 +32105,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3645),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 53,
@@ -32078,7 +32120,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3649),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 53,
@@ -32093,7 +32135,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "FromNo",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3653),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromNo",
                             Operator = "EQ",
                             ReportId = 53,
@@ -32108,7 +32150,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "ToNo",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3657),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toNo",
                             Operator = "EQ",
                             ReportId = 53,
@@ -32123,7 +32165,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3662),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 54,
@@ -32138,7 +32180,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3666),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 54,
@@ -32153,7 +32195,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "FromNo",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3670),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromNo",
                             Operator = "EQ",
                             ReportId = 54,
@@ -32168,7 +32210,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "ToNo",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3673),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toNo",
                             Operator = "EQ",
                             ReportId = 54,
@@ -32183,7 +32225,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3712),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 55,
@@ -32198,7 +32240,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3717),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 55,
@@ -32213,7 +32255,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "FromNo",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3721),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromNo",
                             Operator = "EQ",
                             ReportId = 55,
@@ -32228,7 +32270,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "ToNo",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3728),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toNo",
                             Operator = "EQ",
                             ReportId = 55,
@@ -32243,7 +32285,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3733),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 56,
@@ -32258,7 +32300,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3737),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 56,
@@ -32273,7 +32315,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "FromNo",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3741),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromNo",
                             Operator = "EQ",
                             ReportId = 56,
@@ -32288,7 +32330,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "ToNo",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3745),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toNo",
                             Operator = "EQ",
                             ReportId = 56,
@@ -32303,7 +32345,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3749),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 57,
@@ -32318,7 +32360,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3753),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 57,
@@ -32333,7 +32375,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "FromNo",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3758),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromNo",
                             Operator = "EQ",
                             ReportId = 57,
@@ -32348,7 +32390,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "ToNo",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3763),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toNo",
                             Operator = "EQ",
                             ReportId = 57,
@@ -32363,7 +32405,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3767),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 58,
@@ -32378,7 +32420,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3771),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 58,
@@ -32393,7 +32435,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "FromNo",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3775),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromNo",
                             Operator = "EQ",
                             ReportId = 58,
@@ -32408,7 +32450,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "ToNo",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3779),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toNo",
                             Operator = "EQ",
                             ReportId = 58,
@@ -32423,7 +32465,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3783),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 59,
@@ -32438,7 +32480,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3787),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 59,
@@ -32453,7 +32495,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "FromNo",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3791),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromNo",
                             Operator = "EQ",
                             ReportId = 59,
@@ -32468,7 +32510,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "ToNo",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3794),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toNo",
                             Operator = "EQ",
                             ReportId = 59,
@@ -32483,7 +32525,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3799),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 60,
@@ -32498,7 +32540,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3803),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 60,
@@ -32513,7 +32555,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "FromNo",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3807),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromNo",
                             Operator = "EQ",
                             ReportId = 60,
@@ -32528,7 +32570,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "ToNo",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3811),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toNo",
                             Operator = "EQ",
                             ReportId = 60,
@@ -32543,7 +32585,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3816),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 61,
@@ -32558,7 +32600,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3820),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 61,
@@ -32573,7 +32615,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "FromNo",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3824),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromNo",
                             Operator = "EQ",
                             ReportId = 61,
@@ -32588,7 +32630,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "ToNo",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3900),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toNo",
                             Operator = "EQ",
                             ReportId = 61,
@@ -32603,7 +32645,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3904),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 62,
@@ -32618,7 +32660,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3908),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 62,
@@ -32633,7 +32675,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3912),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 63,
@@ -32648,7 +32690,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3916),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 63,
@@ -32663,7 +32705,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3920),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 64,
@@ -32678,7 +32720,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3924),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 64,
@@ -32693,7 +32735,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3928),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 65,
@@ -32708,7 +32750,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3932),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 65,
@@ -32723,7 +32765,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3937),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 66,
@@ -32738,7 +32780,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3940),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 66,
@@ -32753,7 +32795,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3945),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 67,
@@ -32768,7 +32810,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3949),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 67,
@@ -32783,7 +32825,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3953),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 68,
@@ -32798,7 +32840,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3957),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 68,
@@ -32813,7 +32855,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3961),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 69,
@@ -32828,7 +32870,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3966),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 69,
@@ -32843,7 +32885,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "FromNo",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3969),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromNo",
                             Operator = "EQ",
                             ReportId = 69,
@@ -32858,7 +32900,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "ToNo",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3975),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toNo",
                             Operator = "EQ",
                             ReportId = 69,
@@ -32873,7 +32915,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "Date",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3979),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "GTE",
                             ReportId = 70,
@@ -32888,7 +32930,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "Date",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3983),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "LTE",
                             ReportId = 70,
@@ -32903,7 +32945,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "Date",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3987),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "GTE",
                             ReportId = 71,
@@ -32918,7 +32960,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "Date",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3991),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "LTE",
                             ReportId = 71,
@@ -32933,7 +32975,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "Date",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3995),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "GTE",
                             ReportId = 72,
@@ -32948,7 +32990,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "Date",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(3999),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "LTE",
                             ReportId = 72,
@@ -32963,7 +33005,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "Date",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(4004),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "GTE",
                             ReportId = 73,
@@ -32978,7 +33020,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "Date",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(4008),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "LTE",
                             ReportId = 73,
@@ -32993,7 +33035,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(4012),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 76,
@@ -33008,7 +33050,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(4016),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 76,
@@ -33023,7 +33065,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(4020),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 77,
@@ -33038,7 +33080,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(4024),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 77,
@@ -33053,7 +33095,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "VoucherNo",
                             FieldName = "no",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(4063),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "no",
                             Operator = "EQ",
                             ReportId = 82,
@@ -33068,7 +33110,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "VoucherNo",
                             FieldName = "no",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(4069),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "no",
                             Operator = "EQ",
                             ReportId = 83,
@@ -33083,7 +33125,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "VoucherNo",
                             FieldName = "no",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(4073),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "no",
                             Operator = "EQ",
                             ReportId = 84,
@@ -33098,7 +33140,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "VoucherNo",
                             FieldName = "no",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(4077),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "no",
                             Operator = "EQ",
                             ReportId = 41,
@@ -33113,7 +33155,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(4080),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 85,
@@ -33128,7 +33170,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(4084),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 85,
@@ -33143,7 +33185,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(4088),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "EQ",
                             ReportId = 86,
@@ -33158,7 +33200,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(4092),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "EQ",
                             ReportId = 86,
@@ -33173,7 +33215,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "FromNo",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(4097),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromNo",
                             Operator = "EQ",
                             ReportId = 87,
@@ -33188,7 +33230,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "ToNo",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(4101),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toNo",
                             Operator = "EQ",
                             ReportId = 87,
@@ -33203,7 +33245,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "FromNo",
                             FieldName = "from",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(4107),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromNo",
                             Operator = "EQ",
                             ReportId = 88,
@@ -33218,7 +33260,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "ToNo",
                             FieldName = "to",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(4111),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toNo",
                             Operator = "EQ",
                             ReportId = 88,
@@ -33233,7 +33275,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "CompanyId",
                             FieldName = "companyId",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(4115),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "companyId",
                             Operator = "EQ",
                             ReportId = 21,
@@ -33248,7 +33290,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "Date",
                             FieldName = "date",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(4119),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "date",
                             Operator = "EQ",
                             ReportId = 80,
@@ -33263,7 +33305,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "FromDate",
                             FieldName = "Date",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(4124),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromDate",
                             Operator = "GTE",
                             ReportId = 89,
@@ -33278,7 +33320,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.DateTime",
                             DescriptionKey = "ToDate",
                             FieldName = "Date",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(4129),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toDate",
                             Operator = "LTE",
                             ReportId = 89,
@@ -33293,7 +33335,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "FromNo",
                             FieldName = "No",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(4133),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "fromNo",
                             Operator = "GTE",
                             ReportId = 90,
@@ -33308,7 +33350,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DataType = "System.Int32",
                             DescriptionKey = "ToNo",
                             FieldName = "No",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(4137),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "toNo",
                             Operator = "LTE",
                             ReportId = 90,
@@ -33324,7 +33366,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DescriptionKey = "PaymentId",
                             FieldName = "paymentId",
                             MinValue = " 1  ",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(4141),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "paymentId",
                             Operator = "EQ",
                             ReportId = 104,
@@ -33340,7 +33382,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DescriptionKey = "ReceiptId",
                             FieldName = "receiptId",
                             MinValue = " 1  ",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(4145),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "receiptId",
                             Operator = "EQ",
                             ReportId = 105,
@@ -33356,7 +33398,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DescriptionKey = "ReceiptId",
                             FieldName = "paymentId",
                             MinValue = " 1  ",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(4149),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "paymentId",
                             Operator = "EQ",
                             ReportId = 107,
@@ -33372,7 +33414,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DescriptionKey = "PaymentId",
                             FieldName = "receiptId",
                             MinValue = " 1  ",
-                            ModifiedDate = new DateTime(2023, 10, 21, 18, 46, 17, 307, DateTimeKind.Local).AddTicks(4153),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "receiptId",
                             Operator = "EQ",
                             ReportId = 106,
@@ -33386,7 +33428,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ReportID")
+                        .HasColumnName("ReportId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Code")
@@ -33395,7 +33437,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasColumnType("nvarchar(128)");
 
                     b.Property<int>("CreatedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CreatedById");
 
                     b.Property<bool>("IsDefault")
                         .HasColumnType("bit");
@@ -33415,7 +33458,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int?>("ParentId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ParentId");
 
                     b.Property<int?>("ReportViewId")
                         .HasColumnType("int");
@@ -33434,10 +33478,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<int>("SubsystemId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("SubsystemId");
 
                     b.Property<int?>("ViewId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ViewId");
 
                     b.HasKey("Id");
 
@@ -35412,7 +35458,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("SystemIssueID")
+                        .HasColumnName("SystemIssueId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ApiUrl")
@@ -35431,10 +35477,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int?>("ParentId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ParentId");
 
                     b.Property<int?>("PermissionID")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("PermissionId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -35448,7 +35496,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasColumnType("nvarchar(64)");
 
                     b.Property<int?>("ViewId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ViewId");
 
                     b.HasKey("Id");
 

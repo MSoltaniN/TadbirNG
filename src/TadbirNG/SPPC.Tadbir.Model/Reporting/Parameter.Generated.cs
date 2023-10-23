@@ -18,7 +18,7 @@ namespace SPPC.Tadbir.Model.Reporting
     /// <summary>
     /// اطلاعات یکی از پارامترهای مورد نیاز برای اجرای گزارش را نگهداری می کند
     /// </summary>
-    public partial class Parameter : CoreEntity
+    public partial class Parameter : PCoreEntity
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -36,7 +36,7 @@ namespace SPPC.Tadbir.Model.Reporting
             MinValue = String.Empty;
             MaxValue = String.Empty;
             DescriptionKey = String.Empty;
-            ModifiedDate = DateTime.Now;
+            //ModifiedDate = DateTime.Now;
         }
 
         /// <summary>

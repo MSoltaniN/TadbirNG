@@ -133,19 +133,33 @@ namespace SPPC.Tadbir.Persistence
         public static void AdjustDBColumnNames(ModelBuilder modelBuilder)
         {
             var entityTypes = modelBuilder.Model.GetEntityTypes();
-
+            
             foreach (var entityType in entityTypes)
             {
+                if (entityType.GetSchema() is null or "dbo")
+                {
+                    continue;
+                }
+
                 var properties = entityType.ClrType.GetProperties();
 
                 foreach (var property in properties)
                 {
-                    if (property.Name.EndsWith("Id") && !property.Name.StartsWith("Id"))
+                    if (property.Name.EndsWith("ID") && !property.Name.StartsWith("ID")
+                        || (property.Name.EndsWith("Id") && !property.Name.StartsWith("Id")))
                     {
-                        var columnName = property.Name.Replace("Id", "ID");
+                        var columnName = property.Name.Replace("ID", "Id");
                         modelBuilder.Entity(entityType.ClrType)
                             .Property(property.Name)
                             .HasColumnName(columnName);
+                    }
+                    else if (property.Name.EndsWith("ID")
+                             || (property.Name.EndsWith("Id")))
+                    {
+                        var columnName = property.Name.Replace("ID", "Id");
+                        modelBuilder.Entity(entityType.ClrType)
+                            .Property(property.Name)
+                            .HasColumnName(property.ReflectedType.Name + columnName);
                     }
                 }
             }

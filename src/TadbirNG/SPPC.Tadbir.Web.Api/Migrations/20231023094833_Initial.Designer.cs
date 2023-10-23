@@ -10,8 +10,8 @@ using SPPC.Tadbir.Persistence;
 namespace SPPC.Tadbir.Web.Api.Migrations
 {
     [DbContext(typeof(TadbirContext))]
-    [Migration("20231021133147_initial")]
-    partial class initial
+    [Migration("20231023094833_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,11 +26,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("RoleBranchID")
+                        .HasColumnName("RoleBranchId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("BranchId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("BranchId");
 
                     b.Property<DateTime>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -38,7 +39,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("RoleId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -60,11 +62,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("RoleFiscalPeriodID")
+                        .HasColumnName("RoleFiscalPeriodId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("FiscalPeriodId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("FiscalPeriodId");
 
                     b.Property<DateTime>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -72,7 +75,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("RoleId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -94,7 +98,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("RoleWidgetID")
+                        .HasColumnName("RoleWidgetId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("ModifiedDate")
@@ -103,7 +107,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("RoleId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -112,7 +117,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasDefaultValueSql("(newid())");
 
                     b.Property<int>("WidgetId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("WidgetId");
 
                     b.HasKey("Id");
 
@@ -126,17 +132,19 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("CashRegisterID")
+                        .HasColumnName("CashRegisterId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("BranchId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("BranchId");
 
                     b.Property<short>("BranchScope")
                         .HasColumnType("smallint");
 
                     b.Property<int>("CreatedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CreatedById");
 
                     b.Property<string>("CreatedByName")
                         .IsRequired()
@@ -151,10 +159,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<int>("FiscalPeriodId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("FiscalPeriodId");
 
                     b.Property<int>("ModifiedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ModifiedById");
 
                     b.Property<string>("ModifiedByName")
                         .IsRequired()
@@ -191,21 +201,24 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("PayReceiveID")
+                        .HasColumnName("PayReceiveId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("ApprovedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ApprovedById");
 
                     b.Property<string>("ApprovedByName")
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
                     b.Property<int>("BranchId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("BranchId");
 
                     b.Property<int?>("ConfirmedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ConfirmedById");
 
                     b.Property<string>("ConfirmedByName")
                         .HasMaxLength(64)
@@ -215,7 +228,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("CurrencyId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CurrencyId");
 
                     b.Property<decimal?>("CurrencyRate")
                         .HasColumnType("decimal(18,2)");
@@ -228,10 +242,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(1024)");
 
                     b.Property<int>("FiscalPeriodId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("FiscalPeriodId");
 
                     b.Property<int>("IssuedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("IssuedById");
 
                     b.Property<string>("IssuedByName")
                         .IsRequired()
@@ -239,7 +255,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(64)");
 
                     b.Property<int>("ModifiedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ModifiedById");
 
                     b.Property<string>("ModifiedByName")
                         .IsRequired()
@@ -285,20 +302,23 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("PayReceiveAccountID")
+                        .HasColumnName("PayReceiveAccountId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("AccountId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("AccountId");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("CostCenterId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CostCenterId");
 
                     b.Property<int?>("DetailAccountId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("DetailAccountId");
 
                     b.Property<DateTime>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -306,10 +326,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int>("PayReceiveId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("PayReceiveId");
 
                     b.Property<int?>("ProjectId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ProjectId");
 
                     b.Property<string>("Remarks")
                         .HasMaxLength(512)
@@ -341,11 +363,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("PayReceiveCashAccountID")
+                        .HasColumnName("PayReceiveCashAccountId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("AccountId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("AccountId");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
@@ -355,10 +378,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(64)");
 
                     b.Property<int?>("CostCenterId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CostCenterId");
 
                     b.Property<int?>("DetailAccountId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("DetailAccountId");
 
                     b.Property<bool>("IsBank")
                         .HasColumnType("bit");
@@ -369,10 +394,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int>("PayReceiveId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("PayReceiveId");
 
                     b.Property<int?>("ProjectId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ProjectId");
 
                     b.Property<string>("Remarks")
                         .HasMaxLength(512)
@@ -385,7 +412,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasDefaultValueSql("(newid())");
 
                     b.Property<int?>("SourceAppId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("SourceAppId");
 
                     b.HasKey("Id");
 
@@ -409,7 +437,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("PayReceiveVoucherLineID")
+                        .HasColumnName("PayReceiveVoucherLineId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("ModifiedDate")
@@ -418,7 +446,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int>("PayReceiveId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("PayReceiveId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -427,7 +456,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasDefaultValueSql("(newid())");
 
                     b.Property<int>("VoucherLineId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("VoucherLineId");
 
                     b.HasKey("Id");
 
@@ -444,11 +474,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("SourceAppID")
+                        .HasColumnName("SourceAppId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("BranchId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("BranchId");
 
                     b.Property<short>("BranchScope")
                         .HasColumnType("smallint");
@@ -459,7 +490,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(16)");
 
                     b.Property<int>("CreatedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CreatedById");
 
                     b.Property<string>("CreatedByName")
                         .IsRequired()
@@ -474,10 +506,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(512)");
 
                     b.Property<int>("FiscalPeriodId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("FiscalPeriodId");
 
                     b.Property<int>("ModifiedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ModifiedById");
 
                     b.Property<string>("ModifiedByName")
                         .IsRequired()
@@ -517,11 +551,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("UserCashRegisterID")
+                        .HasColumnName("UserCashRegisterId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("CashRegisterId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CashRegisterId");
 
                     b.Property<DateTime>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -535,7 +570,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasDefaultValueSql("(newid())");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("UserId");
 
                     b.HasKey("Id");
 
@@ -549,30 +585,35 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("CheckBookID")
+                        .HasColumnName("CheckBookId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("AccountId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("AccountId");
 
                     b.Property<string>("BankName")
                         .HasMaxLength(32)
                         .HasColumnType("nvarchar(32)");
 
                     b.Property<int>("BranchId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("BranchId");
 
                     b.Property<int?>("CostCenterId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CostCenterId");
 
                     b.Property<int>("CreatedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CreatedById");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("DetailAccountId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("DetailAccountId");
 
                     b.Property<string>("EndNo")
                         .IsRequired()
@@ -580,7 +621,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(32)");
 
                     b.Property<int>("FiscalPeriodId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("FiscalPeriodId");
 
                     b.Property<bool?>("IsArchived")
                         .HasColumnType("bit");
@@ -589,7 +631,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("ModifiedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ModifiedById");
 
                     b.Property<DateTime>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -602,7 +645,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(64)");
 
                     b.Property<int?>("ProjectId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ProjectId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -653,14 +697,16 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("CheckBookPageID")
+                        .HasColumnName("CheckBookPageId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("CheckBookId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CheckBookId");
 
                     b.Property<int?>("CheckId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CheckId");
 
                     b.Property<DateTime>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -698,7 +744,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("LabelSettingID")
+                        .HasColumnName("LabelSettingId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("CustomFormID")
@@ -709,7 +755,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("LocaleId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("LocaleId");
 
                     b.Property<string>("ModelType")
                         .IsRequired()
@@ -748,12 +795,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("LogSettingID")
+                        .HasColumnName("LogSettingId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("EntityTypeId")
                         .HasColumnType("int")
-                        .HasColumnName("EntityTypeID");
+                        .HasColumnName("EntityTypeId");
 
                     b.Property<bool>("IsEnabled")
                         .HasColumnType("bit");
@@ -765,7 +812,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
 
                     b.Property<int>("OperationId")
                         .HasColumnType("int")
-                        .HasColumnName("OperationID");
+                        .HasColumnName("OperationId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -775,15 +822,15 @@ namespace SPPC.Tadbir.Web.Api.Migrations
 
                     b.Property<int?>("SourceId")
                         .HasColumnType("int")
-                        .HasColumnName("SourceID");
+                        .HasColumnName("SourceId");
 
                     b.Property<int>("SourceTypeId")
                         .HasColumnType("int")
-                        .HasColumnName("SourceTypeID");
+                        .HasColumnName("SourceTypeId");
 
                     b.Property<int>("SubsystemId")
                         .HasColumnType("int")
-                        .HasColumnName("SubsystemID");
+                        .HasColumnName("SubsystemId");
 
                     b.HasKey("Id");
 
@@ -4492,7 +4539,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("SettingID")
+                        .HasColumnName("SettingId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("DefaultValues")
@@ -4558,7 +4605,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("UserSettingID")
+                        .HasColumnName("UserSettingId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ModelType")
@@ -4572,7 +4619,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int?>("RoleId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("RoleId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -4581,10 +4629,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasDefaultValueSql("(newid())");
 
                     b.Property<int>("SettingId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("SettingId");
 
                     b.Property<int?>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("UserId");
 
                     b.Property<string>("Values")
                         .IsRequired()
@@ -4593,7 +4643,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnName("Values");
 
                     b.Property<int?>("ViewId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ViewId");
 
                     b.HasKey("Id");
 
@@ -4607,11 +4658,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ValueID")
+                        .HasColumnName("UserValueId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("CategoryId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CategoryId");
 
                     b.Property<DateTime>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -4641,7 +4693,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("CategoryID")
+                        .HasColumnName("UserValueCategoryId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("ModifiedDate")
@@ -4670,7 +4722,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ViewSettingID")
+                        .HasColumnName("ViewSettingId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("DefaultValues")
@@ -4694,14 +4746,16 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasDefaultValueSql("(newid())");
 
                     b.Property<int>("SettingId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("SettingId");
 
                     b.Property<string>("Values")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ViewId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ViewId");
 
                     b.HasKey("Id");
 
@@ -4713,7 +4767,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("StatusID")
+                        .HasColumnName("DocumentStatusId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("ModifiedDate")
@@ -4742,7 +4796,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("TypeID")
+                        .HasColumnName("DocumentTypeId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("ModifiedDate")
@@ -4771,7 +4825,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("FilterID")
+                        .HasColumnName("FilterId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("IsPublic")
@@ -4794,7 +4848,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasDefaultValueSql("(newid())");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("UserId");
 
                     b.Property<string>("Values")
                         .IsRequired()
@@ -4802,7 +4857,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(2048)");
 
                     b.Property<int>("ViewId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ViewId");
 
                     b.HasKey("Id");
 
@@ -4814,14 +4870,16 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("InactiveEntityID")
+                        .HasColumnName("InactiveEntityId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("BranchId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("BranchId");
 
                     b.Property<int>("EntityId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("EntityId");
 
                     b.Property<string>("EntityName")
                         .IsRequired()
@@ -4829,7 +4887,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(64)");
 
                     b.Property<int>("FiscalPeriodId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("FiscalPeriodId");
 
                     b.Property<DateTime>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -4856,14 +4915,16 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("OperationLogID")
+                        .HasColumnName("OperationLogId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("BranchId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("BranchId");
 
                     b.Property<int>("CompanyId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CompanyId");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -4887,7 +4948,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(1024)");
 
                     b.Property<int?>("EntityId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("EntityId");
 
                     b.Property<string>("EntityName")
                         .HasMaxLength(256)
@@ -4901,10 +4963,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(64)");
 
                     b.Property<int?>("EntityTypeId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("EntityTypeId");
 
                     b.Property<int>("FiscalPeriodId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("FiscalPeriodId");
 
                     b.Property<DateTime>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -4912,7 +4976,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int>("OperationId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("OperationId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -4921,16 +4986,19 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasDefaultValueSql("(newid())");
 
                     b.Property<int?>("SourceId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("SourceId");
 
                     b.Property<int?>("SourceListId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("SourceListId");
 
                     b.Property<TimeSpan>("Time")
                         .HasColumnType("time");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("UserId");
 
                     b.HasKey("Id");
 
@@ -4954,14 +5022,16 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("OperationLogArchiveID")
+                        .HasColumnName("OperationLogArchiveId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("BranchId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("BranchId");
 
                     b.Property<int>("CompanyId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CompanyId");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -4985,7 +5055,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(1024)");
 
                     b.Property<int?>("EntityId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("EntityId");
 
                     b.Property<string>("EntityName")
                         .HasMaxLength(256)
@@ -4999,10 +5070,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(64)");
 
                     b.Property<int?>("EntityTypeId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("EntityTypeId");
 
                     b.Property<int>("FiscalPeriodId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("FiscalPeriodId");
 
                     b.Property<DateTime>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -5010,7 +5083,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int>("OperationId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("OperationId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -5019,16 +5093,19 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasDefaultValueSql("(newid())");
 
                     b.Property<int?>("SourceId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("SourceId");
 
                     b.Property<int?>("SourceListId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("SourceListId");
 
                     b.Property<TimeSpan>("Time")
                         .HasColumnType("time");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("UserId");
 
                     b.HasKey("Id");
 
@@ -5052,7 +5129,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("BranchID")
+                        .HasColumnName("BranchId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
@@ -5075,7 +5152,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(128)");
 
                     b.Property<int?>("ParentId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ParentId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -5116,11 +5194,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("AccountID")
+                        .HasColumnName("AccountId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("BranchId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("BranchId");
 
                     b.Property<short>("BranchScope")
                         .HasColumnType("smallint");
@@ -5131,7 +5210,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(16)");
 
                     b.Property<int>("CreatedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CreatedById");
 
                     b.Property<string>("CreatedByName")
                         .IsRequired()
@@ -5146,7 +5226,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(512)");
 
                     b.Property<int>("FiscalPeriodId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("FiscalPeriodId");
 
                     b.Property<string>("FullCode")
                         .IsRequired()
@@ -5154,7 +5235,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<int?>("GroupId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("GroupId");
 
                     b.Property<bool>("IsCurrencyAdjustable")
                         .HasColumnType("bit");
@@ -5163,7 +5245,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("smallint");
 
                     b.Property<int>("ModifiedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ModifiedById");
 
                     b.Property<string>("ModifiedByName")
                         .IsRequired()
@@ -5181,7 +5264,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(512)");
 
                     b.Property<int?>("ParentId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ParentId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -5210,7 +5294,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("CollectionID")
+                        .HasColumnName("AccountCollectionId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("CategoryID")
@@ -5253,20 +5337,24 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("AccountCollectionAccountID")
+                        .HasColumnName("AccountCollectionAccountId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("AccountId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("AccountId");
 
                     b.Property<int>("BranchId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("BranchId");
 
                     b.Property<int>("CollectionId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CollectionId");
 
                     b.Property<int>("FiscalPeriodId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("FiscalPeriodId");
 
                     b.Property<DateTime>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -5297,7 +5385,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("CategoryID")
+                        .HasColumnName("AccountCollectionCategoryId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("ModifiedDate")
@@ -5326,14 +5414,16 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("AccountCostCenterID")
+                        .HasColumnName("AccountCostCenterId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("AccountId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("AccountId");
 
                     b.Property<int>("CostCenterId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CostCenterId");
 
                     b.Property<DateTime>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -5364,13 +5454,16 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("AccountId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("AccountId");
 
                     b.Property<int>("BranchId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("BranchId");
 
                     b.Property<int>("CurrencyId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CurrencyId");
 
                     b.Property<DateTime>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -5399,14 +5492,16 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("AccountDetailAccountID")
+                        .HasColumnName("AccountDetailAccountId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("AccountId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("AccountId");
 
                     b.Property<int>("DetailAccountId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("DetailAccountId");
 
                     b.Property<DateTime>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -5433,7 +5528,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("GroupID")
+                        .HasColumnName("AccountGroupId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Category")
@@ -5474,11 +5569,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("AccountHolderID")
+                        .HasColumnName("AccountHolderId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("AccountOwnerId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("AccountOwnerId");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -5516,11 +5612,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("AccountOwnerID")
+                        .HasColumnName("AccountOwnerId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("AccountID")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("AccountId");
 
                     b.Property<string>("AccountNumber")
                         .IsRequired()
@@ -5581,11 +5678,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("AccountProjectID")
+                        .HasColumnName("AccountProjectId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("AccountId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("AccountId");
 
                     b.Property<DateTime>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -5593,7 +5691,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int>("ProjectId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ProjectId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -5615,11 +5714,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("CostCenterID")
+                        .HasColumnName("CostCenterId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("BranchId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("BranchId");
 
                     b.Property<short>("BranchScope")
                         .HasColumnType("smallint");
@@ -5630,7 +5730,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(16)");
 
                     b.Property<int>("CreatedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CreatedById");
 
                     b.Property<string>("CreatedByName")
                         .IsRequired()
@@ -5645,7 +5746,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(512)");
 
                     b.Property<int>("FiscalPeriodId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("FiscalPeriodId");
 
                     b.Property<string>("FullCode")
                         .IsRequired()
@@ -5658,7 +5760,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasDefaultValueSql("((0))");
 
                     b.Property<int>("ModifiedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ModifiedById");
 
                     b.Property<string>("ModifiedByName")
                         .IsRequired()
@@ -5676,7 +5779,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<int?>("ParentId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ParentId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -5704,7 +5808,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("BranchId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("BranchId");
 
                     b.Property<short>("BranchScope")
                         .HasColumnType("smallint");
@@ -5715,7 +5820,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(8)");
 
                     b.Property<int>("CreatedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CreatedById");
 
                     b.Property<string>("CreatedByName")
                         .IsRequired()
@@ -5733,7 +5839,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(512)");
 
                     b.Property<int>("FiscalPeriodId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("FiscalPeriodId");
 
                     b.Property<bool>("IsDefaultCurrency")
                         .HasColumnType("bit");
@@ -5744,7 +5851,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(32)");
 
                     b.Property<int>("ModifiedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ModifiedById");
 
                     b.Property<string>("ModifiedByName")
                         .IsRequired()
@@ -5784,17 +5892,19 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("CurrencyRateID")
+                        .HasColumnName("CurrencyRateId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("BranchId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("BranchId");
 
                     b.Property<short>("BranchScope")
                         .HasColumnType("smallint");
 
                     b.Property<int>("CreatedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CreatedById");
 
                     b.Property<string>("CreatedByName")
                         .IsRequired()
@@ -5805,7 +5915,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("CurrencyId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CurrencyId");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -5817,10 +5928,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("FiscalPeriodId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(0);
+                        .HasDefaultValue(0)
+                        .HasColumnName("FiscalPeriodId");
 
                     b.Property<int>("ModifiedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ModifiedById");
 
                     b.Property<string>("ModifiedByName")
                         .IsRequired()
@@ -5860,11 +5973,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("CustomerTaxInfoID")
+                        .HasColumnName("CustomerTaxInfoId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("AccountID")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("AccountId");
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -5953,11 +6067,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("DetailAccountID")
+                        .HasColumnName("DetailAccountId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("BranchId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("BranchId");
 
                     b.Property<short>("BranchScope")
                         .HasColumnType("smallint");
@@ -5968,7 +6083,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(16)");
 
                     b.Property<int>("CreatedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CreatedById");
 
                     b.Property<string>("CreatedByName")
                         .IsRequired()
@@ -5979,14 +6095,16 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("CurrencyId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CurrencyId");
 
                     b.Property<string>("Description")
                         .HasMaxLength(512)
                         .HasColumnType("nvarchar(512)");
 
                     b.Property<int>("FiscalPeriodId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("FiscalPeriodId");
 
                     b.Property<string>("FullCode")
                         .IsRequired()
@@ -5999,7 +6117,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasDefaultValueSql("((0))");
 
                     b.Property<int>("ModifiedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ModifiedById");
 
                     b.Property<string>("ModifiedByName")
                         .IsRequired()
@@ -6017,7 +6136,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<int?>("ParentId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ParentId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -6043,7 +6163,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("FiscalPeriodID")
+                        .HasColumnName("FiscalPeriodId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
@@ -6082,11 +6202,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ProjectID")
+                        .HasColumnName("ProjectId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("BranchId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("BranchId");
 
                     b.Property<short>("BranchScope")
                         .HasColumnType("smallint");
@@ -6097,7 +6218,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(16)");
 
                     b.Property<int>("CreatedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CreatedById");
 
                     b.Property<string>("CreatedByName")
                         .IsRequired()
@@ -6112,7 +6234,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(512)");
 
                     b.Property<int>("FiscalPeriodId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("FiscalPeriodId");
 
                     b.Property<string>("FullCode")
                         .IsRequired()
@@ -6125,7 +6248,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasDefaultValueSql("((0))");
 
                     b.Property<int>("ModifiedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ModifiedById");
 
                     b.Property<string>("ModifiedByName")
                         .IsRequired()
@@ -6143,7 +6267,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<int?>("ParentId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ParentId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -6167,7 +6292,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("TaxCurrencyID")
+                        .HasColumnName("TaxCurrencyId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("Code")
@@ -6199,12 +6324,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("VoucherID")
+                        .HasColumnName("VoucherId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("ApprovedById")
                         .HasColumnType("int")
-                        .HasColumnName("ApprovedByID");
+                        .HasColumnName("ApprovedById");
 
                     b.Property<string>("ApproverName")
                         .HasMaxLength(64)
@@ -6215,11 +6340,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(64)");
 
                     b.Property<int>("BranchId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("BranchId");
 
                     b.Property<int?>("ConfirmedById")
                         .HasColumnType("int")
-                        .HasColumnName("ConfirmedByID");
+                        .HasColumnName("ConfirmedById");
 
                     b.Property<string>("ConfirmerName")
                         .HasMaxLength(64)
@@ -6227,7 +6353,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
 
                     b.Property<int>("CreatedById")
                         .HasColumnType("int")
-                        .HasColumnName("IssuedByID");
+                        .HasColumnName("CreatedById");
 
                     b.Property<int>("DailyNo")
                         .HasColumnType("int");
@@ -6240,7 +6366,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(1024)");
 
                     b.Property<int>("FiscalPeriodId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("FiscalPeriodId");
 
                     b.Property<bool>("IsBalanced")
                         .HasColumnType("bit");
@@ -6252,7 +6379,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
 
                     b.Property<int>("ModifiedById")
                         .HasColumnType("int")
-                        .HasColumnName("ModifiedByID");
+                        .HasColumnName("ModifiedById");
 
                     b.Property<DateTime>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -6268,7 +6395,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("OriginId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("OriginId");
 
                     b.Property<string>("Reference")
                         .HasMaxLength(64)
@@ -6285,7 +6413,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
 
                     b.Property<int>("StatusId")
                         .HasColumnType("int")
-                        .HasColumnName("StatusID");
+                        .HasColumnName("StatusId");
 
                     b.Property<short>("SubjectType")
                         .HasColumnType("smallint");
@@ -6311,29 +6439,34 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("VoucherLineID")
+                        .HasColumnName("VoucherLineId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("AccountId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("AccountId");
 
                     b.Property<decimal?>("Amount")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("BranchId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("BranchId");
 
                     b.Property<int?>("CostCenterId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CostCenterId");
 
                     b.Property<int>("CreatedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CreatedById");
 
                     b.Property<decimal>("Credit")
                         .HasColumnType("money");
 
                     b.Property<int?>("CurrencyId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CurrencyId");
 
                     b.Property<decimal?>("CurrencyValue")
                         .HasColumnType("money");
@@ -6346,10 +6479,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(512)");
 
                     b.Property<int?>("DetailAccountId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("DetailAccountId");
 
                     b.Property<int>("FiscalPeriodId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("FiscalPeriodId");
 
                     b.Property<string>("FollowupNo")
                         .HasMaxLength(64)
@@ -6365,7 +6500,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int?>("ProjectId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ProjectId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -6377,13 +6513,16 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("SourceAppId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("SourceAppId");
 
                     b.Property<short>("TypeId")
-                        .HasColumnType("smallint");
+                        .HasColumnType("smallint")
+                        .HasColumnName("TypeId");
 
                     b.Property<int>("VoucherId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("VoucherId");
 
                     b.HasKey("Id");
 
@@ -6413,7 +6552,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("OriginID")
+                        .HasColumnName("VoucherOriginId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("ModifiedDate")
@@ -6442,7 +6581,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("CityID")
+                        .HasColumnName("CityId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Code")
@@ -6460,7 +6599,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(64)");
 
                     b.Property<int>("ProvinceId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ProvinceId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -6480,7 +6620,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("CustomFormID")
+                        .HasColumnName("CustomFormId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
@@ -6513,7 +6653,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("EntityTypeID")
+                        .HasColumnName("EntityTypeId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
@@ -6740,7 +6880,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("OperationID")
+                        .HasColumnName("OperationId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
@@ -7439,7 +7579,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("OperationSourceID")
+                        .HasColumnName("OperationSourceId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
@@ -7570,7 +7710,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("OperationSourceListID")
+                        .HasColumnName("OperationSourceListId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
@@ -7603,7 +7743,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("OperationSourceTypeID")
+                        .HasColumnName("OperationSourceTypeId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("ModifiedDate")
@@ -7655,7 +7795,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ProvinceID")
+                        .HasColumnName("ProvinceId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Code")
@@ -7688,7 +7828,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("SubsystemID")
+                        .HasColumnName("SubsystemId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("ModifiedDate")
@@ -7747,17 +7887,19 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("AttributeID")
+                        .HasColumnName("AttributeId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("BranchId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("BranchId");
 
                     b.Property<short>("BranchScope")
                         .HasColumnType("smallint");
 
                     b.Property<int>("CreatedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CreatedById");
 
                     b.Property<string>("CreatedByName")
                         .IsRequired()
@@ -7776,13 +7918,15 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(64)");
 
                     b.Property<int>("FiscalPeriodId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("FiscalPeriodId");
 
                     b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<int>("ModifiedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ModifiedById");
 
                     b.Property<string>("ModifiedByName")
                         .IsRequired()
@@ -7815,17 +7959,19 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("BrandID")
+                        .HasColumnName("BrandId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("BranchId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("BranchId");
 
                     b.Property<short>("BranchScope")
                         .HasColumnType("smallint");
 
                     b.Property<int>("CreatedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CreatedById");
 
                     b.Property<string>("CreatedByName")
                         .IsRequired()
@@ -7844,7 +7990,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(64)");
 
                     b.Property<int>("FiscalPeriodId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("FiscalPeriodId");
 
                     b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
@@ -7854,7 +8001,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(64)");
 
                     b.Property<int>("ModifiedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ModifiedById");
 
                     b.Property<string>("ModifiedByName")
                         .IsRequired()
@@ -7892,17 +8040,19 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("FileID")
+                        .HasColumnName("FileId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("BranchId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("BranchId");
 
                     b.Property<short>("BranchScope")
                         .HasColumnType("smallint");
 
                     b.Property<int>("CreatedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CreatedById");
 
                     b.Property<string>("CreatedByName")
                         .IsRequired()
@@ -7920,13 +8070,15 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(2048)");
 
                     b.Property<int>("FiscalPeriodId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("FiscalPeriodId");
 
                     b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<int>("ModifiedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ModifiedById");
 
                     b.Property<string>("ModifiedByName")
                         .IsRequired()
@@ -7963,17 +8115,19 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("PropertyID")
+                        .HasColumnName("PropertyId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("BranchId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("BranchId");
 
                     b.Property<short>("BranchScope")
                         .HasColumnType("smallint");
 
                     b.Property<int>("CreatedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CreatedById");
 
                     b.Property<string>("CreatedByName")
                         .IsRequired()
@@ -7992,13 +8146,15 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(64)");
 
                     b.Property<int>("FiscalPeriodId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("FiscalPeriodId");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<int>("ModifiedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ModifiedById");
 
                     b.Property<string>("ModifiedByName")
                         .IsRequired()
@@ -8039,17 +8195,19 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("UnitID")
+                        .HasColumnName("UnitId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("BranchId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("BranchId");
 
                     b.Property<short>("BranchScope")
                         .HasColumnType("smallint");
 
                     b.Property<int>("CreatedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CreatedById");
 
                     b.Property<string>("CreatedByName")
                         .IsRequired()
@@ -8068,13 +8226,15 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(64)");
 
                     b.Property<int>("FiscalPeriodId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("FiscalPeriodId");
 
                     b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<int>("ModifiedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ModifiedById");
 
                     b.Property<string>("ModifiedByName")
                         .IsRequired()
@@ -8144,7 +8304,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("DashboardID")
+                        .HasColumnName("DashboardId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("ModifiedDate")
@@ -8159,7 +8319,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasDefaultValueSql("(newid())");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("UserId");
 
                     b.HasKey("Id");
 
@@ -8171,11 +8332,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("DashboardTabID")
+                        .HasColumnName("DashboardTabId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("DashboardId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("DashboardId");
 
                     b.Property<int>("Index")
                         .HasColumnType("int");
@@ -8208,7 +8370,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("FunctionParameterID")
+                        .HasColumnName("FunctionParameterId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Alias")
@@ -8256,7 +8418,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("TabWidgetID")
+                        .HasColumnName("TabWidgetId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("DefaultSettings")
@@ -8281,10 +8443,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(1024)");
 
                     b.Property<int>("TabId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("TabId");
 
                     b.Property<int>("WidgetId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("WidgetId");
 
                     b.HasKey("Id");
 
@@ -8304,7 +8468,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("FunctionId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("FunctionId");
 
                     b.Property<DateTime>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -8312,7 +8477,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int>("ParameterId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ParameterId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -8334,11 +8500,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("WidgetID")
+                        .HasColumnName("WidgetId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("CreatedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CreatedById");
 
                     b.Property<string>("DefaultSettings")
                         .IsRequired()
@@ -8350,7 +8517,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(512)");
 
                     b.Property<int>("FunctionId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("FunctionId");
 
                     b.Property<DateTime>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -8369,7 +8537,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(128)");
 
                     b.Property<int>("TypeId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("TypeId");
 
                     b.HasKey("Id");
 
@@ -8385,17 +8554,20 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("WidgetAccountID")
+                        .HasColumnName("WidgetAccountId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("AccountId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("AccountId");
 
                     b.Property<int?>("CostCenterId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CostCenterId");
 
                     b.Property<int?>("DetailAccountId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("DetailAccountId");
 
                     b.Property<DateTime>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -8403,7 +8575,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int?>("ProjectId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ProjectId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -8412,7 +8585,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasDefaultValueSql("(newid())");
 
                     b.Property<int>("WidgetId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("WidgetId");
 
                     b.HasKey("Id");
 
@@ -8434,7 +8608,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("WidgetFunctionID")
+                        .HasColumnName("WidgetFunctionId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
@@ -8467,7 +8641,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("WidgetTypeID")
+                        .HasColumnName("WidgetTypeId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")

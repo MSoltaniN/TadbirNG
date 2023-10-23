@@ -10,8 +10,8 @@ using SPPC.Tadbir.Persistence;
 namespace SPPC.Tadbir.Web.Api.Migrations.System
 {
     [DbContext(typeof(SystemContext))]
-    [Migration("20231021133730_initial")]
-    partial class initial
+    [Migration("20231023094914_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,7 +26,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("PermissionID")
+                        .HasColumnName("PermissionId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
@@ -39,7 +39,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("((0))");
 
                     b.Property<int>("GroupId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("GroupId");
 
                     b.Property<DateTime>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -3281,7 +3282,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("PermissionGroupID")
+                        .HasColumnName("PermissionGroupId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
@@ -3309,10 +3310,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(newid())");
 
                     b.Property<int>("SourceTypeId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("SourceTypeId");
 
                     b.Property<int>("SubsystemId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("SubsystemId");
 
                     b.HasKey("Id");
 
@@ -3847,7 +3850,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("RoleID")
+                        .HasColumnName("RoleId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
@@ -3880,11 +3883,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("RoleCompanyID")
+                        .HasColumnName("RoleCompanyId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("CompanyId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CompanyId");
 
                     b.Property<DateTime>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -3892,7 +3896,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("RoleId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -3914,7 +3919,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("RolePermissionID")
+                        .HasColumnName("RolePermissionId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("ModifiedDate")
@@ -3923,10 +3928,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int>("PermissionId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("PermissionId");
 
                     b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("RoleId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -3948,7 +3955,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("SessionID")
+                        .HasColumnName("SessionId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Browser")
@@ -3992,7 +3999,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasColumnType("nvarchar(32)");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("UserId");
 
                     b.HasKey("Id");
 
@@ -4006,7 +4014,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("UserID")
+                        .HasColumnName("UserId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("IsEnabled")
@@ -4059,7 +4067,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("UserRoleID")
+                        .HasColumnName("UserRoleId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("ModifiedDate")
@@ -4068,7 +4076,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("RoleId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -4077,7 +4086,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(newid())");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("UserId");
 
                     b.HasKey("Id");
 
@@ -4093,7 +4103,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("RowPermissionID")
+                        .HasColumnName("ViewRowPermissionId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AccessMode")
@@ -4111,7 +4121,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("RoleId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -4130,7 +4141,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasColumnType("float");
 
                     b.Property<int>("ViewID")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ViewId");
 
                     b.HasKey("Id");
 
@@ -4146,7 +4158,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("CompanyID")
+                        .HasColumnName("CompanyDbId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("DbName")
@@ -4201,7 +4213,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DbName = "NGTadbirMG2",
                             Description = "",
                             IsActive = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 28, 969, DateTimeKind.Local).AddTicks(4967),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "شرکت نمونه",
                             Password = "$$$%%%",
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
@@ -4215,7 +4227,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("SettingID")
+                        .HasColumnName("SettingId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("DefaultValues")
@@ -4281,11 +4293,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("SysLogSettingID")
+                        .HasColumnName("SysLogSettingId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("EntityTypeId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("EntityTypeId");
 
                     b.Property<bool>("IsEnabled")
                         .HasColumnType("bit");
@@ -4296,7 +4309,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int>("OperationId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("OperationId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -4305,7 +4319,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(newid())");
 
                     b.Property<int?>("SourceId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("SourceId");
 
                     b.HasKey("Id");
 
@@ -4323,7 +4338,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 1,
                             EntityTypeId = 1,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 18, DateTimeKind.Local).AddTicks(9145),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 1,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4332,7 +4347,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 2,
                             EntityTypeId = 1,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(936),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 2,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4341,7 +4356,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 3,
                             EntityTypeId = 1,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(949),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 3,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4350,7 +4365,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 4,
                             EntityTypeId = 1,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(953),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 4,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4359,7 +4374,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 5,
                             EntityTypeId = 1,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(957),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 21,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4368,7 +4383,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 6,
                             EntityTypeId = 1,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(969),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 5,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4377,7 +4392,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 7,
                             EntityTypeId = 1,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(973),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 58,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4386,7 +4401,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 8,
                             EntityTypeId = 1,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(977),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 6,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4395,7 +4410,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 9,
                             EntityTypeId = 1,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(980),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 54,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4404,7 +4419,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 10,
                             EntityTypeId = 1,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(985),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 35,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4413,7 +4428,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 11,
                             EntityTypeId = 6,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(989),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 1,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4422,7 +4437,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 12,
                             EntityTypeId = 6,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(993),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 2,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4431,7 +4446,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 13,
                             EntityTypeId = 6,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(996),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 3,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4440,7 +4455,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 14,
                             EntityTypeId = 6,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1000),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 5,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4449,7 +4464,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 15,
                             EntityTypeId = 6,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1003),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 58,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4458,7 +4473,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 16,
                             EntityTypeId = 6,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1006),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 6,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4467,7 +4482,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 17,
                             EntityTypeId = 6,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1010),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 54,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4476,7 +4491,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 18,
                             EntityTypeId = 6,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1014),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 26,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4485,7 +4500,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 19,
                             EntityTypeId = 2,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1018),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 1,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4494,7 +4509,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 20,
                             EntityTypeId = 2,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1021),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 2,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4503,7 +4518,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 21,
                             EntityTypeId = 2,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1024),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 3,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4512,7 +4527,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 22,
                             EntityTypeId = 2,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1027),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 4,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4521,7 +4536,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 23,
                             EntityTypeId = 2,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1089),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 21,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4530,7 +4545,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 24,
                             EntityTypeId = 2,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1093),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 5,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4539,7 +4554,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 25,
                             EntityTypeId = 2,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1097),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 58,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4548,7 +4563,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 26,
                             EntityTypeId = 2,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1100),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 6,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4557,7 +4572,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 27,
                             EntityTypeId = 2,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1104),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 54,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4566,7 +4581,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 28,
                             EntityTypeId = 2,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1107),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 27,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4575,7 +4590,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 29,
                             EntityTypeId = 2,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1110),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 28,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4584,7 +4599,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 30,
                             EntityTypeId = 2,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1113),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 29,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4593,7 +4608,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 31,
                             EntityTypeId = 2,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1116),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 57,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4602,7 +4617,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 32,
                             EntityTypeId = 4,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1119),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 1,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4611,7 +4626,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 33,
                             EntityTypeId = 4,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1123),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 7,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4620,7 +4635,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 34,
                             EntityTypeId = 5,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1128),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 1,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4629,7 +4644,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 35,
                             EntityTypeId = 5,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1132),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 4,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4638,7 +4653,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 36,
                             EntityTypeId = 5,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1136),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 21,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4647,7 +4662,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 37,
                             EntityTypeId = 5,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1139),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 5,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4656,7 +4671,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 38,
                             EntityTypeId = 5,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1143),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 58,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4665,7 +4680,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 39,
                             EntityTypeId = 5,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1146),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 6,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4674,7 +4689,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 40,
                             EntityTypeId = 5,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1150),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 54,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4683,7 +4698,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 41,
                             EntityTypeId = 5,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1153),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 8,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4692,7 +4707,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 42,
                             EntityTypeId = 5,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1157),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 30,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4701,7 +4716,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 43,
                             EntityTypeId = 8,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1160),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 1,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4710,7 +4725,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 44,
                             EntityTypeId = 8,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1164),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 7,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         },
@@ -4718,7 +4733,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         {
                             Id = 45,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1167),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 22,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
                             SourceId = 7
@@ -4727,7 +4742,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         {
                             Id = 46,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1171),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 23,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
                             SourceId = 8
@@ -4736,7 +4751,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         {
                             Id = 47,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1174),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 24,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
                             SourceId = 8
@@ -4745,7 +4760,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         {
                             Id = 48,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1177),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 25,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
                             SourceId = 8
@@ -4755,7 +4770,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 49,
                             EntityTypeId = 9,
                             IsEnabled = true,
-                            ModifiedDate = new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1180),
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationId = 10,
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
                         });
@@ -4766,7 +4781,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("UserSettingID")
+                        .HasColumnName("UserSettingId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ModelType")
@@ -4780,7 +4795,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int?>("RoleId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("RoleId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -4789,10 +4805,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(newid())");
 
                     b.Property<int>("SettingId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("SettingId");
 
                     b.Property<int?>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("UserId");
 
                     b.Property<string>("Values")
                         .IsRequired()
@@ -4801,7 +4819,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasColumnName("Values");
 
                     b.Property<int?>("ViewId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ViewId");
 
                     b.HasKey("Id");
 
@@ -4821,7 +4840,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("PersonID")
+                        .HasColumnName("PersonId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("FullName")
@@ -4842,7 +4861,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
 
                     b.Property<int>("UserId")
                         .HasColumnType("int")
-                        .HasColumnName("UserID");
+                        .HasColumnName("UserId");
 
                     b.HasKey("Id");
 
@@ -4867,11 +4886,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("SysOperationLogID")
+                        .HasColumnName("SysOperationLogId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("CompanyId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CompanyId");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -4891,7 +4911,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasColumnType("nvarchar(1024)");
 
                     b.Property<int?>("EntityId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("EntityId");
 
                     b.Property<string>("EntityName")
                         .HasMaxLength(256)
@@ -4901,7 +4922,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasColumnType("int");
 
                     b.Property<int?>("EntityTypeId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("EntityTypeId");
 
                     b.Property<DateTime>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -4909,7 +4931,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int>("OperationId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("OperationId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -4918,16 +4941,19 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(newid())");
 
                     b.Property<int?>("SourceId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("SourceId");
 
                     b.Property<int?>("SourceListId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("SourceListId");
 
                     b.Property<TimeSpan>("Time")
                         .HasColumnType("time");
 
                     b.Property<int?>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("UserId");
 
                     b.HasKey("Id");
 
@@ -4951,11 +4977,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("SysOperationLogArchiveID")
+                        .HasColumnName("SysOperationLogArchiveId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("CompanyId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CompanyId");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -4975,7 +5002,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasColumnType("nvarchar(1024)");
 
                     b.Property<int?>("EntityId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("EntityId");
 
                     b.Property<string>("EntityName")
                         .HasMaxLength(256)
@@ -4985,7 +5013,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasColumnType("int");
 
                     b.Property<int?>("EntityTypeId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("EntityTypeId");
 
                     b.Property<DateTime>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -4993,7 +5022,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int>("OperationId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("OperationId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -5002,16 +5032,19 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(newid())");
 
                     b.Property<int?>("SourceId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("SourceId");
 
                     b.Property<int?>("SourceListId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("SourceListId");
 
                     b.Property<TimeSpan>("Time")
                         .HasColumnType("time");
 
                     b.Property<int?>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("UserId");
 
                     b.HasKey("Id");
 
@@ -5035,17 +5068,19 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("SystemErrorID")
+                        .HasColumnName("SystemErrorId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("BranchId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("BranchId");
 
                     b.Property<int>("Code")
                         .HasColumnType("int");
 
                     b.Property<int?>("CompanyId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CompanyId");
 
                     b.Property<string>("FaultType")
                         .IsRequired()
@@ -5058,7 +5093,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasColumnType("nvarchar(64)");
 
                     b.Property<int?>("FiscalPeriodId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("FiscalPeriodId");
 
                     b.Property<string>("Message")
                         .IsRequired()
@@ -5096,7 +5132,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ColumnID")
+                        .HasColumnName("ColumnId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("AllowFiltering")
@@ -25207,7 +25243,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("CommandID")
+                        .HasColumnName("CommandId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("HotKey")
@@ -25227,10 +25263,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int?>("ParentId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ParentId");
 
                     b.Property<int?>("PermissionId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("PermissionId");
 
                     b.Property<string>("RouteUrl")
                         .HasMaxLength(256)
@@ -26126,7 +26164,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("EntityTypeID")
+                        .HasColumnName("EntityTypeId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
@@ -26217,7 +26255,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("LocaleID")
+                        .HasColumnName("LocaleId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Code")
@@ -26294,7 +26332,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("OperationID")
+                        .HasColumnName("OperationId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
@@ -26513,7 +26551,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("OperationSourceID")
+                        .HasColumnName("OperationSourceId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
@@ -26572,7 +26610,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("OperationSourceTypeID")
+                        .HasColumnName("OperationSourceTypeId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("ModifiedDate")
@@ -26624,7 +26662,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ViewID")
+                        .HasColumnName("ReportViewId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
@@ -26657,7 +26695,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ShortcutCommandID")
+                        .HasColumnName("ShortcutCommandId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("HotKey")
@@ -26681,7 +26719,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasColumnType("nvarchar(128)");
 
                     b.Property<int?>("PermissionId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("PermissionId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -26705,7 +26744,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("SubsystemID")
+                        .HasColumnName("SubsystemId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("ModifiedDate")
@@ -26764,7 +26803,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ValidRowPermissionID")
+                        .HasColumnName("ValidRowPermissionId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AccessMode")
@@ -26798,7 +26837,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ViewID")
+                        .HasColumnName("ViewId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("EntityName")
@@ -27964,7 +28003,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("LocalReportID")
+                        .HasColumnName("LocalReportId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Caption")
@@ -27973,7 +28012,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasColumnType("nvarchar(128)");
 
                     b.Property<int>("LocaleId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("LocaleId");
 
                     b.Property<DateTime>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -27981,7 +28021,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int>("ReportId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ReportId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -31188,7 +31229,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ParamID")
+                        .HasColumnName("ParameterId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("CaptionKey")
@@ -31243,7 +31284,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasColumnType("nvarchar(16)");
 
                     b.Property<int>("ReportId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ReportId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -31260,6 +31302,2127 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.HasIndex("ReportId");
 
                     b.ToTable("Parameter", "Reporting");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 2,
+                            CaptionKey = "FromDate",
+                            ControlType = "DatePicker",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 27,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CaptionKey = "ToDate",
+                            ControlType = "DatePicker",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 27,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CaptionKey = "FromDate",
+                            ControlType = "DatePicker",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 28,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 1,
+                            CaptionKey = "ToDate",
+                            ControlType = "DatePicker",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 28,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CaptionKey = "FromDate",
+                            ControlType = "DatePicker",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 29,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CaptionKey = "ToDate",
+                            ControlType = "DatePicker",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 29,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CaptionKey = "FromDate",
+                            ControlType = "DatePicker",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 30,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CaptionKey = "ToDate",
+                            ControlType = "DatePicker",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 30,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CaptionKey = "FromDate",
+                            ControlType = "DatePicker",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 31,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            CaptionKey = "ToDate",
+                            ControlType = "DatePicker",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 31,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            CaptionKey = "FromDate",
+                            ControlType = "DatePicker",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 32,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            CaptionKey = "ToDate",
+                            ControlType = "DatePicker",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 32,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            CaptionKey = "FromNo",
+                            ControlType = "NumberBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "FromNo",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromNo",
+                            Operator = "EQ",
+                            ReportId = 33,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            CaptionKey = "ToNo",
+                            ControlType = "NumberBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "ToNo",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toNo",
+                            Operator = "EQ",
+                            ReportId = 33,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            CaptionKey = "FromNo",
+                            ControlType = "NumberBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "FromNo",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromNo",
+                            Operator = "EQ",
+                            ReportId = 34,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            CaptionKey = "ToNo",
+                            ControlType = "NumberBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "ToNo",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toNo",
+                            Operator = "EQ",
+                            ReportId = 34,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            CaptionKey = "FromNo",
+                            ControlType = "NumberBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "FromNo",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromNo",
+                            Operator = "EQ",
+                            ReportId = 35,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            CaptionKey = "ToNo",
+                            ControlType = "NumberBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "ToNo",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toNo",
+                            Operator = "EQ",
+                            ReportId = 35,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            CaptionKey = "FromNo",
+                            ControlType = "NumberBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "FromNo",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromNo",
+                            Operator = "EQ",
+                            ReportId = 36,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            CaptionKey = "ToNo",
+                            ControlType = "NumberBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "ToNo",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toNo",
+                            Operator = "EQ",
+                            ReportId = 36,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 21,
+                            CaptionKey = "FromNo",
+                            ControlType = "NumberBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "FromNo",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromNo",
+                            Operator = "EQ",
+                            ReportId = 37,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 22,
+                            CaptionKey = "ToNo",
+                            ControlType = "NumberBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "ToNo",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toNo",
+                            Operator = "EQ",
+                            ReportId = 37,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 23,
+                            CaptionKey = "FromDate",
+                            ControlType = "DatePicker",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 38,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 24,
+                            CaptionKey = "ToDate",
+                            ControlType = "DatePicker",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 38,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 42,
+                            CaptionKey = "VoucherNo",
+                            ControlType = "NumberBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "VoucherNo",
+                            FieldName = "no",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "no",
+                            Operator = "EQ",
+                            ReportId = 40,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "Route"
+                        },
+                        new
+                        {
+                            Id = 43,
+                            CaptionKey = "FromDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 46,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 44,
+                            CaptionKey = "ToDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 46,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 45,
+                            CaptionKey = "FromNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "FromNo",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromNo",
+                            Operator = "EQ",
+                            ReportId = 46,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 46,
+                            CaptionKey = "ToNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "ToNo",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toNo",
+                            Operator = "EQ",
+                            ReportId = 46,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 48,
+                            CaptionKey = "FromDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 47,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 49,
+                            CaptionKey = "ToDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 47,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 50,
+                            CaptionKey = "FromNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "FromNo",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromNo",
+                            Operator = "EQ",
+                            ReportId = 47,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 51,
+                            CaptionKey = "ToNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "ToNo",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toNo",
+                            Operator = "EQ",
+                            ReportId = 47,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 53,
+                            CaptionKey = "FromDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 48,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 54,
+                            CaptionKey = "ToDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 48,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 55,
+                            CaptionKey = "FromNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "FromNo",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromNo",
+                            Operator = "EQ",
+                            ReportId = 48,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 56,
+                            CaptionKey = "ToNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "ToNo",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toNo",
+                            Operator = "EQ",
+                            ReportId = 48,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 58,
+                            CaptionKey = "FromDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 49,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 59,
+                            CaptionKey = "ToDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 49,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 60,
+                            CaptionKey = "FromNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "FromNo",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromNo",
+                            Operator = "EQ",
+                            ReportId = 49,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 61,
+                            CaptionKey = "ToNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "ToNo",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toNo",
+                            Operator = "EQ",
+                            ReportId = 49,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 63,
+                            CaptionKey = "FromDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 50,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 64,
+                            CaptionKey = "ToDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 50,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 65,
+                            CaptionKey = "FromNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "FromNo",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromNo",
+                            Operator = "EQ",
+                            ReportId = 50,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 66,
+                            CaptionKey = "ToNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "ToNo",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toNo",
+                            Operator = "EQ",
+                            ReportId = 50,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 68,
+                            CaptionKey = "FromDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 51,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 69,
+                            CaptionKey = "ToDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 51,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 70,
+                            CaptionKey = "FromNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "FromNo",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromNo",
+                            Operator = "EQ",
+                            ReportId = 51,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 71,
+                            CaptionKey = "ToNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "ToNo",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toNo",
+                            Operator = "EQ",
+                            ReportId = 51,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 73,
+                            CaptionKey = "FromDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 52,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 74,
+                            CaptionKey = "ToDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 52,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 75,
+                            CaptionKey = "FromNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "FromNo",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromNo",
+                            Operator = "EQ",
+                            ReportId = 52,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 76,
+                            CaptionKey = "ToNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "ToNo",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toNo",
+                            Operator = "EQ",
+                            ReportId = 52,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 78,
+                            CaptionKey = "FromDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 53,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 79,
+                            CaptionKey = "ToDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 53,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 80,
+                            CaptionKey = "FromNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "FromNo",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromNo",
+                            Operator = "EQ",
+                            ReportId = 53,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 81,
+                            CaptionKey = "ToNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "ToNo",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toNo",
+                            Operator = "EQ",
+                            ReportId = 53,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 83,
+                            CaptionKey = "FromDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 54,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 84,
+                            CaptionKey = "ToDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 54,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 85,
+                            CaptionKey = "FromNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "FromNo",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromNo",
+                            Operator = "EQ",
+                            ReportId = 54,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 86,
+                            CaptionKey = "ToNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "ToNo",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toNo",
+                            Operator = "EQ",
+                            ReportId = 54,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 88,
+                            CaptionKey = "FromDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 55,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 89,
+                            CaptionKey = "ToDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 55,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 90,
+                            CaptionKey = "FromNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "FromNo",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromNo",
+                            Operator = "EQ",
+                            ReportId = 55,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 91,
+                            CaptionKey = "ToNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "ToNo",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toNo",
+                            Operator = "EQ",
+                            ReportId = 55,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 93,
+                            CaptionKey = "FromDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 56,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 94,
+                            CaptionKey = "ToDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 56,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 95,
+                            CaptionKey = "FromNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "FromNo",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromNo",
+                            Operator = "EQ",
+                            ReportId = 56,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 96,
+                            CaptionKey = "ToNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "ToNo",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toNo",
+                            Operator = "EQ",
+                            ReportId = 56,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 98,
+                            CaptionKey = "FromDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 57,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 99,
+                            CaptionKey = "ToDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 57,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 100,
+                            CaptionKey = "FromNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "FromNo",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromNo",
+                            Operator = "EQ",
+                            ReportId = 57,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 101,
+                            CaptionKey = "ToNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "ToNo",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toNo",
+                            Operator = "EQ",
+                            ReportId = 57,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 103,
+                            CaptionKey = "FromDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 58,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 104,
+                            CaptionKey = "ToDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 58,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 105,
+                            CaptionKey = "FromNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "FromNo",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromNo",
+                            Operator = "EQ",
+                            ReportId = 58,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 106,
+                            CaptionKey = "ToNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "ToNo",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toNo",
+                            Operator = "EQ",
+                            ReportId = 58,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 108,
+                            CaptionKey = "FromDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 59,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 109,
+                            CaptionKey = "ToDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 59,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 110,
+                            CaptionKey = "FromNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "FromNo",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromNo",
+                            Operator = "EQ",
+                            ReportId = 59,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 111,
+                            CaptionKey = "ToNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "ToNo",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toNo",
+                            Operator = "EQ",
+                            ReportId = 59,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 113,
+                            CaptionKey = "FromDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 60,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 114,
+                            CaptionKey = "ToDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 60,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 115,
+                            CaptionKey = "FromNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "FromNo",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromNo",
+                            Operator = "EQ",
+                            ReportId = 60,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 116,
+                            CaptionKey = "ToNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "ToNo",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toNo",
+                            Operator = "EQ",
+                            ReportId = 60,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 118,
+                            CaptionKey = "FromDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 61,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 119,
+                            CaptionKey = "ToDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 61,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 120,
+                            CaptionKey = "FromNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "FromNo",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromNo",
+                            Operator = "EQ",
+                            ReportId = 61,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 121,
+                            CaptionKey = "ToNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "ToNo",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toNo",
+                            Operator = "EQ",
+                            ReportId = 61,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 123,
+                            CaptionKey = "FromDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 62,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 124,
+                            CaptionKey = "ToDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 62,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 126,
+                            CaptionKey = "FromDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 63,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 127,
+                            CaptionKey = "ToDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 63,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 129,
+                            CaptionKey = "FromDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 64,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 130,
+                            CaptionKey = "ToDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 64,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 132,
+                            CaptionKey = "FromDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 65,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 133,
+                            CaptionKey = "ToDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 65,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 135,
+                            CaptionKey = "FromDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 66,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 136,
+                            CaptionKey = "ToDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 66,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 138,
+                            CaptionKey = "FromDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 67,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 139,
+                            CaptionKey = "ToDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 67,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 141,
+                            CaptionKey = "FromDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 68,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 142,
+                            CaptionKey = "ToDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 68,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 144,
+                            CaptionKey = "FromDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 69,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 145,
+                            CaptionKey = "ToDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 69,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 146,
+                            CaptionKey = "FromNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "FromNo",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromNo",
+                            Operator = "EQ",
+                            ReportId = 69,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 147,
+                            CaptionKey = "ToNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "ToNo",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toNo",
+                            Operator = "EQ",
+                            ReportId = 69,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 149,
+                            CaptionKey = "FromDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "Date",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "GTE",
+                            ReportId = 70,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "GridOptions"
+                        },
+                        new
+                        {
+                            Id = 150,
+                            CaptionKey = "ToDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "Date",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "LTE",
+                            ReportId = 70,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "GridOptions"
+                        },
+                        new
+                        {
+                            Id = 151,
+                            CaptionKey = "FromDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "Date",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "GTE",
+                            ReportId = 71,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "GridOptions"
+                        },
+                        new
+                        {
+                            Id = 152,
+                            CaptionKey = "ToDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "Date",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "LTE",
+                            ReportId = 71,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "GridOptions"
+                        },
+                        new
+                        {
+                            Id = 153,
+                            CaptionKey = "FromDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "Date",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "GTE",
+                            ReportId = 72,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "GridOptions"
+                        },
+                        new
+                        {
+                            Id = 154,
+                            CaptionKey = "ToDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "Date",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "LTE",
+                            ReportId = 72,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "GridOptions"
+                        },
+                        new
+                        {
+                            Id = 155,
+                            CaptionKey = "FromDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "Date",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "GTE",
+                            ReportId = 73,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "GridOptions"
+                        },
+                        new
+                        {
+                            Id = 156,
+                            CaptionKey = "ToDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "Date",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "LTE",
+                            ReportId = 73,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "GridOptions"
+                        },
+                        new
+                        {
+                            Id = 158,
+                            CaptionKey = "FromDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 76,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 159,
+                            CaptionKey = "ToDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 76,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 161,
+                            CaptionKey = "FromDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 77,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 162,
+                            CaptionKey = "ToDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 77,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 164,
+                            CaptionKey = "VoucherNo",
+                            ControlType = "NumberBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "VoucherNo",
+                            FieldName = "no",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "no",
+                            Operator = "EQ",
+                            ReportId = 82,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "Route"
+                        },
+                        new
+                        {
+                            Id = 165,
+                            CaptionKey = "VoucherNo",
+                            ControlType = "NumberBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "VoucherNo",
+                            FieldName = "no",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "no",
+                            Operator = "EQ",
+                            ReportId = 83,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "Route"
+                        },
+                        new
+                        {
+                            Id = 166,
+                            CaptionKey = "VoucherNo",
+                            ControlType = "NumberBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "VoucherNo",
+                            FieldName = "no",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "no",
+                            Operator = "EQ",
+                            ReportId = 84,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "Route"
+                        },
+                        new
+                        {
+                            Id = 167,
+                            CaptionKey = "VoucherNo",
+                            ControlType = "NumberBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "VoucherNo",
+                            FieldName = "no",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "no",
+                            Operator = "EQ",
+                            ReportId = 41,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "Route"
+                        },
+                        new
+                        {
+                            Id = 168,
+                            CaptionKey = "FromDate",
+                            ControlType = "DatePicker",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 85,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "DatePicker"
+                        },
+                        new
+                        {
+                            Id = 169,
+                            CaptionKey = "ToDate",
+                            ControlType = "DatePicker",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 85,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "DatePicker"
+                        },
+                        new
+                        {
+                            Id = 170,
+                            CaptionKey = "FromDate",
+                            ControlType = "DatePicker",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "EQ",
+                            ReportId = 86,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "DatePicker"
+                        },
+                        new
+                        {
+                            Id = 171,
+                            CaptionKey = "ToDate",
+                            ControlType = "DatePicker",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "EQ",
+                            ReportId = 86,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "DatePicker"
+                        },
+                        new
+                        {
+                            Id = 172,
+                            CaptionKey = "FromNo",
+                            ControlType = "NumberBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "FromNo",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromNo",
+                            Operator = "EQ",
+                            ReportId = 87,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "NumberBox"
+                        },
+                        new
+                        {
+                            Id = 173,
+                            CaptionKey = "ToNo",
+                            ControlType = "NumberBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "ToNo",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toNo",
+                            Operator = "EQ",
+                            ReportId = 87,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "NumberBox"
+                        },
+                        new
+                        {
+                            Id = 174,
+                            CaptionKey = "FromNo",
+                            ControlType = "NumberBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "FromNo",
+                            FieldName = "from",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromNo",
+                            Operator = "EQ",
+                            ReportId = 88,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "NumberBox"
+                        },
+                        new
+                        {
+                            Id = 175,
+                            CaptionKey = "ToNo",
+                            ControlType = "NumberBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "ToNo",
+                            FieldName = "to",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toNo",
+                            Operator = "EQ",
+                            ReportId = 88,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "NumberBox"
+                        },
+                        new
+                        {
+                            Id = 176,
+                            CaptionKey = "CompanyId",
+                            ControlType = "NumberBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "CompanyId",
+                            FieldName = "companyId",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "companyId",
+                            Operator = "EQ",
+                            ReportId = 21,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "Route"
+                        },
+                        new
+                        {
+                            Id = 177,
+                            CaptionKey = "Date",
+                            ControlType = "DatePicker",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "Date",
+                            FieldName = "date",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "date",
+                            Operator = "EQ",
+                            ReportId = 80,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "QueryString"
+                        },
+                        new
+                        {
+                            Id = 178,
+                            CaptionKey = "FromDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "FromDate",
+                            FieldName = "Date",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromDate",
+                            Operator = "GTE",
+                            ReportId = 89,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 179,
+                            CaptionKey = "ToDate",
+                            ControlType = "TextBox",
+                            DataType = "System.DateTime",
+                            DescriptionKey = "ToDate",
+                            FieldName = "Date",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toDate",
+                            Operator = "LTE",
+                            ReportId = 89,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 180,
+                            CaptionKey = "FromNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "FromNo",
+                            FieldName = "No",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "fromNo",
+                            Operator = "GTE",
+                            ReportId = 90,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 181,
+                            CaptionKey = "ToNo",
+                            ControlType = "TextBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "ToNo",
+                            FieldName = "No",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "toNo",
+                            Operator = "LTE",
+                            ReportId = 90,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "(null)"
+                        },
+                        new
+                        {
+                            Id = 182,
+                            CaptionKey = "PaymentId",
+                            ControlType = "NumberBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "PaymentId",
+                            FieldName = "paymentId",
+                            MinValue = " 1  ",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "paymentId",
+                            Operator = "EQ",
+                            ReportId = 104,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "Route"
+                        },
+                        new
+                        {
+                            Id = 183,
+                            CaptionKey = "ReceiptId",
+                            ControlType = "NumberBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "ReceiptId",
+                            FieldName = "receiptId",
+                            MinValue = " 1  ",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "receiptId",
+                            Operator = "EQ",
+                            ReportId = 105,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "Route"
+                        },
+                        new
+                        {
+                            Id = 184,
+                            CaptionKey = "ReceiptId",
+                            ControlType = "NumberBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "ReceiptId",
+                            FieldName = "paymentId",
+                            MinValue = " 1  ",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "paymentId",
+                            Operator = "EQ",
+                            ReportId = 107,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "Route"
+                        },
+                        new
+                        {
+                            Id = 185,
+                            CaptionKey = "PaymentId",
+                            ControlType = "NumberBox",
+                            DataType = "System.Int32",
+                            DescriptionKey = "PaymentId",
+                            FieldName = "receiptId",
+                            MinValue = " 1  ",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "receiptId",
+                            Operator = "EQ",
+                            ReportId = 106,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Source = "Route"
+                        });
                 });
 
             modelBuilder.Entity("SPPC.Tadbir.Model.Reporting.Report", b =>
@@ -31267,7 +33430,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ReportID")
+                        .HasColumnName("ReportId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Code")
@@ -31276,7 +33439,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasColumnType("nvarchar(128)");
 
                     b.Property<int>("CreatedById")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CreatedById");
 
                     b.Property<bool>("IsDefault")
                         .HasColumnType("bit");
@@ -31296,7 +33460,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int?>("ParentId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ParentId");
 
                     b.Property<int?>("ReportViewId")
                         .HasColumnType("int");
@@ -31315,10 +33480,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<int>("SubsystemId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("SubsystemId");
 
                     b.Property<int?>("ViewId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ViewId");
 
                     b.HasKey("Id");
 
@@ -33293,7 +35460,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("SystemIssueID")
+                        .HasColumnName("SystemIssueId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ApiUrl")
@@ -33312,10 +35479,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<int?>("ParentId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ParentId");
 
                     b.Property<int?>("PermissionID")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("PermissionId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -33329,7 +35498,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasColumnType("nvarchar(64)");
 
                     b.Property<int?>("ViewId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ViewId");
 
                     b.HasKey("Id");
 

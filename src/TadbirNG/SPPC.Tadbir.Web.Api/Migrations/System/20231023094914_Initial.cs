@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SPPC.Tadbir.Web.Api.Migrations.System
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -30,7 +30,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 schema: "Config",
                 columns: table => new
                 {
-                    CompanyID = table.Column<int>(type: "int", nullable: false)
+                    CompanyDbId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     DbName = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
@@ -44,7 +44,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CompanyDb", x => x.CompanyID);
+                    table.PrimaryKey("PK_CompanyDb", x => x.CompanyDbId);
                 });
 
             migrationBuilder.CreateTable(
@@ -52,7 +52,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 schema: "Metadata",
                 columns: table => new
                 {
-                    EntityTypeID = table.Column<int>(type: "int", nullable: false)
+                    EntityTypeId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
@@ -61,7 +61,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EntityType", x => x.EntityTypeID);
+                    table.PrimaryKey("PK_EntityType", x => x.EntityTypeId);
                 });
 
             migrationBuilder.CreateTable(
@@ -69,7 +69,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 schema: "Metadata",
                 columns: table => new
                 {
-                    LocaleID = table.Column<int>(type: "int", nullable: false)
+                    LocaleId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     LocalName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
@@ -79,7 +79,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Locale", x => x.LocaleID);
+                    table.PrimaryKey("PK_Locale", x => x.LocaleId);
                 });
 
             migrationBuilder.CreateTable(
@@ -87,7 +87,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 schema: "Metadata",
                 columns: table => new
                 {
-                    OperationID = table.Column<int>(type: "int", nullable: false)
+                    OperationId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
@@ -96,7 +96,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Operation", x => x.OperationID);
+                    table.PrimaryKey("PK_Operation", x => x.OperationId);
                 });
 
             migrationBuilder.CreateTable(
@@ -104,7 +104,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 schema: "Metadata",
                 columns: table => new
                 {
-                    OperationSourceID = table.Column<int>(type: "int", nullable: false)
+                    OperationSourceId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
@@ -113,7 +113,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OperationSource", x => x.OperationSourceID);
+                    table.PrimaryKey("PK_OperationSource", x => x.OperationSourceId);
                 });
 
             migrationBuilder.CreateTable(
@@ -121,7 +121,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 schema: "Metadata",
                 columns: table => new
                 {
-                    OperationSourceTypeID = table.Column<int>(type: "int", nullable: false)
+                    OperationSourceTypeId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     rowguid = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
@@ -129,7 +129,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OperationSourceType", x => x.OperationSourceTypeID);
+                    table.PrimaryKey("PK_OperationSourceType", x => x.OperationSourceTypeId);
                 });
 
             migrationBuilder.CreateTable(
@@ -137,7 +137,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 schema: "Metadata",
                 columns: table => new
                 {
-                    ViewID = table.Column<int>(type: "int", nullable: false)
+                    ReportViewId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
@@ -146,7 +146,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ReportView", x => x.ViewID);
+                    table.PrimaryKey("PK_ReportView", x => x.ReportViewId);
                 });
 
             migrationBuilder.CreateTable(
@@ -154,7 +154,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 schema: "Auth",
                 columns: table => new
                 {
-                    RoleID = table.Column<int>(type: "int", nullable: false)
+                    RoleId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
@@ -163,7 +163,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Role", x => x.RoleID);
+                    table.PrimaryKey("PK_Role", x => x.RoleId);
                 });
 
             migrationBuilder.CreateTable(
@@ -171,7 +171,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 schema: "Config",
                 columns: table => new
                 {
-                    SettingID = table.Column<int>(type: "int", nullable: false)
+                    SettingId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Subsystem = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
                     TitleKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
@@ -188,13 +188,13 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Setting", x => x.SettingID);
+                    table.PrimaryKey("PK_Setting", x => x.SettingId);
                     table.ForeignKey(
                         name: "FK_Config_Setting_Config_Parent",
                         column: x => x.ParentID,
                         principalSchema: "Config",
                         principalTable: "Setting",
-                        principalColumn: "SettingID",
+                        principalColumn: "SettingId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -203,7 +203,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 schema: "Metadata",
                 columns: table => new
                 {
-                    SubsystemID = table.Column<int>(type: "int", nullable: false)
+                    SubsystemId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     rowguid = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
@@ -211,7 +211,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Subsystem", x => x.SubsystemID);
+                    table.PrimaryKey("PK_Subsystem", x => x.SubsystemId);
                 });
 
             migrationBuilder.CreateTable(
@@ -219,7 +219,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 schema: "Auth",
                 columns: table => new
                 {
-                    UserID = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     PasswordHash = table.Column<string>(type: "varchar(256)", unicode: false, maxLength: 256, nullable: false),
@@ -230,7 +230,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.UserID);
+                    table.PrimaryKey("PK_User", x => x.UserId);
                 });
 
             migrationBuilder.CreateTable(
@@ -254,7 +254,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 schema: "Metadata",
                 columns: table => new
                 {
-                    ViewID = table.Column<int>(type: "int", nullable: false)
+                    ViewId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     EntityName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
@@ -268,7 +268,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_View", x => x.ViewID);
+                    table.PrimaryKey("PK_View", x => x.ViewId);
                 });
 
             migrationBuilder.CreateTable(
@@ -276,7 +276,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 schema: "Core",
                 columns: table => new
                 {
-                    SystemErrorID = table.Column<int>(type: "int", nullable: false)
+                    SystemErrorId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CompanyId = table.Column<int>(type: "int", nullable: true),
                     FiscalPeriodId = table.Column<int>(type: "int", nullable: true),
@@ -293,13 +293,13 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SystemError", x => x.SystemErrorID);
+                    table.PrimaryKey("PK_SystemError", x => x.SystemErrorId);
                     table.ForeignKey(
                         name: "FK_Core_SystemError_Config_Company",
                         column: x => x.CompanyId,
                         principalSchema: "Config",
                         principalTable: "CompanyDb",
-                        principalColumn: "CompanyID",
+                        principalColumn: "CompanyDbId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -308,7 +308,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 schema: "Config",
                 columns: table => new
                 {
-                    SysLogSettingID = table.Column<int>(type: "int", nullable: false)
+                    SysLogSettingId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SourceId = table.Column<int>(type: "int", nullable: true),
                     EntityTypeId = table.Column<int>(type: "int", nullable: true),
@@ -319,27 +319,27 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SysLogSetting", x => x.SysLogSettingID);
+                    table.PrimaryKey("PK_SysLogSetting", x => x.SysLogSettingId);
                     table.ForeignKey(
                         name: "FK_Config_LogSetting_Metadata_EntityType",
                         column: x => x.EntityTypeId,
                         principalSchema: "Metadata",
                         principalTable: "EntityType",
-                        principalColumn: "EntityTypeID",
+                        principalColumn: "EntityTypeId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Config_LogSetting_Metadata_Operation",
                         column: x => x.OperationId,
                         principalSchema: "Metadata",
                         principalTable: "Operation",
-                        principalColumn: "OperationID",
+                        principalColumn: "OperationId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Config_LogSetting_Metadata_Source",
                         column: x => x.SourceId,
                         principalSchema: "Metadata",
                         principalTable: "OperationSource",
-                        principalColumn: "OperationSourceID",
+                        principalColumn: "OperationSourceId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -348,7 +348,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 schema: "Auth",
                 columns: table => new
                 {
-                    RoleCompanyID = table.Column<int>(type: "int", nullable: false)
+                    RoleCompanyId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RoleId = table.Column<int>(type: "int", nullable: false),
                     CompanyId = table.Column<int>(type: "int", nullable: false),
@@ -357,20 +357,20 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RoleCompany", x => x.RoleCompanyID);
+                    table.PrimaryKey("PK_RoleCompany", x => x.RoleCompanyId);
                     table.ForeignKey(
                         name: "FK_RoleCompany_CompanyDb_CompanyId",
                         column: x => x.CompanyId,
                         principalSchema: "Config",
                         principalTable: "CompanyDb",
-                        principalColumn: "CompanyID",
+                        principalColumn: "CompanyDbId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_RoleCompany_Role_RoleId",
                         column: x => x.RoleId,
                         principalSchema: "Auth",
                         principalTable: "Role",
-                        principalColumn: "RoleID",
+                        principalColumn: "RoleId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -379,7 +379,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 schema: "Auth",
                 columns: table => new
                 {
-                    PermissionGroupID = table.Column<int>(type: "int", nullable: false)
+                    PermissionGroupId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SubsystemId = table.Column<int>(type: "int", nullable: false),
                     SourceTypeId = table.Column<int>(type: "int", nullable: false),
@@ -391,20 +391,20 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PermissionGroup", x => x.PermissionGroupID);
+                    table.PrimaryKey("PK_PermissionGroup", x => x.PermissionGroupId);
                     table.ForeignKey(
                         name: "FK_Auth_PermissionGroup_Metadata_SourceType",
                         column: x => x.SourceTypeId,
                         principalSchema: "Metadata",
                         principalTable: "OperationSourceType",
-                        principalColumn: "OperationSourceTypeID",
+                        principalColumn: "OperationSourceTypeId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Auth_PermissionGroup_Metadata_Subsystem",
                         column: x => x.SubsystemId,
                         principalSchema: "Metadata",
                         principalTable: "Subsystem",
-                        principalColumn: "SubsystemID",
+                        principalColumn: "SubsystemId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -413,22 +413,22 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 schema: "Contact",
                 columns: table => new
                 {
-                    PersonID = table.Column<int>(type: "int", nullable: false)
+                    PersonId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserID = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     rowguid = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
                     ModifiedDate = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "(getdate())")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Person", x => x.PersonID);
+                    table.PrimaryKey("PK_Person", x => x.PersonId);
                     table.ForeignKey(
                         name: "FK_Contact_Person_Auth_User",
-                        column: x => x.UserID,
+                        column: x => x.UserId,
                         principalSchema: "Auth",
                         principalTable: "User",
-                        principalColumn: "UserID",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -437,7 +437,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 schema: "Auth",
                 columns: table => new
                 {
-                    SessionID = table.Column<int>(type: "int", nullable: false)
+                    SessionId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     Device = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
@@ -452,13 +452,13 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Session", x => x.SessionID);
+                    table.PrimaryKey("PK_Session", x => x.SessionId);
                     table.ForeignKey(
                         name: "FK_Auth_Session_Auth_User",
                         column: x => x.UserId,
                         principalSchema: "Auth",
                         principalTable: "User",
-                        principalColumn: "UserID",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -467,7 +467,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 schema: "Auth",
                 columns: table => new
                 {
-                    UserRoleID = table.Column<int>(type: "int", nullable: false)
+                    UserRoleId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     RoleId = table.Column<int>(type: "int", nullable: false),
@@ -476,21 +476,21 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserRole", x => x.UserRoleID);
+                    table.PrimaryKey("PK_UserRole", x => x.UserRoleId);
                     table.UniqueConstraint("AK_UserRole_UserId_RoleId", x => new { x.UserId, x.RoleId });
                     table.ForeignKey(
                         name: "FK_UserRole_Role_RoleId",
                         column: x => x.RoleId,
                         principalSchema: "Auth",
                         principalTable: "Role",
-                        principalColumn: "RoleID",
+                        principalColumn: "RoleId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UserRole_User_UserId",
                         column: x => x.UserId,
                         principalSchema: "Auth",
                         principalTable: "User",
-                        principalColumn: "UserID",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -499,7 +499,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 schema: "Metadata",
                 columns: table => new
                 {
-                    ColumnID = table.Column<int>(type: "int", nullable: false)
+                    ColumnId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     GroupName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
@@ -523,13 +523,13 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Column", x => x.ColumnID);
+                    table.PrimaryKey("PK_Column", x => x.ColumnId);
                     table.ForeignKey(
                         name: "FK_Metadata_Column_Metadata_View",
                         column: x => x.ViewID,
                         principalSchema: "Metadata",
                         principalTable: "View",
-                        principalColumn: "ViewID",
+                        principalColumn: "ViewId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -538,7 +538,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 schema: "Reporting",
                 columns: table => new
                 {
-                    ReportID = table.Column<int>(type: "int", nullable: false)
+                    ReportId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreatedById = table.Column<int>(type: "int", nullable: false),
                     ParentId = table.Column<int>(type: "int", nullable: true),
@@ -557,34 +557,34 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Report", x => x.ReportID);
+                    table.PrimaryKey("PK_Report", x => x.ReportId);
                     table.ForeignKey(
                         name: "FK_Report_ReportView_ReportViewId",
                         column: x => x.ReportViewId,
                         principalSchema: "Metadata",
                         principalTable: "ReportView",
-                        principalColumn: "ViewID",
+                        principalColumn: "ReportViewId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Reporting_Report_Auth_CreatedBy",
                         column: x => x.CreatedById,
                         principalSchema: "Auth",
                         principalTable: "User",
-                        principalColumn: "UserID",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Reporting_Report_Metadata_ReportView",
                         column: x => x.ViewId,
                         principalSchema: "Metadata",
                         principalTable: "View",
-                        principalColumn: "ViewID",
+                        principalColumn: "ViewId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Reporting_Report_Reporting_Parent",
                         column: x => x.ParentId,
                         principalSchema: "Reporting",
                         principalTable: "Report",
-                        principalColumn: "ReportID",
+                        principalColumn: "ReportId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -593,7 +593,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 schema: "Core",
                 columns: table => new
                 {
-                    SysOperationLogID = table.Column<int>(type: "int", nullable: false)
+                    SysOperationLogId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OperationId = table.Column<int>(type: "int", nullable: false),
                     EntityTypeId = table.Column<int>(type: "int", nullable: true),
@@ -615,48 +615,48 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SysOperationLog", x => x.SysOperationLogID);
+                    table.PrimaryKey("PK_SysOperationLog", x => x.SysOperationLogId);
                     table.ForeignKey(
                         name: "FK_Core_SysOperationLog_Auth_User",
                         column: x => x.UserId,
                         principalSchema: "Auth",
                         principalTable: "User",
-                        principalColumn: "UserID",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Core_SysOperationLog_Config_Company",
                         column: x => x.CompanyId,
                         principalSchema: "Config",
                         principalTable: "CompanyDb",
-                        principalColumn: "CompanyID",
+                        principalColumn: "CompanyDbId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Core_SysOperationLog_Metadata_EntityType",
                         column: x => x.EntityTypeId,
                         principalSchema: "Metadata",
                         principalTable: "EntityType",
-                        principalColumn: "EntityTypeID",
+                        principalColumn: "EntityTypeId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Core_SysOperationLog_Metadata_Operation",
                         column: x => x.OperationId,
                         principalSchema: "Metadata",
                         principalTable: "Operation",
-                        principalColumn: "OperationID",
+                        principalColumn: "OperationId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Core_SysOperationLog_Metadata_Source",
                         column: x => x.SourceId,
                         principalSchema: "Metadata",
                         principalTable: "OperationSource",
-                        principalColumn: "OperationSourceID",
+                        principalColumn: "OperationSourceId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Core_SysOperationLog_Metadata_SourceList",
                         column: x => x.SourceListId,
                         principalSchema: "Metadata",
                         principalTable: "View",
-                        principalColumn: "ViewID",
+                        principalColumn: "ViewId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -665,7 +665,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 schema: "Core",
                 columns: table => new
                 {
-                    SysOperationLogArchiveID = table.Column<int>(type: "int", nullable: false)
+                    SysOperationLogArchiveId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OperationId = table.Column<int>(type: "int", nullable: false),
                     EntityTypeId = table.Column<int>(type: "int", nullable: true),
@@ -687,48 +687,48 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SysOperationLogArchive", x => x.SysOperationLogArchiveID);
+                    table.PrimaryKey("PK_SysOperationLogArchive", x => x.SysOperationLogArchiveId);
                     table.ForeignKey(
                         name: "FK_Core_SysOperationLogArchive_Auth_User",
                         column: x => x.UserId,
                         principalSchema: "Auth",
                         principalTable: "User",
-                        principalColumn: "UserID",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Core_SysOperationLogArchive_Config_Company",
                         column: x => x.CompanyId,
                         principalSchema: "Config",
                         principalTable: "CompanyDb",
-                        principalColumn: "CompanyID",
+                        principalColumn: "CompanyDbId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Core_SysOperationLogArchive_Metadata_EntityType",
                         column: x => x.EntityTypeId,
                         principalSchema: "Metadata",
                         principalTable: "EntityType",
-                        principalColumn: "EntityTypeID",
+                        principalColumn: "EntityTypeId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Core_SysOperationLogArchive_Metadata_Operation",
                         column: x => x.OperationId,
                         principalSchema: "Metadata",
                         principalTable: "Operation",
-                        principalColumn: "OperationID",
+                        principalColumn: "OperationId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Core_SysOperationLogArchive_Metadata_Source",
                         column: x => x.SourceId,
                         principalSchema: "Metadata",
                         principalTable: "OperationSource",
-                        principalColumn: "OperationSourceID",
+                        principalColumn: "OperationSourceId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Core_SysOperationLogArchive_Metadata_SourceList",
                         column: x => x.SourceListId,
                         principalSchema: "Metadata",
                         principalTable: "View",
-                        principalColumn: "ViewID",
+                        principalColumn: "ViewId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -737,7 +737,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 schema: "Config",
                 columns: table => new
                 {
-                    UserSettingID = table.Column<int>(type: "int", nullable: false)
+                    UserSettingId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: true),
                     RoleId = table.Column<int>(type: "int", nullable: true),
@@ -750,34 +750,34 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserSetting", x => x.UserSettingID);
+                    table.PrimaryKey("PK_UserSetting", x => x.UserSettingId);
                     table.ForeignKey(
                         name: "FK_Config_UserSetting_Auth_Role",
                         column: x => x.RoleId,
                         principalSchema: "Auth",
                         principalTable: "Role",
-                        principalColumn: "RoleID",
+                        principalColumn: "RoleId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Config_UserSetting_Auth_User",
                         column: x => x.UserId,
                         principalSchema: "Auth",
                         principalTable: "User",
-                        principalColumn: "UserID",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Config_UserSetting_Config_Setting",
                         column: x => x.SettingId,
                         principalSchema: "Config",
                         principalTable: "Setting",
-                        principalColumn: "SettingID",
+                        principalColumn: "SettingId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Config_UserSetting_Metadata_EntityView",
                         column: x => x.ViewId,
                         principalSchema: "Metadata",
                         principalTable: "View",
-                        principalColumn: "ViewID",
+                        principalColumn: "ViewId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -786,7 +786,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 schema: "Metadata",
                 columns: table => new
                 {
-                    ValidRowPermissionID = table.Column<int>(type: "int", nullable: false)
+                    ValidRowPermissionId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AccessMode = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     ViewID = table.Column<int>(type: "int", nullable: true),
@@ -795,13 +795,13 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ValidRowPermission", x => x.ValidRowPermissionID);
+                    table.PrimaryKey("PK_ValidRowPermission", x => x.ValidRowPermissionId);
                     table.ForeignKey(
                         name: "FK_Metadata_ValidRowPermission_Metadata_View",
                         column: x => x.ViewID,
                         principalSchema: "Metadata",
                         principalTable: "View",
-                        principalColumn: "ViewID",
+                        principalColumn: "ViewId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -810,10 +810,10 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 schema: "Auth",
                 columns: table => new
                 {
-                    RowPermissionID = table.Column<int>(type: "int", nullable: false)
+                    ViewRowPermissionId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RoleId = table.Column<int>(type: "int", nullable: false),
-                    ViewID = table.Column<int>(type: "int", nullable: false),
+                    ViewId = table.Column<int>(type: "int", nullable: false),
                     AccessMode = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     Value = table.Column<double>(type: "float", nullable: false),
                     Value2 = table.Column<double>(type: "float", nullable: false),
@@ -824,20 +824,20 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ViewRowPermission", x => x.RowPermissionID);
+                    table.PrimaryKey("PK_ViewRowPermission", x => x.ViewRowPermissionId);
                     table.ForeignKey(
                         name: "FK_Auth_ViewRowPermission_Auth_Role",
                         column: x => x.RoleId,
                         principalSchema: "Auth",
                         principalTable: "Role",
-                        principalColumn: "RoleID",
+                        principalColumn: "RoleId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Auth_ViewRowPermission_Metadata_View",
-                        column: x => x.ViewID,
+                        column: x => x.ViewId,
                         principalSchema: "Metadata",
                         principalTable: "View",
-                        principalColumn: "ViewID",
+                        principalColumn: "ViewId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -846,7 +846,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 schema: "Auth",
                 columns: table => new
                 {
-                    PermissionID = table.Column<int>(type: "int", nullable: false)
+                    PermissionId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     GroupId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
@@ -857,13 +857,13 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Permission", x => x.PermissionID);
+                    table.PrimaryKey("PK_Permission", x => x.PermissionId);
                     table.ForeignKey(
                         name: "FK_Auth_Permission_Auth_PermissionGroup",
                         column: x => x.GroupId,
                         principalSchema: "Auth",
                         principalTable: "PermissionGroup",
-                        principalColumn: "PermissionGroupID",
+                        principalColumn: "PermissionGroupId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -872,7 +872,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 schema: "Reporting",
                 columns: table => new
                 {
-                    LocalReportID = table.Column<int>(type: "int", nullable: false)
+                    LocalReportId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     LocaleId = table.Column<int>(type: "int", nullable: false),
                     ReportId = table.Column<int>(type: "int", nullable: false),
@@ -883,20 +883,20 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LocalReport", x => x.LocalReportID);
+                    table.PrimaryKey("PK_LocalReport", x => x.LocalReportId);
                     table.ForeignKey(
                         name: "FK_Reporting_LocalReport_Reporting_Locale",
                         column: x => x.LocaleId,
                         principalSchema: "Metadata",
                         principalTable: "Locale",
-                        principalColumn: "LocaleID",
+                        principalColumn: "LocaleId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Reporting_LocalReport_Reporting_Report",
                         column: x => x.ReportId,
                         principalSchema: "Reporting",
                         principalTable: "Report",
-                        principalColumn: "ReportID",
+                        principalColumn: "ReportId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -905,7 +905,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 schema: "Reporting",
                 columns: table => new
                 {
-                    ParamID = table.Column<int>(type: "int", nullable: false)
+                    ParameterId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ReportId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
@@ -924,13 +924,13 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Parameter", x => x.ParamID);
+                    table.PrimaryKey("PK_Parameter", x => x.ParameterId);
                     table.ForeignKey(
                         name: "FK_Reporting_Parameter_Reporting_Report",
                         column: x => x.ReportId,
                         principalSchema: "Reporting",
                         principalTable: "Report",
-                        principalColumn: "ReportID",
+                        principalColumn: "ReportId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -939,7 +939,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 schema: "Metadata",
                 columns: table => new
                 {
-                    CommandID = table.Column<int>(type: "int", nullable: false)
+                    CommandId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ParentId = table.Column<int>(type: "int", nullable: true),
                     PermissionId = table.Column<int>(type: "int", nullable: true),
@@ -953,20 +953,20 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Command", x => x.CommandID);
+                    table.PrimaryKey("PK_Command", x => x.CommandId);
                     table.ForeignKey(
                         name: "FK_Metadata_Command_Auth_Permission",
                         column: x => x.PermissionId,
                         principalSchema: "Auth",
                         principalTable: "Permission",
-                        principalColumn: "PermissionID",
+                        principalColumn: "PermissionId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Metadata_Command_Metadata_Parent",
                         column: x => x.ParentId,
                         principalSchema: "Metadata",
                         principalTable: "Command",
-                        principalColumn: "CommandID",
+                        principalColumn: "CommandId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -975,7 +975,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 schema: "Auth",
                 columns: table => new
                 {
-                    RolePermissionID = table.Column<int>(type: "int", nullable: false)
+                    RolePermissionId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RoleId = table.Column<int>(type: "int", nullable: false),
                     PermissionId = table.Column<int>(type: "int", nullable: false),
@@ -984,21 +984,21 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RolePermission", x => x.RolePermissionID);
+                    table.PrimaryKey("PK_RolePermission", x => x.RolePermissionId);
                     table.UniqueConstraint("AK_RolePermission_RoleId_PermissionId", x => new { x.RoleId, x.PermissionId });
                     table.ForeignKey(
                         name: "FK_RolePermission_Permission_PermissionId",
                         column: x => x.PermissionId,
                         principalSchema: "Auth",
                         principalTable: "Permission",
-                        principalColumn: "PermissionID",
+                        principalColumn: "PermissionId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_RolePermission_Role_RoleId",
                         column: x => x.RoleId,
                         principalSchema: "Auth",
                         principalTable: "Role",
-                        principalColumn: "RoleID",
+                        principalColumn: "RoleId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -1007,7 +1007,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 schema: "Metadata",
                 columns: table => new
                 {
-                    ShortcutCommandID = table.Column<int>(type: "int", nullable: false)
+                    ShortcutCommandId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PermissionId = table.Column<int>(type: "int", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
@@ -1019,13 +1019,13 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ShortcutCommand", x => x.ShortcutCommandID);
+                    table.PrimaryKey("PK_ShortcutCommand", x => x.ShortcutCommandId);
                     table.ForeignKey(
                         name: "FK_Config_ShortcutCommand_Auth_Permission",
                         column: x => x.PermissionId,
                         principalSchema: "Auth",
                         principalTable: "Permission",
-                        principalColumn: "PermissionID",
+                        principalColumn: "PermissionId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1034,10 +1034,10 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 schema: "Reporting",
                 columns: table => new
                 {
-                    SystemIssueID = table.Column<int>(type: "int", nullable: false)
+                    SystemIssueId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ParentId = table.Column<int>(type: "int", nullable: true),
-                    PermissionID = table.Column<int>(type: "int", nullable: true),
+                    PermissionId = table.Column<int>(type: "int", nullable: true),
                     ViewId = table.Column<int>(type: "int", nullable: true),
                     TitleKey = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     ApiUrl = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: true),
@@ -1048,41 +1048,41 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SystemIssue", x => x.SystemIssueID);
+                    table.PrimaryKey("PK_SystemIssue", x => x.SystemIssueId);
                     table.ForeignKey(
                         name: "FK_Reporting_SystemIssue_Auth_Permission",
-                        column: x => x.PermissionID,
+                        column: x => x.PermissionId,
                         principalSchema: "Auth",
                         principalTable: "Permission",
-                        principalColumn: "PermissionID",
+                        principalColumn: "PermissionId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Reporting_SystemIssue_Metadata_View",
                         column: x => x.ViewId,
                         principalSchema: "Metadata",
                         principalTable: "View",
-                        principalColumn: "ViewID",
+                        principalColumn: "ViewId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Reporting_SystemIssue_Reporting_Parent",
                         column: x => x.ParentId,
                         principalSchema: "Reporting",
                         principalTable: "SystemIssue",
-                        principalColumn: "SystemIssueID",
+                        principalColumn: "SystemIssueId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
                 schema: "Auth",
                 table: "User",
-                columns: new[] { "UserID", "IsEnabled", "LastLoginDate", "PasswordHash", "UserName" },
+                columns: new[] { "UserId", "IsEnabled", "LastLoginDate", "PasswordHash", "UserName" },
                 values: new object[] { 1, true, new DateTime(2023, 10, 16, 8, 57, 46, 3, DateTimeKind.Unspecified), "b22f213ec710f0b0e86297d10279d69171f50f01a04edf40f472a563e7ad8576", "admin" });
 
             migrationBuilder.InsertData(
                 schema: "Config",
                 table: "CompanyDb",
-                columns: new[] { "CompanyID", "DbName", "Description", "IsActive", "ModifiedDate", "Name", "Password", "Server", "UserName" },
-                values: new object[] { 1, "NGTadbirMG2", "", true, new DateTime(2023, 10, 21, 17, 7, 28, 969, DateTimeKind.Local).AddTicks(4967), "شرکت نمونه", "$$$%%%", "130.185.75.230,49878", "TadbirUser" });
+                columns: new[] { "CompanyDbId", "DbName", "Description", "IsActive", "Name", "Password", "Server", "UserName" },
+                values: new object[] { 1, "NGTadbirMG2", "", true, "شرکت نمونه", "$$$%%%", "130.185.75.230,49878", "TadbirUser" });
 
             migrationBuilder.InsertData(
                 schema: "Core",
@@ -1093,7 +1093,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Column",
-                columns: new[] { "ColumnID", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
+                columns: new[] { "ColumnId", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
                 values: new object[,]
                 {
                     { 2, true, false, (short)-1, "System.Int16", "", "", false, false, false, 0, 0, "BranchScope", "number", "smallint", "", null, "AlwaysHidden" },
@@ -1140,7 +1140,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Column",
-                columns: new[] { "ColumnID", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
+                columns: new[] { "ColumnId", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
                 values: new object[,]
                 {
                     { 586, true, true, (short)14, "System.String", "", "", false, false, false, 128, 0, "BranchName", "string", "nvarchar", "", null, "AlwaysVisible" },
@@ -1190,7 +1190,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Column",
-                columns: new[] { "ColumnID", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
+                columns: new[] { "ColumnId", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
                 values: new object[,]
                 {
                     { 673, false, false, (short)3, "System.Decimal", "", "", true, false, false, 0, 0, "PeriodTurnoverItem", "number", "money", "Money", null, "Visible" },
@@ -1240,7 +1240,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Column",
-                columns: new[] { "ColumnID", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
+                columns: new[] { "ColumnId", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
                 values: new object[,]
                 {
                     { 499, true, true, (short)10, "System.Decimal", "", "EndBalance", false, false, false, 0, 0, "EndBalanceCredit", "number", "money", "Money", null, "Visible" },
@@ -1290,7 +1290,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Column",
-                columns: new[] { "ColumnID", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
+                columns: new[] { "ColumnId", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
                 values: new object[,]
                 {
                     { 484, true, true, (short)6, "System.Decimal", "", "Turnover", false, false, false, 0, 0, "TurnoverCredit", "number", "money", "Money", null, "Visible" },
@@ -1340,7 +1340,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Column",
-                columns: new[] { "ColumnID", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
+                columns: new[] { "ColumnId", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
                 values: new object[,]
                 {
                     { 527, true, true, (short)3, "System.Decimal", "", "Turnover", false, false, false, 0, 0, "TurnoverDebit", "number", "money", "Money", null, "Visible" },
@@ -1390,7 +1390,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Column",
-                columns: new[] { "ColumnID", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
+                columns: new[] { "ColumnId", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
                 values: new object[,]
                 {
                     { 854, true, true, (short)8, "System.DateTime", "", "", false, false, true, 0, 0, "ModifiedDate", "Date", "datetime", "Default", null, "Hidden" },
@@ -1440,7 +1440,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Column",
-                columns: new[] { "ColumnID", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
+                columns: new[] { "ColumnId", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
                 values: new object[,]
                 {
                     { 100035, true, true, (short)1, "System.String", "", "", false, false, false, 64, 0, "Name", "string", "nvarchar", "", null, "Visible" },
@@ -1490,7 +1490,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Column",
-                columns: new[] { "ColumnID", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
+                columns: new[] { "ColumnId", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
                 values: new object[,]
                 {
                     { 100020, true, true, (short)-1, "System.Int32", "", "", false, false, false, 0, 0, "BranchId", "number", "int", "", null, "AlwaysHidden" },
@@ -1540,7 +1540,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Column",
-                columns: new[] { "ColumnID", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
+                columns: new[] { "ColumnId", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
                 values: new object[,]
                 {
                     { 694, true, true, (short)3, "System.String", "", "", false, false, false, 64, 0, "FunctionName", "string", "nvarchar", "", null, "Visible" },
@@ -1590,7 +1590,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Column",
-                columns: new[] { "ColumnID", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
+                columns: new[] { "ColumnId", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
                 values: new object[,]
                 {
                     { 794, true, true, (short)-1, "System.Int32", "", "", false, false, false, 0, 0, "PayReceiveId", "number", "int", "", null, "AlwaysHidden" },
@@ -1640,7 +1640,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Column",
-                columns: new[] { "ColumnID", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
+                columns: new[] { "ColumnId", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
                 values: new object[,]
                 {
                     { 150, true, true, (short)1, "System.Date", "", "", false, false, false, 0, 0, "VoucherDate", "Date", "datetime", "Default", null, "Visible" },
@@ -1690,7 +1690,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Column",
-                columns: new[] { "ColumnID", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
+                columns: new[] { "ColumnId", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
                 values: new object[,]
                 {
                     { 135, true, true, (short)2, "System.Int32", "", "", false, false, false, 0, 0, "VoucherNo", "number", "int", "", null, "Visible" },
@@ -1740,7 +1740,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Column",
-                columns: new[] { "ColumnID", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
+                columns: new[] { "ColumnId", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
                 values: new object[,]
                 {
                     { 177, true, true, (short)3, "System.String", "", "", false, false, false, 512, 0, "AccountName", "string", "nvarchar", "", null, "Visible" },
@@ -1790,7 +1790,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Column",
-                columns: new[] { "ColumnID", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
+                columns: new[] { "ColumnId", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
                 values: new object[,]
                 {
                     { 47, true, true, (short)15, "System.Decimal", "", "", false, false, true, 0, 0, "CurrencyValue", "number", "money", "Money", null, "AlwaysVisible" },
@@ -1840,7 +1840,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Column",
-                columns: new[] { "ColumnID", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
+                columns: new[] { "ColumnId", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
                 values: new object[,]
                 {
                     { 90, false, false, (short)0, "System.Int32", "", "", false, false, true, 0, 0, "RowNo", "number", "int", "", null, "AlwaysVisible" },
@@ -1890,7 +1890,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Column",
-                columns: new[] { "ColumnID", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
+                columns: new[] { "ColumnId", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
                 values: new object[,]
                 {
                     { 75, true, true, (short)-1, "System.Int32", "", "", false, false, false, 0, 0, "Id", "number", "int", "", null, "AlwaysHidden" },
@@ -1940,7 +1940,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Column",
-                columns: new[] { "ColumnID", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
+                columns: new[] { "ColumnId", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
                 values: new object[,]
                 {
                     { 372, true, true, (short)9, "System.Decimal", "", "", false, false, false, 0, 0, "Credit", "number", "money", "Money", null, "Visible" },
@@ -1990,7 +1990,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Column",
-                columns: new[] { "ColumnID", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
+                columns: new[] { "ColumnId", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
                 values: new object[,]
                 {
                     { 444, true, true, (short)10, "System.Decimal", "", "EndBalance", false, false, false, 0, 0, "EndBalanceCredit", "number", "money", "Money", null, "Visible" },
@@ -2040,7 +2040,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Column",
-                columns: new[] { "ColumnID", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
+                columns: new[] { "ColumnId", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
                 values: new object[,]
                 {
                     { 345, true, true, (short)1, "System.String", "", "", false, false, false, 128, 0, "CurrencyName", "string", "nvarchar", "", null, "Visible" },
@@ -2090,7 +2090,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Column",
-                columns: new[] { "ColumnID", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
+                columns: new[] { "ColumnId", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
                 values: new object[,]
                 {
                     { 241, false, false, (short)0, "System.Int32", "", "", false, false, true, 0, 0, "RowNo", "number", "int", "", null, "AlwaysVisible" },
@@ -2140,7 +2140,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Column",
-                columns: new[] { "ColumnID", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
+                columns: new[] { "ColumnId", "AllowFiltering", "AllowSorting", "DisplayIndex", "DotNetType", "Expression", "GroupName", "IsDynamic", "IsFixedLength", "IsNullable", "Length", "MinLength", "Name", "ScriptType", "StorageType", "Type", "ViewID", "Visibility" },
                 values: new object[,]
                 {
                     { 341, true, true, (short)12, "System.Decimal", "", "EndBalance", false, false, false, 0, 0, "EndBalanceCredit", "number", "money", "Money", null, "Visible" },
@@ -2179,7 +2179,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Command",
-                columns: new[] { "CommandID", "HotKey", "IconName", "Index", "ParentId", "PermissionId", "RouteUrl", "TitleKey" },
+                columns: new[] { "CommandId", "HotKey", "IconName", "Index", "ParentId", "PermissionId", "RouteUrl", "TitleKey" },
                 values: new object[,]
                 {
                     { 1, "", "folder-close", null, null, null, "", "Accounting" },
@@ -2193,7 +2193,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "EntityType",
-                columns: new[] { "EntityTypeID", "Description", "Name" },
+                columns: new[] { "EntityTypeId", "Description", "Name" },
                 values: new object[,]
                 {
                     { 8, "", "ViewRowPermission" },
@@ -2206,7 +2206,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "EntityType",
-                columns: new[] { "EntityTypeID", "Description", "Name" },
+                columns: new[] { "EntityTypeId", "Description", "Name" },
                 values: new object[,]
                 {
                     { 1, "", "CompanyDb" },
@@ -2216,7 +2216,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Locale",
-                columns: new[] { "LocaleID", "Code", "LocalName", "Name" },
+                columns: new[] { "LocaleId", "Code", "LocalName", "Name" },
                 values: new object[,]
                 {
                     { 1, "en", "English", "English" },
@@ -2228,7 +2228,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Operation",
-                columns: new[] { "OperationID", "Description", "Name" },
+                columns: new[] { "OperationId", "Description", "Name" },
                 values: new object[,]
                 {
                     { 26, "", "AssignRole" },
@@ -2259,7 +2259,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "OperationSource",
-                columns: new[] { "OperationSourceID", "Description", "Name" },
+                columns: new[] { "OperationSourceId", "Description", "Name" },
                 values: new object[,]
                 {
                     { 7, "", "AppLogin" },
@@ -2270,7 +2270,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "OperationSourceType",
-                columns: new[] { "OperationSourceTypeID", "Name" },
+                columns: new[] { "OperationSourceTypeId", "Name" },
                 values: new object[,]
                 {
                     { 1, "BaseData" },
@@ -2281,7 +2281,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Subsystem",
-                columns: new[] { "SubsystemID", "Name" },
+                columns: new[] { "SubsystemId", "Name" },
                 values: new object[,]
                 {
                     { 100000, "ProductScope" },
@@ -2293,7 +2293,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "View",
-                columns: new[] { "ViewID", "EntityName", "EntityType", "FetchUrl", "IsCartableIntegrated", "IsHierarchy", "Name", "SearchUrl" },
+                columns: new[] { "ViewId", "EntityName", "EntityType", "FetchUrl", "IsCartableIntegrated", "IsHierarchy", "Name", "SearchUrl" },
                 values: new object[,]
                 {
                     { 45, "ItemBalance", "", "", false, false, "DetailAccountBalance6Column", "" },
@@ -2304,7 +2304,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "View",
-                columns: new[] { "ViewID", "EntityName", "EntityType", "FetchUrl", "IsCartableIntegrated", "IsHierarchy", "Name", "SearchUrl" },
+                columns: new[] { "ViewId", "EntityName", "EntityType", "FetchUrl", "IsCartableIntegrated", "IsHierarchy", "Name", "SearchUrl" },
                 values: new object[,]
                 {
                     { 58, "BalanceByAccount", "", "", false, false, "BalanceByAccount", "" },
@@ -2354,7 +2354,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "View",
-                columns: new[] { "ViewID", "EntityName", "EntityType", "FetchUrl", "IsCartableIntegrated", "IsHierarchy", "Name", "SearchUrl" },
+                columns: new[] { "ViewId", "EntityName", "EntityType", "FetchUrl", "IsCartableIntegrated", "IsHierarchy", "Name", "SearchUrl" },
                 values: new object[,]
                 {
                     { 13, "OperationLog", "Core", "", false, false, "OperationLog", "" },
@@ -2400,7 +2400,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Auth",
                 table: "PermissionGroup",
-                columns: new[] { "PermissionGroupID", "Description", "EntityName", "Name", "SourceTypeId", "SubsystemId" },
+                columns: new[] { "PermissionGroupId", "Description", "EntityName", "Name", "SourceTypeId", "SubsystemId" },
                 values: new object[,]
                 {
                     { 100005, "", "file", "ManageEntities,files", 1, 100000 },
@@ -2450,7 +2450,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Auth",
                 table: "PermissionGroup",
-                columns: new[] { "PermissionGroupID", "Description", "EntityName", "Name", "SourceTypeId", "SubsystemId" },
+                columns: new[] { "PermissionGroupId", "Description", "EntityName", "Name", "SourceTypeId", "SubsystemId" },
                 values: new object[,]
                 {
                     { 29, "", "BalanceByAccount", "BalanceByAccountReport", 3, 2 },
@@ -2463,78 +2463,78 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Config",
                 table: "SysLogSetting",
-                columns: new[] { "SysLogSettingID", "EntityTypeId", "IsEnabled", "ModifiedDate", "OperationId", "SourceId" },
+                columns: new[] { "SysLogSettingId", "EntityTypeId", "IsEnabled", "OperationId", "SourceId" },
                 values: new object[,]
                 {
-                    { 40, 5, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1150), 54, null },
-                    { 47, null, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1174), 24, 8 },
-                    { 46, null, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1171), 23, 8 },
-                    { 45, null, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1167), 22, 7 },
-                    { 38, 5, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1143), 58, null },
-                    { 25, 2, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1097), 58, null },
-                    { 15, 6, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1003), 58, null },
-                    { 7, 1, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(973), 58, null },
-                    { 31, 2, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1116), 57, null },
-                    { 48, null, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1177), 25, 8 },
-                    { 27, 2, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1104), 54, null },
-                    { 9, 1, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(980), 54, null },
-                    { 6, 1, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(969), 5, null },
-                    { 35, 5, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1132), 4, null },
-                    { 22, 2, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1027), 4, null },
-                    { 4, 1, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(953), 4, null },
-                    { 21, 2, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1024), 3, null },
-                    { 13, 6, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(996), 3, null },
-                    { 3, 1, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(949), 3, null },
-                    { 14, 6, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1000), 5, null },
-                    { 17, 6, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1010), 54, null },
-                    { 2, 1, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(936), 2, null },
-                    { 43, 8, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1160), 1, null },
-                    { 34, 5, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1128), 1, null },
-                    { 32, 4, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1119), 1, null },
-                    { 19, 2, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1018), 1, null },
-                    { 11, 6, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(989), 1, null },
-                    { 1, 1, true, new DateTime(2023, 10, 21, 17, 7, 29, 18, DateTimeKind.Local).AddTicks(9145), 1, null },
-                    { 12, 6, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(993), 2, null },
-                    { 24, 2, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1093), 5, null },
-                    { 20, 2, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1021), 2, null },
-                    { 8, 1, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(977), 6, null },
-                    { 42, 5, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1157), 30, null },
-                    { 30, 2, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1113), 29, null },
-                    { 29, 2, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1110), 28, null },
-                    { 28, 2, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1107), 27, null },
-                    { 18, 6, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1014), 26, null }
+                    { 40, 5, true, 54, null },
+                    { 47, null, true, 24, 8 },
+                    { 46, null, true, 23, 8 },
+                    { 45, null, true, 22, 7 },
+                    { 38, 5, true, 58, null },
+                    { 25, 2, true, 58, null },
+                    { 15, 6, true, 58, null },
+                    { 7, 1, true, 58, null },
+                    { 31, 2, true, 57, null },
+                    { 48, null, true, 25, 8 },
+                    { 27, 2, true, 54, null },
+                    { 9, 1, true, 54, null },
+                    { 6, 1, true, 5, null },
+                    { 35, 5, true, 4, null },
+                    { 22, 2, true, 4, null },
+                    { 4, 1, true, 4, null },
+                    { 21, 2, true, 3, null },
+                    { 13, 6, true, 3, null },
+                    { 3, 1, true, 3, null },
+                    { 14, 6, true, 5, null },
+                    { 17, 6, true, 54, null },
+                    { 2, 1, true, 2, null },
+                    { 43, 8, true, 1, null },
+                    { 34, 5, true, 1, null },
+                    { 32, 4, true, 1, null },
+                    { 19, 2, true, 1, null },
+                    { 11, 6, true, 1, null },
+                    { 1, 1, true, 1, null },
+                    { 12, 6, true, 2, null },
+                    { 24, 2, true, 5, null },
+                    { 20, 2, true, 2, null },
+                    { 8, 1, true, 6, null },
+                    { 42, 5, true, 30, null },
+                    { 30, 2, true, 29, null },
+                    { 29, 2, true, 28, null },
+                    { 28, 2, true, 27, null },
+                    { 18, 6, true, 26, null }
                 });
 
             migrationBuilder.InsertData(
                 schema: "Config",
                 table: "SysLogSetting",
-                columns: new[] { "SysLogSettingID", "EntityTypeId", "IsEnabled", "ModifiedDate", "OperationId", "SourceId" },
+                columns: new[] { "SysLogSettingId", "EntityTypeId", "IsEnabled", "OperationId", "SourceId" },
                 values: new object[,]
                 {
-                    { 36, 5, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1136), 21, null },
-                    { 23, 2, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1089), 21, null },
-                    { 5, 1, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(957), 21, null },
-                    { 49, 9, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1180), 10, null },
-                    { 41, 5, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1153), 8, null },
-                    { 44, 8, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1164), 7, null },
-                    { 33, 4, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1123), 7, null },
-                    { 39, 5, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1146), 6, null },
-                    { 26, 2, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1100), 6, null },
-                    { 16, 6, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1006), 6, null },
-                    { 10, 1, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(985), 35, null },
-                    { 37, 5, true, new DateTime(2023, 10, 21, 17, 7, 29, 19, DateTimeKind.Local).AddTicks(1139), 5, null }
+                    { 36, 5, true, 21, null },
+                    { 23, 2, true, 21, null },
+                    { 5, 1, true, 21, null },
+                    { 49, 9, true, 10, null },
+                    { 41, 5, true, 8, null },
+                    { 44, 8, true, 7, null },
+                    { 33, 4, true, 7, null },
+                    { 39, 5, true, 6, null },
+                    { 26, 2, true, 6, null },
+                    { 16, 6, true, 6, null },
+                    { 10, 1, true, 35, null },
+                    { 37, 5, true, 5, null }
                 });
 
             migrationBuilder.InsertData(
                 schema: "Contact",
                 table: "Person",
-                columns: new[] { "PersonID", "FullName", "UserID" },
+                columns: new[] { "PersonId", "FullName", "UserId" },
                 values: new object[] { 1, "admin", 1 });
 
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Command",
-                columns: new[] { "CommandID", "HotKey", "IconName", "Index", "ParentId", "PermissionId", "RouteUrl", "TitleKey" },
+                columns: new[] { "CommandId", "HotKey", "IconName", "Index", "ParentId", "PermissionId", "RouteUrl", "TitleKey" },
                 values: new object[,]
                 {
                     { 100001, "", "folder-close", null, 100000, null, "", "BaseData" },
@@ -2555,7 +2555,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Reporting",
                 table: "Report",
-                columns: new[] { "ReportID", "Code", "CreatedById", "IsDefault", "IsDynamic", "IsGroup", "IsSystem", "ParentId", "ReportViewId", "ResourceKeys", "ServiceUrl", "SubsystemId", "ViewId" },
+                columns: new[] { "ReportId", "Code", "CreatedById", "IsDefault", "IsDynamic", "IsGroup", "IsSystem", "ParentId", "ReportViewId", "ResourceKeys", "ServiceUrl", "SubsystemId", "ViewId" },
                 values: new object[,]
                 {
                     { 100000, "ProductScope", 1, false, false, true, true, null, null, "", "", 100000, null },
@@ -2568,7 +2568,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Auth",
                 table: "Permission",
-                columns: new[] { "PermissionID", "Description", "Flag", "GroupId", "Name" },
+                columns: new[] { "PermissionId", "Description", "Flag", "GroupId", "Name" },
                 values: new object[,]
                 {
                     { 127, "", 2, 19, "Save" },
@@ -2618,7 +2618,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Auth",
                 table: "Permission",
-                columns: new[] { "PermissionID", "Description", "Flag", "GroupId", "Name" },
+                columns: new[] { "PermissionId", "Description", "Flag", "GroupId", "Name" },
                 values: new object[,]
                 {
                     { 175, "", 1, 31, "View" },
@@ -2668,7 +2668,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Auth",
                 table: "Permission",
-                columns: new[] { "PermissionID", "Description", "Flag", "GroupId", "Name" },
+                columns: new[] { "PermissionId", "Description", "Flag", "GroupId", "Name" },
                 values: new object[,]
                 {
                     { 165, "", 2, 28, "Filter" },
@@ -2718,7 +2718,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Auth",
                 table: "Permission",
-                columns: new[] { "PermissionID", "Description", "Flag", "GroupId", "Name" },
+                columns: new[] { "PermissionId", "Description", "Flag", "GroupId", "Name" },
                 values: new object[,]
                 {
                     { 100016, "", 2, 100003, "Filter" },
@@ -2768,7 +2768,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Auth",
                 table: "Permission",
-                columns: new[] { "PermissionID", "Description", "Flag", "GroupId", "Name" },
+                columns: new[] { "PermissionId", "Description", "Flag", "GroupId", "Name" },
                 values: new object[,]
                 {
                     { 280, "Mark an active source/application as inactive", 128, 40, "Deactivate" },
@@ -2818,7 +2818,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Auth",
                 table: "Permission",
-                columns: new[] { "PermissionID", "Description", "Flag", "GroupId", "Name" },
+                columns: new[] { "PermissionId", "Description", "Flag", "GroupId", "Name" },
                 values: new object[,]
                 {
                     { 114, "", 1, 16, "View" },
@@ -2868,7 +2868,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Auth",
                 table: "Permission",
-                columns: new[] { "PermissionID", "Description", "Flag", "GroupId", "Name" },
+                columns: new[] { "PermissionId", "Description", "Flag", "GroupId", "Name" },
                 values: new object[,]
                 {
                     { 14, "", 64, 2, "Delete" },
@@ -2918,7 +2918,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Auth",
                 table: "Permission",
-                columns: new[] { "PermissionID", "Description", "Flag", "GroupId", "Name" },
+                columns: new[] { "PermissionId", "Description", "Flag", "GroupId", "Name" },
                 values: new object[,]
                 {
                     { 20, "", 32, 3, "Edit" },
@@ -2953,7 +2953,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Reporting",
                 table: "LocalReport",
-                columns: new[] { "LocalReportID", "Caption", "LocaleId", "ReportId", "Template" },
+                columns: new[] { "LocalReportId", "Caption", "LocaleId", "ReportId", "Template" },
                 values: new object[,]
                 {
                     { 52, "Accounting", 4, 13, "" },
@@ -2975,13 +2975,13 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Reporting",
                 table: "Report",
-                columns: new[] { "ReportID", "Code", "CreatedById", "IsDefault", "IsDynamic", "IsGroup", "IsSystem", "ParentId", "ReportViewId", "ResourceKeys", "ServiceUrl", "SubsystemId", "ViewId" },
+                columns: new[] { "ReportId", "Code", "CreatedById", "IsDefault", "IsDynamic", "IsGroup", "IsSystem", "ParentId", "ReportViewId", "ResourceKeys", "ServiceUrl", "SubsystemId", "ViewId" },
                 values: new object[] { 14, "Accnt-Base", 1, false, false, true, true, 13, null, "", "", 2, null });
 
             migrationBuilder.InsertData(
                 schema: "Reporting",
                 table: "Report",
-                columns: new[] { "ReportID", "Code", "CreatedById", "IsDefault", "IsDynamic", "IsGroup", "IsSystem", "ParentId", "ReportViewId", "ResourceKeys", "ServiceUrl", "SubsystemId", "ViewId" },
+                columns: new[] { "ReportId", "Code", "CreatedById", "IsDefault", "IsDynamic", "IsGroup", "IsSystem", "ParentId", "ReportViewId", "ResourceKeys", "ServiceUrl", "SubsystemId", "ViewId" },
                 values: new object[,]
                 {
                     { 94, "Treasury-Base", 1, false, false, true, true, 93, null, "", "", 3, null },
@@ -3001,7 +3001,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Command",
-                columns: new[] { "CommandID", "HotKey", "IconName", "Index", "ParentId", "PermissionId", "RouteUrl", "TitleKey" },
+                columns: new[] { "CommandId", "HotKey", "IconName", "Index", "ParentId", "PermissionId", "RouteUrl", "TitleKey" },
                 values: new object[,]
                 {
                     { 100008, "", "list", null, 100001, 100029, "/product-scope/files", "Files" },
@@ -3051,7 +3051,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Metadata",
                 table: "Command",
-                columns: new[] { "CommandID", "HotKey", "IconName", "Index", "ParentId", "PermissionId", "RouteUrl", "TitleKey" },
+                columns: new[] { "CommandId", "HotKey", "IconName", "Index", "ParentId", "PermissionId", "RouteUrl", "TitleKey" },
                 values: new object[,]
                 {
                     { 56, "", "", null, 54, 215, "/treasury/check-books/new", "NewCheckBook" },
@@ -3072,7 +3072,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Reporting",
                 table: "LocalReport",
-                columns: new[] { "LocalReportID", "Caption", "LocaleId", "ReportId", "Template" },
+                columns: new[] { "LocalReportId", "Caption", "LocaleId", "ReportId", "Template" },
                 values: new object[,]
                 {
                     { 100007, "گزارشات", 2, 100003, "" },
@@ -3109,7 +3109,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Reporting",
                 table: "LocalReport",
-                columns: new[] { "LocalReportID", "Caption", "LocaleId", "ReportId", "Template" },
+                columns: new[] { "LocalReportId", "Caption", "LocaleId", "ReportId", "Template" },
                 values: new object[,]
                 {
                     { 281, "Operational Data", 1, 95, "" },
@@ -3128,7 +3128,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Reporting",
                 table: "Report",
-                columns: new[] { "ReportID", "Code", "CreatedById", "IsDefault", "IsDynamic", "IsGroup", "IsSystem", "ParentId", "ReportViewId", "ResourceKeys", "ServiceUrl", "SubsystemId", "ViewId" },
+                columns: new[] { "ReportId", "Code", "CreatedById", "IsDefault", "IsDynamic", "IsGroup", "IsSystem", "ParentId", "ReportViewId", "ResourceKeys", "ServiceUrl", "SubsystemId", "ViewId" },
                 values: new object[,]
                 {
                     { 100006, "ProductScope-Report-QReport", 1, false, false, true, true, 100003, null, "", "", 100000, null },
@@ -3161,7 +3161,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Reporting",
                 table: "LocalReport",
-                columns: new[] { "LocalReportID", "Caption", "LocaleId", "ReportId", "Template" },
+                columns: new[] { "LocalReportId", "Caption", "LocaleId", "ReportId", "Template" },
                 values: new object[,]
                 {
                     { 17, "Quick Report", 1, 5, "" },
@@ -3211,77 +3211,94 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
             migrationBuilder.InsertData(
                 schema: "Reporting",
                 table: "LocalReport",
-                columns: new[] { "LocalReportID", "Caption", "LocaleId", "ReportId", "Template" },
+                columns: new[] { "LocalReportId", "Caption", "LocaleId", "ReportId", "Template" },
                 values: new object[,]
                 {
-                    { 72, "Quick Report", 4, 18, "" },
-                    { 25, "Quick Report", 1, 7, "" },
-                    { 71, "Quick Report", 3, 18, "" },
-                    { 67, "Quick Report", 3, 17, "" },
+                    { 70, "گزارش فوری", 2, 18, "" },
                     { 28, "Quick Report", 4, 7, "" },
+                    { 66, "گزارش فوری", 2, 17, "" },
+                    { 67, "Quick Report", 3, 17, "" },
+                    { 27, "Quick Report", 3, 7, "" },
+                    { 26, "گزارش فوری", 2, 7, "" },
+                    { 68, "Quick Report", 4, 17, "" },
+                    { 25, "Quick Report", 1, 7, "" },
                     { 65, "Quick Report", 1, 17, "" },
                     { 24, "Quick Report", 4, 6, "" },
                     { 23, "Quick Report", 3, 6, "" },
                     { 22, "گزارش فوری", 2, 6, "" },
-                    { 27, "Quick Report", 3, 7, "" },
+                    { 71, "Quick Report", 3, 18, "" },
                     { 21, "Quick Report", 1, 6, "" },
-                    { 77, "Voucher Printing", 1, 20, "" },
-                    { 78, "چاپ سند", 2, 20, "" },
-                    { 69, "Quick Report", 1, 18, "" },
-                    { 70, "گزارش فوری", 2, 18, "" },
-                    { 66, "گزارش فوری", 2, 17, "" },
-                    { 79, "Voucher Printing", 3, 20, "" },
-                    { 20, "Quick Report", 4, 5, "" },
-                    { 19, "Quick Report", 3, 5, "" },
                     { 18, "گزارش فوری", 2, 5, "" },
-                    { 68, "Quick Report", 4, 17, "" },
-                    { 26, "گزارش فوری", 2, 7, "" }
+                    { 19, "Quick Report", 3, 5, "" },
+                    { 20, "Quick Report", 4, 5, "" },
+                    { 72, "Quick Report", 4, 18, "" },
+                    { 79, "Voucher Printing", 3, 20, "" },
+                    { 69, "Quick Report", 1, 18, "" },
+                    { 78, "چاپ سند", 2, 20, "" },
+                    { 77, "Voucher Printing", 1, 20, "" }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "Reporting",
+                table: "Parameter",
+                columns: new[] { "ParameterId", "CaptionKey", "ControlType", "DataType", "DefaultValue", "DescriptionKey", "FieldName", "MaxValue", "MinValue", "Name", "Operator", "ReportId", "Source" },
+                values: new object[,]
+                {
+                    { 170, "FromDate", "DatePicker", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 86, "DatePicker" },
+                    { 175, "ToNo", "NumberBox", "System.Int32", null, "ToNo", "to", null, null, "toNo", "EQ", 88, "NumberBox" },
+                    { 174, "FromNo", "NumberBox", "System.Int32", null, "FromNo", "from", null, null, "fromNo", "EQ", 88, "NumberBox" },
+                    { 178, "FromDate", "TextBox", "System.DateTime", null, "FromDate", "Date", null, null, "fromDate", "GTE", 89, "(null)" },
+                    { 179, "ToDate", "TextBox", "System.DateTime", null, "ToDate", "Date", null, null, "toDate", "LTE", 89, "(null)" },
+                    { 173, "ToNo", "NumberBox", "System.Int32", null, "ToNo", "to", null, null, "toNo", "EQ", 87, "NumberBox" },
+                    { 180, "FromNo", "TextBox", "System.Int32", null, "FromNo", "No", null, null, "fromNo", "GTE", 90, "(null)" },
+                    { 181, "ToNo", "TextBox", "System.Int32", null, "ToNo", "No", null, null, "toNo", "LTE", 90, "(null)" },
+                    { 171, "ToDate", "DatePicker", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 86, "DatePicker" },
+                    { 172, "FromNo", "NumberBox", "System.Int32", null, "FromNo", "from", null, null, "fromNo", "EQ", 87, "NumberBox" },
+                    { 169, "ToDate", "DatePicker", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 85, "DatePicker" },
+                    { 168, "FromDate", "DatePicker", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 85, "DatePicker" }
                 });
 
             migrationBuilder.InsertData(
                 schema: "Reporting",
                 table: "Report",
-                columns: new[] { "ReportID", "Code", "CreatedById", "IsDefault", "IsDynamic", "IsGroup", "IsSystem", "ParentId", "ReportViewId", "ResourceKeys", "ServiceUrl", "SubsystemId", "ViewId" },
+                columns: new[] { "ReportId", "Code", "CreatedById", "IsDefault", "IsDynamic", "IsGroup", "IsSystem", "ParentId", "ReportViewId", "ResourceKeys", "ServiceUrl", "SubsystemId", "ViewId" },
                 values: new object[,]
                 {
-                    { 40, "Voucher-Std-Form", 1, true, false, false, true, 20, null, "", "reports/finance/voucher-by-no/{0}/std-form", 2, 2 },
-                    { 21, "Fiscal-Periods", 1, true, true, false, true, 17, null, "", "fperiods", 2, 9 },
-                    { 74, "", 1, true, true, false, true, 17, null, "", "currencies", 2, 30 },
-                    { 23, "Detail-Accounts", 1, true, true, false, true, 17, null, "", "faccounts", 2, 6 },
-                    { 24, "Cost-Centers", 1, true, true, false, true, 17, null, "", "ccenters", 2, 7 },
-                    { 25, "Projects", 1, true, true, false, true, 17, null, "", "projects", 2, 8 },
-                    { 26, "Account-Groups", 1, true, true, false, true, 17, null, "", "accgroups", 2, 12 },
-                    { 80, "BalanceSheet", 1, true, true, false, true, 19, null, "", "bal-sheet", 2, 67 },
-                    { 22, "Accounts", 1, true, true, false, true, 17, null, "", "accounts", 2, 1 },
-                    { 92, "", 1, false, true, false, true, 7, null, "", "dashboard/widgets/all", 1, 68 },
-                    { 106, "", 1, true, true, false, true, 98, null, "", "payments/{0}/cash/articles", 3, 74 },
-                    { 103, "", 1, true, true, false, true, 97, null, "", "source-apps", 3, 73 },
+                    { 101, "", 1, true, true, false, true, 97, null, "", "cash-registers", 3, 70 },
                     { 8, "Companies", 1, true, true, false, true, 5, null, "", "companies", 1, 11 },
                     { 9, "Branches", 1, true, true, false, true, 5, null, "", "branches", 1, 10 },
+                    { 26, "Account-Groups", 1, true, true, false, true, 17, null, "", "accgroups", 2, 12 },
                     { 10, "Users", 1, true, true, false, true, 5, null, "", "users", 1, 4 },
                     { 11, "Roles", 1, true, true, false, true, 5, null, "", "roles", 1, 5 },
-                    { 70, "", 1, true, true, false, true, 6, null, "", "oplog/archive", 1, 61 },
-                    { 71, "", 1, true, true, false, true, 6, null, "", "sys-oplog", 1, 59 },
-                    { 101, "", 1, true, true, false, true, 97, null, "", "cash-registers", 3, 70 },
-                    { 72, "", 1, true, true, false, true, 6, null, "", "sys-oplog/archive", 1, 60 }
+                    { 25, "Projects", 1, true, true, false, true, 17, null, "", "projects", 2, 8 },
+                    { 24, "Cost-Centers", 1, true, true, false, true, 17, null, "", "ccenters", 2, 7 }
                 });
 
             migrationBuilder.InsertData(
                 schema: "Reporting",
                 table: "Report",
-                columns: new[] { "ReportID", "Code", "CreatedById", "IsDefault", "IsDynamic", "IsGroup", "IsSystem", "ParentId", "ReportViewId", "ResourceKeys", "ServiceUrl", "SubsystemId", "ViewId" },
+                columns: new[] { "ReportId", "Code", "CreatedById", "IsDefault", "IsDynamic", "IsGroup", "IsSystem", "ParentId", "ReportViewId", "ResourceKeys", "ServiceUrl", "SubsystemId", "ViewId" },
                 values: new object[,]
                 {
+                    { 70, "", 1, true, true, false, true, 6, null, "", "oplog/archive", 1, 61 },
+                    { 71, "", 1, true, true, false, true, 6, null, "", "sys-oplog", 1, 59 },
+                    { 23, "Detail-Accounts", 1, true, true, false, true, 17, null, "", "faccounts", 2, 6 },
+                    { 22, "Accounts", 1, true, true, false, true, 17, null, "", "accounts", 2, 1 },
+                    { 72, "", 1, true, true, false, true, 6, null, "", "sys-oplog/archive", 1, 60 },
+                    { 73, "", 1, true, true, false, true, 6, null, "", "oplog", 1, 13 },
+                    { 21, "Fiscal-Periods", 1, true, true, false, true, 17, null, "", "fperiods", 2, 9 },
                     { 102, "", 1, true, true, false, true, 99, null, "", "check-book-report", 3, 72 },
                     { 107, "", 1, true, true, false, true, 98, null, "", "receipts/{0}/cash/articles", 3, 75 },
-                    { 79, "", 1, true, true, false, true, 19, null, "", "", 2, 66 },
+                    { 106, "", 1, true, true, false, true, 98, null, "", "payments/{0}/cash/articles", 3, 74 },
                     { 105, "", 1, true, true, false, true, 98, null, "", "receipts/{0}/payer/articles", 3, 75 },
                     { 104, "", 1, true, true, false, true, 98, null, "", "payments/{0}/receiver/articles", 3, 74 },
+                    { 103, "", 1, true, true, false, true, 97, null, "", "source-apps", 3, 73 },
+                    { 92, "", 1, false, true, false, true, 7, null, "", "dashboard/widgets/all", 1, 68 },
                     { 91, "", 1, false, true, false, true, 7, null, "", "dashboard/widgets", 1, 68 },
-                    { 73, "", 1, true, true, false, true, 6, null, "", "oplog", 1, 13 },
-                    { 78, "", 1, true, true, false, true, 19, null, "", "", 2, 65 },
-                    { 69, "", 1, true, true, false, true, 19, null, "", "", 2, 58 },
-                    { 76, "", 1, true, true, false, true, 19, null, "", "", 2, 62 },
+                    { 40, "Voucher-Std-Form", 1, true, false, false, true, 20, null, "", "reports/finance/voucher-by-no/{0}/std-form", 2, 2 },
+                    { 80, "BalanceSheet", 1, true, true, false, true, 19, null, "", "bal-sheet", 2, 67 },
+                    { 46, "TestBalance2Column", 1, true, true, false, true, 19, null, "", "", 2, 32 },
+                    { 38, "Journal-ByNo-LedgerSummary", 1, true, true, false, true, 19, null, "", "reports/journal/by-no/summary", 2, 26 },
                     { 37, "Journal-ByNo-BySubsidiary", 1, true, true, false, true, 19, null, "", "reports/journal/by-no/by-subsid", 2, 25 },
                     { 36, "Journal-ByNo-ByLedger", 1, true, true, false, true, 19, null, "", "reports/journal/by-no/by-ledger", 2, 24 },
                     { 35, "Journal-ByNo-ByRow-Detail", 1, true, true, false, true, 19, null, "", "reports/journal/by-no/by-row-detail", 2, 23 },
@@ -3301,48 +3318,58 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     { 82, "", 1, false, false, false, true, 20, null, "", "reports/finance/voucher-by-no/{0}/by-detail", 2, 2 },
                     { 81, "Vouchers", 1, true, true, false, true, 20, null, "", "", 2, 2 },
                     { 41, "Voucher-Std-Form-Detail", 1, false, false, false, true, 20, null, "", "reports/finance/voucher-by-no/{0}/std-form-detail", 2, 2 },
-                    { 38, "Journal-ByNo-LedgerSummary", 1, true, true, false, true, 19, null, "", "reports/journal/by-no/summary", 2, 26 },
-                    { 77, "", 1, true, true, false, true, 19, null, "", "", 2, 64 },
-                    { 46, "TestBalance2Column", 1, true, true, false, true, 19, null, "", "", 2, 32 },
+                    { 47, "TestBalance4Column", 1, true, true, false, true, 19, null, "", "", 2, 33 },
+                    { 48, "TestBalance6Column", 1, true, true, false, true, 19, null, "", "", 2, 34 },
                     { 49, "TestBalance8Column", 1, true, true, false, true, 19, null, "", "", 2, 35 },
-                    { 68, "", 1, true, true, false, true, 19, null, "", "", 2, 40 },
-                    { 67, "", 1, true, true, false, true, 19, null, "", "", 2, 39 },
-                    { 66, "", 1, true, true, false, true, 19, null, "", "", 2, 38 },
-                    { 65, "", 1, true, true, false, true, 19, null, "", "", 2, 37 },
-                    { 64, "", 1, true, true, false, true, 19, null, "", "", 2, 29 },
-                    { 63, "", 1, true, true, false, true, 19, null, "", "", 2, 28 },
-                    { 62, "", 1, true, true, false, true, 19, null, "", "", 2, 27 },
-                    { 61, "", 1, true, true, false, true, 19, null, "", "", 2, 56 },
-                    { 60, "", 1, true, true, false, true, 19, null, "", "", 2, 55 }
+                    { 50, "", 1, true, true, false, true, 19, null, "", "", 2, 43 }
                 });
 
             migrationBuilder.InsertData(
                 schema: "Reporting",
                 table: "Report",
-                columns: new[] { "ReportID", "Code", "CreatedById", "IsDefault", "IsDynamic", "IsGroup", "IsSystem", "ParentId", "ReportViewId", "ResourceKeys", "ServiceUrl", "SubsystemId", "ViewId" },
+                columns: new[] { "ReportId", "Code", "CreatedById", "IsDefault", "IsDynamic", "IsGroup", "IsSystem", "ParentId", "ReportViewId", "ResourceKeys", "ServiceUrl", "SubsystemId", "ViewId" },
                 values: new object[,]
                 {
+                    { 79, "", 1, true, true, false, true, 19, null, "", "", 2, 66 },
+                    { 78, "", 1, true, true, false, true, 19, null, "", "", 2, 65 },
+                    { 77, "", 1, true, true, false, true, 19, null, "", "", 2, 64 },
+                    { 76, "", 1, true, true, false, true, 19, null, "", "", 2, 62 },
+                    { 69, "", 1, true, true, false, true, 19, null, "", "", 2, 58 },
+                    { 68, "", 1, true, true, false, true, 19, null, "", "", 2, 40 },
+                    { 67, "", 1, true, true, false, true, 19, null, "", "", 2, 39 },
+                    { 66, "", 1, true, true, false, true, 19, null, "", "", 2, 38 },
+                    { 65, "", 1, true, true, false, true, 19, null, "", "", 2, 37 },
+                    { 64, "", 1, true, true, false, true, 19, null, "", "", 2, 29 },
+                    { 74, "", 1, true, true, false, true, 17, null, "", "currencies", 2, 30 },
+                    { 63, "", 1, true, true, false, true, 19, null, "", "", 2, 28 },
+                    { 61, "", 1, true, true, false, true, 19, null, "", "", 2, 56 },
+                    { 60, "", 1, true, true, false, true, 19, null, "", "", 2, 55 },
                     { 59, "", 1, true, true, false, true, 19, null, "", "", 2, 54 },
                     { 58, "", 1, true, true, false, true, 19, null, "", "", 2, 53 },
                     { 57, "", 1, true, true, false, true, 19, null, "", "", 2, 51 },
                     { 56, "", 1, true, true, false, true, 19, null, "", "", 2, 50 },
                     { 55, "", 1, true, true, false, true, 19, null, "", "", 2, 49 },
-                    { 54, "", 1, true, true, false, true, 19, null, "", "", 2, 48 },
                     { 53, "", 1, true, true, false, true, 19, null, "", "", 2, 46 },
                     { 52, "", 1, true, true, false, true, 19, null, "", "", 2, 45 },
                     { 51, "", 1, true, true, false, true, 19, null, "", "", 2, 44 },
-                    { 50, "", 1, true, true, false, true, 19, null, "", "", 2, 43 },
-                    { 47, "TestBalance4Column", 1, true, true, false, true, 19, null, "", "", 2, 33 },
-                    { 48, "TestBalance6Column", 1, true, true, false, true, 19, null, "", "", 2, 34 }
+                    { 62, "", 1, true, true, false, true, 19, null, "", "", 2, 27 },
+                    { 54, "", 1, true, true, false, true, 19, null, "", "", 2, 48 }
                 });
 
             migrationBuilder.InsertData(
                 schema: "Reporting",
                 table: "LocalReport",
-                columns: new[] { "LocalReportID", "Caption", "LocaleId", "ReportId", "Template" },
+                columns: new[] { "LocalReportId", "Caption", "LocaleId", "ReportId", "Template" },
                 values: new object[,]
                 {
                     { 29, "Companies", 1, 8, "" },
+                    { 149, "Journal, by number, ledger summary", 1, 38, "" },
+                    { 150, "دفتر روزنامه، بر حسب شماره سند، سند خلاصه", 2, 38, "" },
+                    { 151, "Journal, by number, ledger summary", 3, 38, "" },
+                    { 152, "Journal, by number, ledger summary", 4, 38, "" },
+                    { 173, "Test balance 2 columns", 1, 46, "" },
+                    { 174, "تراز آزمایشی ۲ ستونی", 2, 46, "" },
+                    { 295, "Check Book Report", 1, 102, "" },
                     { 176, "Test balance 2 columns", 4, 46, "" },
                     { 177, "Test balance 4 columns", 1, 47, "" },
                     { 178, "تراز آزمایشی ۴ ستونی", 2, 47, "" },
@@ -3359,19 +3386,32 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     { 189, "Detail account turnover/balance - 2 column", 1, 50, "" },
                     { 190, "گردش و مانده تفصیلی شناور 2 ستونی", 2, 50, "" },
                     { 191, "Detail account turnover/balance - 4 column", 1, 51, "" },
-                    { 192, "گردش و مانده تفصیلی شناور 4 ستونی", 2, 51, "" },
-                    { 193, "Detail account turnover/balance - 6 column", 1, 52, "" },
-                    { 194, "گردش و مانده تفصیلی شناور 6 ستونی", 2, 52, "" },
-                    { 195, "Detail account turnover/balance - 8 column", 1, 53, "" },
-                    { 196, "گردش و مانده تفصیلی شناور 8 ستونی", 2, 53, "" },
-                    { 175, "Test balance 2 columns", 3, 46, "" },
-                    { 197, "Cost center turnover/balance - 2 column", 1, 54, "" },
-                    { 174, "تراز آزمایشی ۲ ستونی", 2, 46, "" },
-                    { 152, "Journal, by number, ledger summary", 4, 38, "" },
+                    { 148, "Journal, by number, by subsidiary", 4, 37, "" },
+                    { 147, "Journal, by number, by subsidiary", 3, 37, "" },
+                    { 146, "دفتر روزنامه، بر حسب شماره سند، در سطح معین", 2, 37, "" },
+                    { 145, "Journal, by number, by subsidiary", 1, 37, "" },
+                    { 121, "Journal, by date, ledger summary", 1, 31, "" },
+                    { 122, "دفتر روزنامه، بر حسب تاریخ، سند خلاصه", 2, 31, "" },
+                    { 123, "Journal, by date, ledger summary", 3, 31, "" },
+                    { 124, "Journal, by date, ledger summary", 4, 31, "" },
+                    { 125, "Journal, by date, summary by date", 1, 32, "" },
+                    { 126, "دفتر روزنامه، بر حسب تاریخ، سند خلاصه به تفکیک تاریخ", 2, 32, "" },
+                    { 127, "Journal, by date, summary by date", 3, 32, "" },
+                    { 128, "Journal, by date, summary by date", 4, 32, "" },
+                    { 129, "Journal, by date, summary by month", 1, 33, "" },
+                    { 130, "دفتر روزنامه، بر حسب تاریخ، سند خلاصه به تفکیک ماه", 2, 33, "" },
                     { 131, "Journal, by date, summary by month", 3, 33, "" },
+                    { 192, "گردش و مانده تفصیلی شناور 4 ستونی", 2, 51, "" },
                     { 132, "Journal, by date, summary by month", 4, 33, "" },
-                    { 133, "Journal, by number, by row", 1, 34, "" },
-                    { 134, "دفتر روزنامه، بر حسب شماره سند، مطابق ردیف های سند", 2, 34, "" },
+                    { 134, "دفتر روزنامه، بر حسب شماره سند، مطابق ردیف های سند", 2, 34, "" }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "Reporting",
+                table: "LocalReport",
+                columns: new[] { "LocalReportId", "Caption", "LocaleId", "ReportId", "Template" },
+                values: new object[,]
+                {
                     { 135, "Journal, by number, by row", 3, 34, "" },
                     { 136, "Journal, by number, by row", 4, 34, "" },
                     { 137, "Journal, by number, by row with details", 1, 35, "" },
@@ -3382,25 +3422,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     { 142, "دفتر روزنامه، بر حسب شماره سند، در سطح کل", 2, 36, "" },
                     { 143, "Journal, by number, by ledger", 3, 36, "" },
                     { 144, "Journal, by number, by ledger", 4, 36, "" },
-                    { 145, "Journal, by number, by subsidiary", 1, 37, "" },
-                    { 146, "دفتر روزنامه، بر حسب شماره سند، در سطح معین", 2, 37, "" }
-                });
-
-            migrationBuilder.InsertData(
-                schema: "Reporting",
-                table: "LocalReport",
-                columns: new[] { "LocalReportID", "Caption", "LocaleId", "ReportId", "Template" },
-                values: new object[,]
-                {
-                    { 147, "Journal, by number, by subsidiary", 3, 37, "" },
-                    { 148, "Journal, by number, by subsidiary", 4, 37, "" },
-                    { 149, "Journal, by number, ledger summary", 1, 38, "" },
-                    { 150, "دفتر روزنامه، بر حسب شماره سند، سند خلاصه", 2, 38, "" },
-                    { 151, "Journal, by number, ledger summary", 3, 38, "" },
-                    { 173, "Test balance 2 columns", 1, 46, "" },
-                    { 130, "دفتر روزنامه، بر حسب تاریخ، سند خلاصه به تفکیک ماه", 2, 33, "" },
-                    { 198, "گردش و مانده مرکز هزینه 2 ستونی", 2, 54, "" },
-                    { 200, "گردش و مانده مرکز هزینه 4 ستونی", 2, 55, "" },
+                    { 133, "Journal, by number, by row", 1, 34, "" },
+                    { 120, "Journal, by date, by subsidiary", 4, 30, "" },
+                    { 193, "Detail account turnover/balance - 6 column", 1, 52, "" },
+                    { 195, "Detail account turnover/balance - 8 column", 1, 53, "" },
+                    { 224, "دفتر عملیات ارزی", 2, 67, "" },
+                    { 225, "Currency Book", 1, 68, "" },
                     { 226, "دفتر عملیات ارزی", 2, 68, "" },
                     { 227, "Balance by account", 1, 69, "" },
                     { 228, "مانده به تفکیک حساب", 2, 69, "" },
@@ -3422,26 +3449,31 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     { 304, "لیست حساب‌های نقدی", 2, 106, "" },
                     { 305, "Cash Accounts List", 1, 107, "" },
                     { 306, "لیست حساب‌های نقدی", 2, 107, "" },
-                    { 225, "Currency Book", 1, 68, "" },
-                    { 199, "Cost center turnover/balance - 4 column", 1, 55, "" },
-                    { 224, "دفتر عملیات ارزی", 2, 67, "" },
+                    { 223, "Currency Book", 1, 67, "" },
                     { 222, "دفتر عملیات ارزی", 2, 66, "" },
+                    { 221, "Currency Book", 1, 66, "" },
+                    { 220, "دفتر عملیات ارزی", 2, 65, "" },
+                    { 196, "گردش و مانده تفصیلی شناور 8 ستونی", 2, 53, "" }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "Reporting",
+                table: "LocalReport",
+                columns: new[] { "LocalReportId", "Caption", "LocaleId", "ReportId", "Template" },
+                values: new object[,]
+                {
+                    { 197, "Cost center turnover/balance - 2 column", 1, 54, "" },
+                    { 198, "گردش و مانده مرکز هزینه 2 ستونی", 2, 54, "" },
+                    { 199, "Cost center turnover/balance - 4 column", 1, 55, "" },
+                    { 200, "گردش و مانده مرکز هزینه 4 ستونی", 2, 55, "" },
                     { 201, "Cost center turnover/balance - 6 column", 1, 56, "" },
                     { 202, "گردش و مانده مرکز هزینه 6 ستونی", 2, 56, "" },
                     { 203, "Cost center turnover/balance - 8 column", 1, 57, "" },
                     { 204, "گردش و مانده مرکز هزینه 8 ستونی", 2, 57, "" },
                     { 205, "Project turnover/balance - 2 column", 1, 58, "" },
                     { 206, "گردش و مانده پروژه 2 ستونی", 2, 58, "" },
+                    { 194, "گردش و مانده تفصیلی شناور 6 ستونی", 2, 52, "" },
                     { 207, "Project turnover/balance - 4 column", 1, 59, "" },
-                    { 208, "گردش و مانده پروژه 4 ستونی", 2, 59, "" }
-                });
-
-            migrationBuilder.InsertData(
-                schema: "Reporting",
-                table: "LocalReport",
-                columns: new[] { "LocalReportID", "Caption", "LocaleId", "ReportId", "Template" },
-                values: new object[,]
-                {
                     { 209, "Project turnover/balance - 6 column", 1, 60, "" },
                     { 210, "گردش و مانده پروژه 6 ستونی", 2, 60, "" },
                     { 211, "Project turnover/balance - 8 column", 1, 61, "" },
@@ -3453,18 +3485,10 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     { 217, "Account Book", 1, 64, "" },
                     { 218, "ذفتر حساب", 2, 64, "" },
                     { 219, "Currency Book", 1, 65, "" },
-                    { 220, "دفتر عملیات ارزی", 2, 65, "" },
-                    { 221, "Currency Book", 1, 66, "" },
-                    { 223, "Currency Book", 1, 67, "" },
-                    { 129, "Journal, by date, summary by month", 1, 33, "" },
-                    { 128, "Journal, by date, summary by date", 4, 32, "" },
-                    { 127, "Journal, by date, summary by date", 3, 32, "" },
-                    { 275, "All Widgets", 1, 92, "" },
-                    { 276, "همه ویجت ها", 2, 92, "" },
-                    { 81, "Fiscal periods", 1, 21, "" },
-                    { 82, "دوره های مالی", 2, 21, "" },
-                    { 83, "Fiscal periods", 3, 21, "" },
-                    { 84, "Fiscal periods", 4, 21, "" },
+                    { 208, "گردش و مانده پروژه 4 ستونی", 2, 59, "" },
+                    { 119, "Journal, by date, by subsidiary", 3, 30, "" },
+                    { 175, "Test balance 2 columns", 3, 46, "" },
+                    { 117, "Journal, by date, by subsidiary", 1, 30, "" },
                     { 85, "Accounts", 1, 22, "" },
                     { 86, "سرفصل های حسابداری", 2, 22, "" },
                     { 87, "Accounts", 3, 22, "" },
@@ -3473,25 +3497,36 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     { 90, "تفصیلی های شناور", 2, 23, "" },
                     { 91, "Detail accounts", 3, 23, "" },
                     { 92, "Detail accounts", 4, 23, "" },
-                    { 93, "Cost centers", 1, 24, "" },
+                    { 118, "دفتر روزنامه، بر حسب تاریخ، در سطح معین", 2, 30, "" },
                     { 94, "مراکز هزینه", 2, 24, "" },
                     { 95, "Cost centers", 3, 24, "" },
                     { 96, "Cost centers", 4, 24, "" },
+                    { 84, "Fiscal periods", 4, 21, "" },
                     { 97, "Projects", 1, 25, "" },
-                    { 98, "پروژه ها", 2, 25, "" },
-                    { 99, "Projects", 3, 25, "" },
-                    { 274, "ویجت های من", 2, 91, "" },
-                    { 100, "Projects", 4, 25, "" },
-                    { 273, "My Widgets", 1, 91, "" },
-                    { 235, "Active operation logs", 1, 73, "" }
+                    { 99, "Projects", 3, 25, "" }
                 });
 
             migrationBuilder.InsertData(
                 schema: "Reporting",
                 table: "LocalReport",
-                columns: new[] { "LocalReportID", "Caption", "LocaleId", "ReportId", "Template" },
+                columns: new[] { "LocalReportId", "Caption", "LocaleId", "ReportId", "Template" },
                 values: new object[,]
                 {
+                    { 100, "Projects", 4, 25, "" },
+                    { 101, "Account groups", 1, 26, "" },
+                    { 102, "گروه های حساب", 2, 26, "" },
+                    { 103, "Account groups", 3, 26, "" },
+                    { 104, "Account groups", 4, 26, "" },
+                    { 237, "Currencies", 1, 74, "" },
+                    { 238, "ارزها", 2, 74, "" },
+                    { 239, "Currency rates", 1, 75, "" },
+                    { 240, "نرخ های ارز", 2, 75, "" },
+                    { 157, "Voucher, standard format", 1, 40, "" },
+                    { 158, "فرم مرسوم سند", 2, 40, "" },
+                    { 98, "پروژه ها", 2, 25, "" },
+                    { 83, "Fiscal periods", 3, 21, "" },
+                    { 82, "دوره های مالی", 2, 21, "" },
+                    { 81, "Fiscal periods", 1, 21, "" },
                     { 30, "شرکت ها", 2, 8, "" },
                     { 31, "Companies", 3, 8, "" },
                     { 32, "Companies", 4, 8, "" },
@@ -3513,10 +3548,34 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     { 232, "رویدادهای سیستمی فعال", 2, 71, "" },
                     { 233, "Archived system logs", 1, 72, "" },
                     { 234, "رویدادهای سیستمی بایگانی شده", 2, 72, "" },
+                    { 235, "Active operation logs", 1, 73, "" },
                     { 236, "رویدادهای عملیاتی فعال", 2, 73, "" },
-                    { 101, "Account groups", 1, 26, "" },
-                    { 102, "گروه های حساب", 2, 26, "" },
-                    { 103, "Account groups", 3, 26, "" },
+                    { 273, "My Widgets", 1, 91, "" },
+                    { 274, "ویجت های من", 2, 91, "" },
+                    { 275, "All Widgets", 1, 92, "" },
+                    { 276, "همه ویجت ها", 2, 92, "" }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "Reporting",
+                table: "LocalReport",
+                columns: new[] { "LocalReportId", "Caption", "LocaleId", "ReportId", "Template" },
+                values: new object[,]
+                {
+                    { 159, "Voucher, standard format", 3, 40, "" },
+                    { 160, "Voucher, standard format", 4, 40, "" },
+                    { 93, "Cost centers", 1, 24, "" },
+                    { 308, "آرتیکل‌های سند", 2, 108, "" },
+                    { 256, "ساده - در سطح تفصیلی", 2, 82, "" },
+                    { 257, "Aggregate - by ledger level", 1, 83, "" },
+                    { 258, "مرکب - در سطح کل", 2, 83, "" },
+                    { 259, "Aggregate - by subsidiary level", 1, 84, "" },
+                    { 260, "مرکب - در سطح معین", 2, 84, "" },
+                    { 307, "Voucher Lines", 1, 108, "" },
+                    { 161, "Voucher, standard format, with detail", 1, 41, "" },
+                    { 309, "Missing Voucher Numbers", 1, 109, "" },
+                    { 310, "شماره سندهای مفقود", 2, 109, "" },
+                    { 105, "Journal, by date, by row", 1, 27, "" },
                     { 106, "دفتر روزنامه، بر حسب تاریخ، مطابق ردیف های سند", 2, 27, "" },
                     { 107, "Journal, by date, by row", 3, 27, "" },
                     { 108, "Journal, by date, by row", 4, 27, "" },
@@ -3528,52 +3587,174 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     { 114, "دفتر روزنامه، بر حسب تاریخ، در سطح کل", 2, 29, "" },
                     { 115, "Journal, by date, by ledger", 3, 29, "" },
                     { 116, "Journal, by date, by ledger", 4, 29, "" },
-                    { 117, "Journal, by date, by subsidiary", 1, 30, "" },
-                    { 118, "دفتر روزنامه، بر حسب تاریخ، در سطح معین", 2, 30, "" },
-                    { 119, "Journal, by date, by subsidiary", 3, 30, "" },
-                    { 120, "Journal, by date, by subsidiary", 4, 30, "" },
-                    { 121, "Journal, by date, ledger summary", 1, 31, "" },
-                    { 122, "دفتر روزنامه، بر حسب تاریخ، سند خلاصه", 2, 31, "" }
+                    { 255, "Simple - by detail level", 1, 82, "" },
+                    { 252, "اسناد مالی", 2, 81, "" },
+                    { 296, "دفتر دسته‌چک", 2, 102, "" },
+                    { 251, "Vouchers", 1, 81, "" },
+                    { 162, "فرم مرسوم سند - با سطوح شناور", 2, 41, "" },
+                    { 164, "Voucher, standard format, with detail", 4, 41, "" },
+                    { 163, "Voucher, standard format, with detail", 3, 41, "" }
                 });
 
             migrationBuilder.InsertData(
                 schema: "Reporting",
-                table: "LocalReport",
-                columns: new[] { "LocalReportID", "Caption", "LocaleId", "ReportId", "Template" },
+                table: "Parameter",
+                columns: new[] { "ParameterId", "CaptionKey", "ControlType", "DataType", "DefaultValue", "DescriptionKey", "FieldName", "MaxValue", "MinValue", "Name", "Operator", "ReportId", "Source" },
                 values: new object[,]
                 {
-                    { 123, "Journal, by date, ledger summary", 3, 31, "" },
-                    { 124, "Journal, by date, ledger summary", 4, 31, "" },
-                    { 125, "Journal, by date, summary by date", 1, 32, "" },
-                    { 126, "دفتر روزنامه، بر حسب تاریخ، سند خلاصه به تفکیک تاریخ", 2, 32, "" },
-                    { 105, "Journal, by date, by row", 1, 27, "" },
-                    { 310, "شماره سندهای مفقود", 2, 109, "" },
-                    { 309, "Missing Voucher Numbers", 1, 109, "" },
-                    { 308, "آرتیکل‌های سند", 2, 108, "" },
-                    { 104, "Account groups", 4, 26, "" },
-                    { 237, "Currencies", 1, 74, "" },
-                    { 238, "ارزها", 2, 74, "" },
-                    { 239, "Currency rates", 1, 75, "" },
-                    { 240, "نرخ های ارز", 2, 75, "" },
-                    { 157, "Voucher, standard format", 1, 40, "" },
-                    { 158, "فرم مرسوم سند", 2, 40, "" },
-                    { 159, "Voucher, standard format", 3, 40, "" },
-                    { 160, "Voucher, standard format", 4, 40, "" },
-                    { 161, "Voucher, standard format, with detail", 1, 41, "" },
-                    { 295, "Check Book Report", 1, 102, "" },
-                    { 162, "فرم مرسوم سند - با سطوح شناور", 2, 41, "" },
-                    { 164, "Voucher, standard format, with detail", 4, 41, "" },
-                    { 251, "Vouchers", 1, 81, "" },
-                    { 252, "اسناد مالی", 2, 81, "" },
-                    { 255, "Simple - by detail level", 1, 82, "" },
-                    { 256, "ساده - در سطح تفصیلی", 2, 82, "" },
-                    { 257, "Aggregate - by ledger level", 1, 83, "" },
-                    { 258, "مرکب - در سطح کل", 2, 83, "" },
-                    { 259, "Aggregate - by subsidiary level", 1, 84, "" },
-                    { 260, "مرکب - در سطح معین", 2, 84, "" },
-                    { 307, "Voucher Lines", 1, 108, "" },
-                    { 163, "Voucher, standard format, with detail", 3, 41, "" },
-                    { 296, "دفتر دسته‌چک", 2, 102, "" }
+                    { 153, "FromDate", "TextBox", "System.DateTime", null, "FromDate", "Date", null, null, "fromDate", "GTE", 72, "GridOptions" },
+                    { 14, "ToNo", "NumberBox", "System.Int32", null, "ToNo", "to", null, null, "toNo", "EQ", 33, "QueryString" },
+                    { 135, "FromDate", "TextBox", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 66, "QueryString" },
+                    { 136, "ToDate", "TextBox", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 66, "QueryString" },
+                    { 13, "FromNo", "NumberBox", "System.Int32", null, "FromNo", "from", null, null, "fromNo", "EQ", 33, "QueryString" },
+                    { 152, "ToDate", "TextBox", "System.DateTime", null, "ToDate", "Date", null, null, "toDate", "LTE", 71, "GridOptions" },
+                    { 138, "FromDate", "TextBox", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 67, "QueryString" },
+                    { 139, "ToDate", "TextBox", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 67, "QueryString" },
+                    { 151, "FromDate", "TextBox", "System.DateTime", null, "FromDate", "Date", null, null, "fromDate", "GTE", 71, "GridOptions" },
+                    { 3, "ToDate", "DatePicker", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 27, "QueryString" }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "Reporting",
+                table: "Parameter",
+                columns: new[] { "ParameterId", "CaptionKey", "ControlType", "DataType", "DefaultValue", "DescriptionKey", "FieldName", "MaxValue", "MinValue", "Name", "Operator", "ReportId", "Source" },
+                values: new object[,]
+                {
+                    { 141, "FromDate", "TextBox", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 68, "QueryString" },
+                    { 133, "ToDate", "TextBox", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 65, "QueryString" },
+                    { 132, "FromDate", "TextBox", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 65, "QueryString" },
+                    { 2, "FromDate", "DatePicker", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 27, "QueryString" },
+                    { 142, "ToDate", "TextBox", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 68, "QueryString" },
+                    { 130, "ToDate", "TextBox", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 64, "QueryString" },
+                    { 129, "FromDate", "TextBox", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 64, "QueryString" },
+                    { 155, "FromDate", "TextBox", "System.DateTime", null, "FromDate", "Date", null, null, "fromDate", "GTE", 73, "GridOptions" },
+                    { 127, "ToDate", "TextBox", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 63, "QueryString" },
+                    { 126, "FromDate", "TextBox", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 63, "QueryString" },
+                    { 156, "ToDate", "TextBox", "System.DateTime", null, "ToDate", "Date", null, null, "toDate", "LTE", 73, "GridOptions" },
+                    { 124, "ToDate", "TextBox", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 62, "QueryString" },
+                    { 123, "FromDate", "TextBox", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 62, "QueryString" },
+                    { 53, "FromDate", "TextBox", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 48, "QueryString" },
+                    { 15, "FromNo", "NumberBox", "System.Int32", null, "FromNo", "from", null, null, "fromNo", "EQ", 34, "QueryString" },
+                    { 121, "ToNo", "TextBox", "System.Int32", null, "ToNo", "to", null, null, "toNo", "EQ", 61, "(null)" },
+                    { 120, "FromNo", "TextBox", "System.Int32", null, "FromNo", "from", null, null, "fromNo", "EQ", 61, "(null)" },
+                    { 154, "ToDate", "TextBox", "System.DateTime", null, "ToDate", "Date", null, null, "toDate", "LTE", 72, "GridOptions" },
+                    { 119, "ToDate", "TextBox", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 61, "(null)" },
+                    { 43, "FromDate", "TextBox", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 46, "QueryString" },
+                    { 144, "FromDate", "TextBox", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 69, "QueryString" },
+                    { 184, "ReceiptId", "NumberBox", "System.Int32", null, "ReceiptId", "paymentId", null, " 1  ", "paymentId", "EQ", 107, "Route" },
+                    { 6, "ToDate", "DatePicker", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 29, "QueryString" },
+                    { 7, "FromDate", "DatePicker", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 30, "QueryString" },
+                    { 185, "PaymentId", "NumberBox", "System.Int32", null, "PaymentId", "receiptId", null, " 1  ", "receiptId", "EQ", 106, "Route" },
+                    { 8, "ToDate", "DatePicker", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 30, "QueryString" },
+                    { 5, "FromDate", "DatePicker", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 29, "QueryString" },
+                    { 183, "ReceiptId", "NumberBox", "System.Int32", null, "ReceiptId", "receiptId", null, " 1  ", "receiptId", "EQ", 105, "Route" },
+                    { 46, "ToNo", "TextBox", "System.Int32", null, "ToNo", "to", null, null, "toNo", "EQ", 46, "QueryString" },
+                    { 45, "FromNo", "TextBox", "System.Int32", null, "FromNo", "from", null, null, "fromNo", "EQ", 46, "QueryString" },
+                    { 182, "PaymentId", "NumberBox", "System.Int32", null, "PaymentId", "paymentId", null, " 1  ", "paymentId", "EQ", 104, "Route" },
+                    { 48, "FromDate", "TextBox", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 47, "QueryString" },
+                    { 9, "FromDate", "DatePicker", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 31, "QueryString" },
+                    { 10, "ToDate", "DatePicker", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 31, "QueryString" },
+                    { 49, "ToDate", "TextBox", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 47, "QueryString" },
+                    { 150, "ToDate", "TextBox", "System.DateTime", null, "ToDate", "Date", null, null, "toDate", "LTE", 70, "GridOptions" },
+                    { 1, "ToDate", "DatePicker", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 28, "QueryString" },
+                    { 177, "Date", "DatePicker", "System.DateTime", null, "Date", "date", null, null, "date", "EQ", 80, "QueryString" },
+                    { 50, "FromNo", "TextBox", "System.Int32", null, "FromNo", "from", null, null, "fromNo", "EQ", 47, "QueryString" },
+                    { 11, "FromDate", "DatePicker", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 32, "QueryString" },
+                    { 162, "ToDate", "TextBox", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 77, "QueryString" },
+                    { 161, "FromDate", "TextBox", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 77, "QueryString" }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "Reporting",
+                table: "Parameter",
+                columns: new[] { "ParameterId", "CaptionKey", "ControlType", "DataType", "DefaultValue", "DescriptionKey", "FieldName", "MaxValue", "MinValue", "Name", "Operator", "ReportId", "Source" },
+                values: new object[,]
+                {
+                    { 12, "ToDate", "DatePicker", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 32, "QueryString" },
+                    { 51, "ToNo", "TextBox", "System.Int32", null, "ToNo", "to", null, null, "toNo", "EQ", 47, "QueryString" },
+                    { 159, "ToDate", "TextBox", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 76, "QueryString" },
+                    { 158, "FromDate", "TextBox", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 76, "QueryString" },
+                    { 44, "ToDate", "TextBox", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 46, "QueryString" },
+                    { 149, "FromDate", "TextBox", "System.DateTime", null, "FromDate", "Date", null, null, "fromDate", "GTE", 70, "GridOptions" },
+                    { 147, "ToNo", "TextBox", "System.Int32", null, "ToNo", "to", null, null, "toNo", "EQ", 69, "QueryString" },
+                    { 146, "FromNo", "TextBox", "System.Int32", null, "FromNo", "from", null, null, "fromNo", "EQ", 69, "QueryString" },
+                    { 145, "ToDate", "TextBox", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 69, "QueryString" },
+                    { 4, "FromDate", "DatePicker", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 28, "QueryString" },
+                    { 63, "FromDate", "TextBox", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 50, "(null)" },
+                    { 118, "FromDate", "TextBox", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 61, "(null)" },
+                    { 54, "ToDate", "TextBox", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 48, "QueryString" },
+                    { 19, "FromNo", "NumberBox", "System.Int32", null, "FromNo", "from", null, null, "fromNo", "EQ", 36, "QueryString" },
+                    { 20, "ToNo", "NumberBox", "System.Int32", null, "ToNo", "to", null, null, "toNo", "EQ", 36, "QueryString" },
+                    { 86, "ToNo", "TextBox", "System.Int32", null, "ToNo", "to", null, null, "toNo", "EQ", 54, "(null)" },
+                    { 85, "FromNo", "TextBox", "System.Int32", null, "FromNo", "from", null, null, "fromNo", "EQ", 54, "(null)" },
+                    { 84, "ToDate", "TextBox", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 54, "(null)" },
+                    { 83, "FromDate", "TextBox", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 54, "(null)" },
+                    { 165, "VoucherNo", "NumberBox", "System.Int32", null, "VoucherNo", "no", null, null, "no", "EQ", 83, "Route" },
+                    { 58, "FromDate", "TextBox", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 49, "QueryString" },
+                    { 81, "ToNo", "TextBox", "System.Int32", null, "ToNo", "to", null, null, "toNo", "EQ", 53, "(null)" },
+                    { 80, "FromNo", "TextBox", "System.Int32", null, "FromNo", "from", null, null, "fromNo", "EQ", 53, "(null)" },
+                    { 79, "ToDate", "TextBox", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 53, "(null)" },
+                    { 78, "FromDate", "TextBox", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 53, "(null)" },
+                    { 59, "ToDate", "TextBox", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 49, "QueryString" },
+                    { 164, "VoucherNo", "NumberBox", "System.Int32", null, "VoucherNo", "no", null, null, "no", "EQ", 82, "Route" },
+                    { 76, "ToNo", "TextBox", "System.Int32", null, "ToNo", "to", null, null, "toNo", "EQ", 52, "(null)" },
+                    { 75, "FromNo", "TextBox", "System.Int32", null, "FromNo", "from", null, null, "fromNo", "EQ", 52, "(null)" },
+                    { 74, "ToDate", "TextBox", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 52, "(null)" },
+                    { 73, "FromDate", "TextBox", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 52, "(null)" },
+                    { 21, "FromNo", "NumberBox", "System.Int32", null, "FromNo", "from", null, null, "fromNo", "EQ", 37, "QueryString" },
+                    { 22, "ToNo", "NumberBox", "System.Int32", null, "ToNo", "to", null, null, "toNo", "EQ", 37, "QueryString" },
+                    { 71, "ToNo", "TextBox", "System.Int32", null, "ToNo", "to", null, null, "toNo", "EQ", 51, "(null)" },
+                    { 70, "FromNo", "TextBox", "System.Int32", null, "FromNo", "from", null, null, "fromNo", "EQ", 51, "(null)" },
+                    { 69, "ToDate", "TextBox", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 51, "(null)" },
+                    { 68, "FromDate", "TextBox", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 51, "(null)" },
+                    { 60, "FromNo", "TextBox", "System.Int32", null, "FromNo", "from", null, null, "fromNo", "EQ", 49, "QueryString" },
+                    { 61, "ToNo", "TextBox", "System.Int32", null, "ToNo", "to", null, null, "toNo", "EQ", 49, "QueryString" },
+                    { 66, "ToNo", "TextBox", "System.Int32", null, "ToNo", "to", null, null, "toNo", "EQ", 50, "(null)" },
+                    { 65, "FromNo", "TextBox", "System.Int32", null, "FromNo", "from", null, null, "fromNo", "EQ", 50, "(null)" },
+                    { 64, "ToDate", "TextBox", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 50, "(null)" }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "Reporting",
+                table: "Parameter",
+                columns: new[] { "ParameterId", "CaptionKey", "ControlType", "DataType", "DefaultValue", "DescriptionKey", "FieldName", "MaxValue", "MinValue", "Name", "Operator", "ReportId", "Source" },
+                values: new object[,]
+                {
+                    { 88, "FromDate", "TextBox", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 55, "(null)" },
+                    { 16, "ToNo", "NumberBox", "System.Int32", null, "ToNo", "to", null, null, "toNo", "EQ", 34, "QueryString" },
+                    { 89, "ToDate", "TextBox", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 55, "(null)" },
+                    { 91, "ToNo", "TextBox", "System.Int32", null, "ToNo", "to", null, null, "toNo", "EQ", 55, "(null)" },
+                    { 116, "ToNo", "TextBox", "System.Int32", null, "ToNo", "to", null, null, "toNo", "EQ", 60, "(null)" },
+                    { 115, "FromNo", "TextBox", "System.Int32", null, "FromNo", "from", null, null, "fromNo", "EQ", 60, "(null)" },
+                    { 114, "ToDate", "TextBox", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 60, "(null)" },
+                    { 113, "FromDate", "TextBox", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 60, "(null)" },
+                    { 55, "FromNo", "TextBox", "System.Int32", null, "FromNo", "from", null, null, "fromNo", "EQ", 48, "QueryString" },
+                    { 56, "ToNo", "TextBox", "System.Int32", null, "ToNo", "to", null, null, "toNo", "EQ", 48, "QueryString" },
+                    { 111, "ToNo", "TextBox", "System.Int32", null, "ToNo", "to", null, null, "toNo", "EQ", 59, "(null)" },
+                    { 110, "FromNo", "TextBox", "System.Int32", null, "FromNo", "from", null, null, "fromNo", "EQ", 59, "(null)" },
+                    { 109, "ToDate", "TextBox", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 59, "(null)" },
+                    { 108, "FromDate", "TextBox", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 59, "(null)" },
+                    { 176, "CompanyId", "NumberBox", "System.Int32", null, "CompanyId", "companyId", null, null, "companyId", "EQ", 21, "Route" },
+                    { 106, "ToNo", "TextBox", "System.Int32", null, "ToNo", "to", null, null, "toNo", "EQ", 58, "(null)" },
+                    { 105, "FromNo", "TextBox", "System.Int32", null, "FromNo", "from", null, null, "fromNo", "EQ", 58, "(null)" },
+                    { 104, "ToDate", "TextBox", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 58, "(null)" },
+                    { 103, "FromDate", "TextBox", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 58, "(null)" },
+                    { 17, "FromNo", "NumberBox", "System.Int32", null, "FromNo", "from", null, null, "fromNo", "EQ", 35, "QueryString" },
+                    { 18, "ToNo", "NumberBox", "System.Int32", null, "ToNo", "to", null, null, "toNo", "EQ", 35, "QueryString" },
+                    { 101, "ToNo", "TextBox", "System.Int32", null, "ToNo", "to", null, null, "toNo", "EQ", 57, "(null)" },
+                    { 100, "FromNo", "TextBox", "System.Int32", null, "FromNo", "from", null, null, "fromNo", "EQ", 57, "(null)" },
+                    { 99, "ToDate", "TextBox", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 57, "(null)" },
+                    { 98, "FromDate", "TextBox", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 57, "(null)" },
+                    { 167, "VoucherNo", "NumberBox", "System.Int32", null, "VoucherNo", "no", null, null, "no", "EQ", 41, "Route" },
+                    { 166, "VoucherNo", "NumberBox", "System.Int32", null, "VoucherNo", "no", null, null, "no", "EQ", 84, "Route" },
+                    { 96, "ToNo", "TextBox", "System.Int32", null, "ToNo", "to", null, null, "toNo", "EQ", 56, "(null)" },
+                    { 95, "FromNo", "TextBox", "System.Int32", null, "FromNo", "from", null, null, "fromNo", "EQ", 56, "(null)" },
+                    { 94, "ToDate", "TextBox", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 56, "(null)" },
+                    { 93, "FromDate", "TextBox", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 56, "(null)" },
+                    { 24, "ToDate", "DatePicker", "System.DateTime", null, "ToDate", "to", null, null, "toDate", "EQ", 38, "QueryString" },
+                    { 23, "FromDate", "DatePicker", "System.DateTime", null, "FromDate", "from", null, null, "fromDate", "EQ", 38, "QueryString" },
+                    { 90, "FromNo", "TextBox", "System.Int32", null, "FromNo", "from", null, null, "fromNo", "EQ", 55, "(null)" },
+                    { 42, "VoucherNo", "NumberBox", "System.Int32", null, "VoucherNo", "no", null, null, "no", "EQ", 40, "Route" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -3631,10 +3812,10 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 column: "SubsystemId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Person_UserID",
+                name: "IX_Person_UserId",
                 schema: "Contact",
                 table: "Person",
-                column: "UserID",
+                column: "UserId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -3800,10 +3981,10 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 column: "ParentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SystemIssue_PermissionID",
+                name: "IX_SystemIssue_PermissionId",
                 schema: "Reporting",
                 table: "SystemIssue",
-                column: "PermissionID");
+                column: "PermissionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SystemIssue_ViewId",
@@ -3854,10 +4035,10 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ViewRowPermission_ViewID",
+                name: "IX_ViewRowPermission_ViewId",
                 schema: "Auth",
                 table: "ViewRowPermission",
-                column: "ViewID");
+                column: "ViewId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

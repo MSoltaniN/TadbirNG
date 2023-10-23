@@ -18,7 +18,7 @@ namespace SPPC.Tadbir.Model.Config
     /// <summary>
     /// اطلاعات مربوط به بانک اطلاعاتی یک شرکت را نگهداری می کند
     /// </summary>
-    public partial class CompanyDb : CoreEntity
+    public partial class CompanyDb : PCoreEntity
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
