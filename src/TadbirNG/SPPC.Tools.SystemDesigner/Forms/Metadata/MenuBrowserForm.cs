@@ -176,6 +176,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
         {
             int? permissionId = row.ValueOrDefault<int>("PermissionID");
             int? parentId = row.ValueOrDefault<int>("ParentID");
+            var v = row.ValueOrDefault("Index");
             return new CommandViewModel()
             {
                 Id = row.ValueOrDefault<int>("CommandID"),
@@ -188,7 +189,8 @@ namespace SPPC.Tools.SystemDesigner.Forms
                 Title = row.ValueOrDefault("TitleKey"),
                 RouteUrl = row.ValueOrDefault("RouteUrl"),
                 IconName = row.ValueOrDefault("IconName"),
-                HotKey = row.ValueOrDefault("HotKey")
+                HotKey = row.ValueOrDefault("HotKey"),
+                Index = string.IsNullOrEmpty(row.ValueOrDefault("Index")) ? null : Convert.ToInt32(row.ValueOrDefault("Index"))
             };
         }
 
@@ -394,7 +396,7 @@ FROM [Auth].[PermissionGroup]");
             var menus = new List<CommandViewModel>();
             menus.AddRange(result
                 .Select("ParentID IS NULL")
-                .Where(row => row.ValueOrDefault("TitleKey") != "Profile")
+               // .Where(row => row.ValueOrDefault("TitleKey") != "Profile")
                 .Select(row => CommandFromRow(row)));
             foreach (var menu in menus)
             {
