@@ -10,5 +10,10 @@ namespace SPPC.Tadbir.Model.Finance
         /// Gets a collection of existing associations between roles and fiscal periods
         /// </summary>
         public virtual IList<RoleFiscalPeriod> RoleFiscalPeriods { get; protected set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual int InventoryMode { get; set; } = 1;
     }
 }

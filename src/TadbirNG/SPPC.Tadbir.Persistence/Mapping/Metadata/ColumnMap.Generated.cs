@@ -70,7 +70,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
 
             builder.HasOne(e => e.View)
                 .WithMany(p => p.Columns)
-                .HasForeignKey("ViewID")
+                .HasForeignKey(e=>e.ViewId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Metadata_Column_Metadata_View");
         }

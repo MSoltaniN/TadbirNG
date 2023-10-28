@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SPPC.Tadbir.Persistence;
 
 namespace SPPC.Tadbir.Web.Api.Migrations.System
 {
     [DbContext(typeof(SystemContext))]
-    partial class SystemContextModelSnapshot : ModelSnapshot
+    [Migration("20231028164731_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -4863,7 +4865,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
 
                     b.Property<string>("Values")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)")
                         .HasColumnName("Values");
 
                     b.Property<int?>("ViewId")

@@ -54,7 +54,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
 
             builder.HasOne(e => e.Parent)
                 .WithMany()
-                .HasForeignKey("ParentID")
+                .HasForeignKey(e=>e.ParentId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Config_Setting_Config_Parent");
         }

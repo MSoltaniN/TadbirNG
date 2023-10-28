@@ -29,7 +29,7 @@ namespace SPPC.Tadbir.Model.Config
             ModelType = String.Empty;
             Values = String.Empty;
             DefaultValues = String.Empty;
-            ModifiedDate = DateTime.Now;
+            //ModifiedDate = DateTime.Now;
         }
 
         /// <summary>

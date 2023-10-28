@@ -10,8 +10,8 @@ using SPPC.Tadbir.Persistence;
 namespace SPPC.Tadbir.Web.Api.Migrations.System
 {
     [DbContext(typeof(SystemContext))]
-    [Migration("20231023094914_Initial")]
-    partial class Initial
+    [Migration("20231028182503_value-usersetting-max")]
+    partial class valueusersettingmax
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -3876,6 +3876,16 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.HasKey("Id");
 
                     b.ToTable("Role", "Auth");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Role_SysAdminDesc",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Role_SysAdmin",
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000")
+                        });
                 });
 
             modelBuilder.Entity("SPPC.Tadbir.Model.Auth.RoleCompany", b =>
@@ -4096,6 +4106,16 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                     b.HasIndex("RoleId");
 
                     b.ToTable("UserRole", "Auth");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RoleId = 1,
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            UserId = 1
+                        });
                 });
 
             modelBuilder.Entity("SPPC.Tadbir.Model.Auth.ViewRowPermission", b =>
@@ -4252,8 +4272,9 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasColumnType("datetime")
                         .HasDefaultValueSql("(getdate())");
 
-                    b.Property<int?>("ParentID")
-                        .HasColumnType("int");
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int")
+                        .HasColumnName("ParentId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -4283,9 +4304,39 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ParentID");
+                    b.HasIndex("ParentId");
 
                     b.ToTable("Setting", "Config");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 4,
+                            DefaultValues = "{\"pageSize\": 10, \"columnViews\": []}",
+                            DescriptionKey = "ListFormViewSettingsDescription",
+                            IsStandalone = true,
+                            ModelType = "ListFormViewConfig",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            ScopeType = (short)2,
+                            TitleKey = "ListFormViewSettings",
+                            Type = (short)3,
+                            Values = "{\"pageSize\": 10, \"columnViews\": []}"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            DefaultValues = "{}",
+                            DescriptionKey = "QuickReportSettingsDescription",
+                            IsStandalone = true,
+                            ModelType = "QuickReportConfig",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            ScopeType = (short)2,
+                            TitleKey = "QuickReportSettings",
+                            Type = (short)3,
+                            Values = "{}"
+                        });
                 });
 
             modelBuilder.Entity("SPPC.Tadbir.Model.Config.SysLogSetting", b =>
@@ -4814,8 +4865,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
 
                     b.Property<string>("Values")
                         .IsRequired()
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("Values");
 
                     b.Property<int?>("ViewId")
@@ -5202,8 +5252,9 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         .HasMaxLength(32)
                         .HasColumnType("nvarchar(32)");
 
-                    b.Property<int?>("ViewID")
-                        .HasColumnType("int");
+                    b.Property<int?>("ViewId")
+                        .HasColumnType("int")
+                        .HasColumnName("ViewId");
 
                     b.Property<string>("Visibility")
                         .HasMaxLength(32)
@@ -5211,7 +5262,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ViewID");
+                    b.HasIndex("ViewId");
 
                     b.ToTable("Column", "Metadata");
 
@@ -5236,6 +5287,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 1,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -5258,6 +5310,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "smallint",
                             Type = "",
+                            ViewId = 1,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -5280,6 +5333,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 1,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -5302,6 +5356,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 1,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -5324,6 +5379,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 1,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -5346,6 +5402,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 1,
                             Visibility = "Visible"
                         },
                         new
@@ -5368,6 +5425,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 1,
                             Visibility = "Visible"
                         },
                         new
@@ -5390,6 +5448,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 1,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -5412,6 +5471,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "smallint",
                             Type = "",
+                            ViewId = 1,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -5434,6 +5494,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 1,
                             Visibility = "Visible"
                         },
                         new
@@ -5456,6 +5517,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 1,
                             Visibility = "Visible"
                         },
                         new
@@ -5478,6 +5540,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "boolean",
                             StorageType = "bit",
                             Type = "",
+                            ViewId = 1,
                             Visibility = "Hidden"
                         },
                         new
@@ -5500,6 +5563,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 1,
                             Visibility = "Hidden"
                         },
                         new
@@ -5522,6 +5586,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 2,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -5544,6 +5609,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 2,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -5566,6 +5632,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "smallint",
                             Type = "",
+                            ViewId = 2,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -5588,6 +5655,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 2,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -5610,6 +5678,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 2,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -5632,6 +5701,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 2,
                             Visibility = "Visible"
                         },
                         new
@@ -5654,6 +5724,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 2,
                             Visibility = "Visible"
                         },
                         new
@@ -5676,6 +5747,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 2,
                             Visibility = "Visible"
                         },
                         new
@@ -5698,6 +5770,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 2,
                             Visibility = "Visible"
                         },
                         new
@@ -5720,6 +5793,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 2,
                             Visibility = "Visible"
                         },
                         new
@@ -5742,6 +5816,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 2,
                             Visibility = "Visible"
                         },
                         new
@@ -5764,6 +5839,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 3,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -5786,6 +5862,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 3,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -5808,6 +5885,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "object",
                             StorageType = "(n/a)",
                             Type = "",
+                            ViewId = 3,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -5830,6 +5908,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 3,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -5852,6 +5931,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 3,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -5874,6 +5954,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 3,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -5896,6 +5977,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 3,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -5918,6 +6000,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 3,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -5940,6 +6023,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "smallint",
                             Type = "",
+                            ViewId = 3,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -5962,6 +6046,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 3,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -5984,6 +6069,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 3,
                             Visibility = "Visible"
                         },
                         new
@@ -6006,6 +6092,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 3,
                             Visibility = "Visible"
                         },
                         new
@@ -6028,6 +6115,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 3,
                             Visibility = "Hidden"
                         },
                         new
@@ -6050,6 +6138,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 3,
                             Visibility = "Hidden"
                         },
                         new
@@ -6072,6 +6161,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 3,
                             Visibility = "Hidden"
                         },
                         new
@@ -6094,6 +6184,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 3,
                             Visibility = "Hidden"
                         },
                         new
@@ -6116,6 +6207,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 3,
                             Visibility = "Hidden"
                         },
                         new
@@ -6138,6 +6230,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 3,
                             Visibility = "Hidden"
                         },
                         new
@@ -6160,6 +6253,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 3,
                             Visibility = "Visible"
                         },
                         new
@@ -6182,6 +6276,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 3,
                             Visibility = "Visible"
                         },
                         new
@@ -6204,6 +6299,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 3,
                             Visibility = "Visible"
                         },
                         new
@@ -6226,6 +6322,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 3,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -6248,6 +6345,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 3,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -6270,6 +6368,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 4,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -6292,6 +6391,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 4,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -6314,6 +6414,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar(64)",
                             Type = "",
+                            ViewId = 4,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -6336,6 +6437,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "DateTime",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 4,
                             Visibility = "Visible"
                         },
                         new
@@ -6358,6 +6460,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "boolean",
                             StorageType = "bit",
                             Type = "",
+                            ViewId = 4,
                             Visibility = "Visible"
                         },
                         new
@@ -6380,6 +6483,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar(64)",
                             Type = "",
+                            ViewId = 4,
                             Visibility = "Visible"
                         },
                         new
@@ -6402,6 +6506,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 5,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -6424,6 +6529,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar(64)",
                             Type = "",
+                            ViewId = 5,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -6446,6 +6552,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar(512)",
                             Type = "",
+                            ViewId = 5,
                             Visibility = "Visible"
                         },
                         new
@@ -6468,6 +6575,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 6,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -6490,6 +6598,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "",
                             StorageType = "smallint",
                             Type = "",
+                            ViewId = 6,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -6512,6 +6621,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "smallint",
                             Type = "",
+                            ViewId = 6,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -6534,6 +6644,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 6,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -6556,6 +6667,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 6,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -6578,6 +6690,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 6,
                             Visibility = "Visible"
                         },
                         new
@@ -6600,6 +6713,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 6,
                             Visibility = "Visible"
                         },
                         new
@@ -6622,6 +6736,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 6,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -6644,6 +6759,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 6,
                             Visibility = "Visible"
                         },
                         new
@@ -6666,6 +6782,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 7,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -6688,6 +6805,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "",
                             StorageType = "smallint",
                             Type = "",
+                            ViewId = 7,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -6710,6 +6828,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "smallint",
                             Type = "",
+                            ViewId = 7,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -6732,6 +6851,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 7,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -6754,6 +6874,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 7,
                             Visibility = "Visible"
                         },
                         new
@@ -6776,6 +6897,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 7,
                             Visibility = "Visible"
                         },
                         new
@@ -6798,6 +6920,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 7,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -6820,6 +6943,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 7,
                             Visibility = "Visible"
                         },
                         new
@@ -6842,6 +6966,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 8,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -6864,6 +6989,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "",
                             StorageType = "smallint",
                             Type = "",
+                            ViewId = 8,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -6886,6 +7012,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "smallint",
                             Type = "",
+                            ViewId = 8,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -6908,6 +7035,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 8,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -6930,6 +7058,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 8,
                             Visibility = "Visible"
                         },
                         new
@@ -6952,6 +7081,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 8,
                             Visibility = "Visible"
                         },
                         new
@@ -6974,6 +7104,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 8,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -6996,6 +7127,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 8,
                             Visibility = "Visible"
                         },
                         new
@@ -7018,6 +7150,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 9,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -7040,6 +7173,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 9,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -7062,6 +7196,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 9,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -7084,6 +7219,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 9,
                             Visibility = "Visible"
                         },
                         new
@@ -7106,6 +7242,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 9,
                             Visibility = "Visible"
                         },
                         new
@@ -7128,6 +7265,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 9,
                             Visibility = "Visible"
                         },
                         new
@@ -7150,6 +7288,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 10,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -7172,6 +7311,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 10,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -7194,6 +7334,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 10,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -7216,6 +7357,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 10,
                             Visibility = "Visible"
                         },
                         new
@@ -7238,6 +7380,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 11,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -7260,6 +7403,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 11,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -7282,6 +7426,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 11,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -7304,6 +7449,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 11,
                             Visibility = "Visible"
                         },
                         new
@@ -7326,6 +7472,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 11,
                             Visibility = "Visible"
                         },
                         new
@@ -7348,6 +7495,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 11,
                             Visibility = "Visible"
                         },
                         new
@@ -7370,6 +7518,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 11,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -7392,6 +7541,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 11,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -7414,6 +7564,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 12,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -7436,6 +7587,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 12,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -7458,6 +7610,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 12,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -7480,6 +7633,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 12,
                             Visibility = "Visible"
                         },
                         new
@@ -7502,6 +7656,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 12,
                             Visibility = "Visible"
                         },
                         new
@@ -7524,6 +7679,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 13,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -7546,6 +7702,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 13,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -7568,6 +7725,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 13,
                             Visibility = "Visible"
                         },
                         new
@@ -7590,6 +7748,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 13,
                             Visibility = "Visible"
                         },
                         new
@@ -7612,6 +7771,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 13,
                             Visibility = "Visible"
                         },
                         new
@@ -7634,6 +7794,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 13,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -7656,6 +7817,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "time",
                             Type = "",
+                            ViewId = 13,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -7678,6 +7840,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 13,
                             Visibility = "Visible"
                         },
                         new
@@ -7700,6 +7863,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 13,
                             Visibility = "Visible"
                         },
                         new
@@ -7722,6 +7886,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 13,
                             Visibility = "Visible"
                         },
                         new
@@ -7744,6 +7909,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 13,
                             Visibility = "Visible"
                         },
                         new
@@ -7766,6 +7932,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 13,
                             Visibility = "Visible"
                         },
                         new
@@ -7788,6 +7955,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 13,
                             Visibility = "Visible"
                         },
                         new
@@ -7810,6 +7978,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 14,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -7832,6 +8001,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 14,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -7854,6 +8024,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 14,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -7876,6 +8047,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 14,
                             Visibility = "Visible"
                         },
                         new
@@ -7898,6 +8070,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 15,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -7920,6 +8093,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 15,
                             Visibility = "Visible"
                         },
                         new
@@ -7942,6 +8116,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 15,
                             Visibility = "Visible"
                         },
                         new
@@ -7964,6 +8139,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 15,
                             Visibility = "Visible"
                         },
                         new
@@ -7986,6 +8162,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 15,
                             Visibility = "Visible"
                         },
                         new
@@ -8008,6 +8185,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 15,
                             Visibility = "Visible"
                         },
                         new
@@ -8030,6 +8208,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 15,
                             Visibility = "Visible"
                         },
                         new
@@ -8052,6 +8231,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 15,
                             Visibility = "Visible"
                         },
                         new
@@ -8074,6 +8254,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 15,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -8096,6 +8277,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 15,
                             Visibility = "Visible"
                         },
                         new
@@ -8118,6 +8300,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 16,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -8140,6 +8323,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 16,
                             Visibility = "Visible"
                         },
                         new
@@ -8162,6 +8346,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 16,
                             Visibility = "Visible"
                         },
                         new
@@ -8184,6 +8369,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 16,
                             Visibility = "Visible"
                         },
                         new
@@ -8206,6 +8392,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 16,
                             Visibility = "Visible"
                         },
                         new
@@ -8228,6 +8415,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 16,
                             Visibility = "Visible"
                         },
                         new
@@ -8250,6 +8438,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 16,
                             Visibility = "Visible"
                         },
                         new
@@ -8272,6 +8461,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 16,
                             Visibility = "Visible"
                         },
                         new
@@ -8294,6 +8484,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 16,
                             Visibility = "Visible"
                         },
                         new
@@ -8316,6 +8507,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 16,
                             Visibility = "Visible"
                         },
                         new
@@ -8338,6 +8530,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 16,
                             Visibility = "Visible"
                         },
                         new
@@ -8360,6 +8553,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 16,
                             Visibility = "Visible"
                         },
                         new
@@ -8382,6 +8576,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 16,
                             Visibility = "Visible"
                         },
                         new
@@ -8404,6 +8599,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 16,
                             Visibility = "Visible"
                         },
                         new
@@ -8426,6 +8622,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 16,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -8448,6 +8645,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 16,
                             Visibility = "Visible"
                         },
                         new
@@ -8470,6 +8668,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 17,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -8492,6 +8691,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 17,
                             Visibility = "Visible"
                         },
                         new
@@ -8514,6 +8714,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 17,
                             Visibility = "Visible"
                         },
                         new
@@ -8536,6 +8737,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 17,
                             Visibility = "Visible"
                         },
                         new
@@ -8558,6 +8760,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 17,
                             Visibility = "Visible"
                         },
                         new
@@ -8580,6 +8783,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 17,
                             Visibility = "Visible"
                         },
                         new
@@ -8602,6 +8806,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 17,
                             Visibility = "Visible"
                         },
                         new
@@ -8624,6 +8829,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 17,
                             Visibility = "Visible"
                         },
                         new
@@ -8646,6 +8852,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 17,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -8668,6 +8875,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 18,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -8690,6 +8898,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 18,
                             Visibility = "Visible"
                         },
                         new
@@ -8712,6 +8921,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 18,
                             Visibility = "Visible"
                         },
                         new
@@ -8734,6 +8944,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 18,
                             Visibility = "Visible"
                         },
                         new
@@ -8756,6 +8967,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 18,
                             Visibility = "Visible"
                         },
                         new
@@ -8778,6 +8990,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 18,
                             Visibility = "Visible"
                         },
                         new
@@ -8800,6 +9013,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 18,
                             Visibility = "Visible"
                         },
                         new
@@ -8822,6 +9036,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 18,
                             Visibility = "Visible"
                         },
                         new
@@ -8844,6 +9059,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 18,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -8866,6 +9082,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 19,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -8888,6 +9105,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 19,
                             Visibility = "Visible"
                         },
                         new
@@ -8910,6 +9128,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 19,
                             Visibility = "Visible"
                         },
                         new
@@ -8932,6 +9151,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 19,
                             Visibility = "Visible"
                         },
                         new
@@ -8954,6 +9174,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 19,
                             Visibility = "Visible"
                         },
                         new
@@ -8976,6 +9197,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 19,
                             Visibility = "Visible"
                         },
                         new
@@ -8998,6 +9220,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 19,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -9020,6 +9243,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 20,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -9042,6 +9266,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 20,
                             Visibility = "Visible"
                         },
                         new
@@ -9064,6 +9289,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 20,
                             Visibility = "Visible"
                         },
                         new
@@ -9086,6 +9312,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 20,
                             Visibility = "Visible"
                         },
                         new
@@ -9108,6 +9335,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 20,
                             Visibility = "Visible"
                         },
                         new
@@ -9130,6 +9358,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 20,
                             Visibility = "Visible"
                         },
                         new
@@ -9152,6 +9381,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 20,
                             Visibility = "Visible"
                         },
                         new
@@ -9174,6 +9404,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 20,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -9196,6 +9427,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 21,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -9218,6 +9450,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 21,
                             Visibility = "Visible"
                         },
                         new
@@ -9240,6 +9473,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 21,
                             Visibility = "Visible"
                         },
                         new
@@ -9262,6 +9496,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 21,
                             Visibility = "Visible"
                         },
                         new
@@ -9284,6 +9519,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 21,
                             Visibility = "Visible"
                         },
                         new
@@ -9306,6 +9542,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 21,
                             Visibility = "Visible"
                         },
                         new
@@ -9328,6 +9565,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 21,
                             Visibility = "Visible"
                         },
                         new
@@ -9350,6 +9588,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 21,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -9372,6 +9611,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 22,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -9394,6 +9634,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 22,
                             Visibility = "Visible"
                         },
                         new
@@ -9416,6 +9657,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 22,
                             Visibility = "Visible"
                         },
                         new
@@ -9438,6 +9680,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 22,
                             Visibility = "Visible"
                         },
                         new
@@ -9460,6 +9703,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 22,
                             Visibility = "Visible"
                         },
                         new
@@ -9482,6 +9726,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 22,
                             Visibility = "Visible"
                         },
                         new
@@ -9504,6 +9749,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 22,
                             Visibility = "Visible"
                         },
                         new
@@ -9526,6 +9772,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 22,
                             Visibility = "Visible"
                         },
                         new
@@ -9548,6 +9795,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 22,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -9570,6 +9818,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 22,
                             Visibility = "Visible"
                         },
                         new
@@ -9592,6 +9841,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 23,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -9614,6 +9864,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 23,
                             Visibility = "Visible"
                         },
                         new
@@ -9636,6 +9887,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 23,
                             Visibility = "Visible"
                         },
                         new
@@ -9658,6 +9910,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 23,
                             Visibility = "Visible"
                         },
                         new
@@ -9680,6 +9933,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 23,
                             Visibility = "Visible"
                         },
                         new
@@ -9702,6 +9956,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 23,
                             Visibility = "Visible"
                         },
                         new
@@ -9724,6 +9979,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 23,
                             Visibility = "Visible"
                         },
                         new
@@ -9746,6 +10002,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 23,
                             Visibility = "Visible"
                         },
                         new
@@ -9768,6 +10025,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 23,
                             Visibility = "Visible"
                         },
                         new
@@ -9790,6 +10048,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 23,
                             Visibility = "Visible"
                         },
                         new
@@ -9812,6 +10071,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 23,
                             Visibility = "Visible"
                         },
                         new
@@ -9834,6 +10094,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 23,
                             Visibility = "Visible"
                         },
                         new
@@ -9856,6 +10117,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 23,
                             Visibility = "Visible"
                         },
                         new
@@ -9878,6 +10140,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 23,
                             Visibility = "Visible"
                         },
                         new
@@ -9900,6 +10163,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 23,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -9922,6 +10186,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 23,
                             Visibility = "Visible"
                         },
                         new
@@ -9944,6 +10209,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 24,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -9966,6 +10232,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 24,
                             Visibility = "Visible"
                         },
                         new
@@ -9988,6 +10255,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 24,
                             Visibility = "Visible"
                         },
                         new
@@ -10010,6 +10278,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 24,
                             Visibility = "Visible"
                         },
                         new
@@ -10032,6 +10301,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 24,
                             Visibility = "Visible"
                         },
                         new
@@ -10054,6 +10324,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 24,
                             Visibility = "Visible"
                         },
                         new
@@ -10076,6 +10347,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 24,
                             Visibility = "Visible"
                         },
                         new
@@ -10098,6 +10370,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 24,
                             Visibility = "Visible"
                         },
                         new
@@ -10120,6 +10393,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 24,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -10142,6 +10416,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 25,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -10164,6 +10439,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 25,
                             Visibility = "Visible"
                         },
                         new
@@ -10186,6 +10462,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 25,
                             Visibility = "Visible"
                         },
                         new
@@ -10208,6 +10485,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 25,
                             Visibility = "Visible"
                         },
                         new
@@ -10230,6 +10508,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 25,
                             Visibility = "Visible"
                         },
                         new
@@ -10252,6 +10531,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 25,
                             Visibility = "Visible"
                         },
                         new
@@ -10274,6 +10554,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 25,
                             Visibility = "Visible"
                         },
                         new
@@ -10296,6 +10577,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 25,
                             Visibility = "Visible"
                         },
                         new
@@ -10318,6 +10600,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 25,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -10340,6 +10623,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 26,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -10362,6 +10646,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 26,
                             Visibility = "Visible"
                         },
                         new
@@ -10384,6 +10669,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 26,
                             Visibility = "Visible"
                         },
                         new
@@ -10406,6 +10692,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 26,
                             Visibility = "Visible"
                         },
                         new
@@ -10428,6 +10715,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 26,
                             Visibility = "Visible"
                         },
                         new
@@ -10450,6 +10738,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 26,
                             Visibility = "Visible"
                         },
                         new
@@ -10472,6 +10761,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 26,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -10494,6 +10784,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 27,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -10516,6 +10807,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 27,
                             Visibility = "Visible"
                         },
                         new
@@ -10538,6 +10830,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 27,
                             Visibility = "Visible"
                         },
                         new
@@ -10560,6 +10853,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 27,
                             Visibility = "Visible"
                         },
                         new
@@ -10582,6 +10876,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 27,
                             Visibility = "Visible"
                         },
                         new
@@ -10604,6 +10899,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 27,
                             Visibility = "Visible"
                         },
                         new
@@ -10626,6 +10922,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 27,
                             Visibility = "Visible"
                         },
                         new
@@ -10648,6 +10945,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 27,
                             Visibility = "Visible"
                         },
                         new
@@ -10670,6 +10968,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 27,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -10692,6 +10991,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 28,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -10714,6 +11014,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 28,
                             Visibility = "Visible"
                         },
                         new
@@ -10736,6 +11037,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 28,
                             Visibility = "Visible"
                         },
                         new
@@ -10758,6 +11060,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 28,
                             Visibility = "Visible"
                         },
                         new
@@ -10780,6 +11083,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 28,
                             Visibility = "Visible"
                         },
                         new
@@ -10802,6 +11106,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 28,
                             Visibility = "Visible"
                         },
                         new
@@ -10824,6 +11129,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 28,
                             Visibility = "Visible"
                         },
                         new
@@ -10846,6 +11152,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 28,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -10868,6 +11175,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 29,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -10890,6 +11198,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 29,
                             Visibility = "Visible"
                         },
                         new
@@ -10912,6 +11221,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 29,
                             Visibility = "Visible"
                         },
                         new
@@ -10934,6 +11244,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 29,
                             Visibility = "Visible"
                         },
                         new
@@ -10956,6 +11267,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 29,
                             Visibility = "Visible"
                         },
                         new
@@ -10978,6 +11290,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 29,
                             Visibility = "Visible"
                         },
                         new
@@ -11000,6 +11313,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 29,
                             Visibility = "Visible"
                         },
                         new
@@ -11022,6 +11336,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 29,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -11044,6 +11359,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 30,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -11066,6 +11382,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "smallint",
                             Type = "",
+                            ViewId = 30,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -11088,6 +11405,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 30,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -11110,6 +11428,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 30,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -11132,6 +11451,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 30,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -11154,6 +11474,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 30,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -11176,6 +11497,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 30,
                             Visibility = "Visible"
                         },
                         new
@@ -11198,6 +11520,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 30,
                             Visibility = "Visible"
                         },
                         new
@@ -11220,6 +11543,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 30,
                             Visibility = "Visible"
                         },
                         new
@@ -11242,6 +11566,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 30,
                             Visibility = "Visible"
                         },
                         new
@@ -11264,6 +11589,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "smallint",
                             Type = "",
+                            ViewId = 30,
                             Visibility = "Hidden"
                         },
                         new
@@ -11286,6 +11612,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 30,
                             Visibility = "Visible"
                         },
                         new
@@ -11308,6 +11635,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 31,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -11330,6 +11658,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 31,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -11352,6 +11681,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 31,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -11374,6 +11704,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "smallint",
                             Type = "",
+                            ViewId = 31,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -11396,6 +11727,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 31,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -11418,6 +11750,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 31,
                             Visibility = "Visible"
                         },
                         new
@@ -11440,6 +11773,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "time",
                             Type = "",
+                            ViewId = 31,
                             Visibility = "Visible"
                         },
                         new
@@ -11462,6 +11796,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 31,
                             Visibility = "Visible"
                         },
                         new
@@ -11484,6 +11819,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 31,
                             Visibility = "Visible"
                         },
                         new
@@ -11506,6 +11842,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 31,
                             Visibility = "Visible"
                         },
                         new
@@ -11528,6 +11865,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 32,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -11550,6 +11888,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 32,
                             Visibility = "Visible"
                         },
                         new
@@ -11572,6 +11911,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 32,
                             Visibility = "Visible"
                         },
                         new
@@ -11594,6 +11934,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 32,
                             Visibility = "Visible"
                         },
                         new
@@ -11616,6 +11957,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 32,
                             Visibility = "Visible"
                         },
                         new
@@ -11638,6 +11980,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 32,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -11660,6 +12003,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 32,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -11682,6 +12026,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 33,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -11704,6 +12049,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 33,
                             Visibility = "Visible"
                         },
                         new
@@ -11726,6 +12072,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 33,
                             Visibility = "Visible"
                         },
                         new
@@ -11748,6 +12095,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 33,
                             Visibility = "Visible"
                         },
                         new
@@ -11770,6 +12118,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 33,
                             Visibility = "Visible"
                         },
                         new
@@ -11792,6 +12141,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 33,
                             Visibility = "Visible"
                         },
                         new
@@ -11814,6 +12164,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 33,
                             Visibility = "Visible"
                         },
                         new
@@ -11836,6 +12187,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 33,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -11858,6 +12210,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 33,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -11880,6 +12233,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 34,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -11902,6 +12256,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 34,
                             Visibility = "Visible"
                         },
                         new
@@ -11924,6 +12279,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 34,
                             Visibility = "Visible"
                         },
                         new
@@ -11946,6 +12302,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 34,
                             Visibility = "Visible"
                         },
                         new
@@ -11968,6 +12325,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 34,
                             Visibility = "Visible"
                         },
                         new
@@ -11990,6 +12348,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 34,
                             Visibility = "Visible"
                         },
                         new
@@ -12012,6 +12371,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 34,
                             Visibility = "Visible"
                         },
                         new
@@ -12034,6 +12394,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 34,
                             Visibility = "Visible"
                         },
                         new
@@ -12056,6 +12417,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 34,
                             Visibility = "Visible"
                         },
                         new
@@ -12078,6 +12440,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 34,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -12100,6 +12463,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 34,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -12122,6 +12486,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 35,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -12144,6 +12509,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 35,
                             Visibility = "Visible"
                         },
                         new
@@ -12166,6 +12532,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 35,
                             Visibility = "Visible"
                         },
                         new
@@ -12188,6 +12555,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 35,
                             Visibility = "Visible"
                         },
                         new
@@ -12210,6 +12578,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 35,
                             Visibility = "Visible"
                         },
                         new
@@ -12232,6 +12601,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 35,
                             Visibility = "Visible"
                         },
                         new
@@ -12254,6 +12624,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 35,
                             Visibility = "Visible"
                         },
                         new
@@ -12276,6 +12647,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 35,
                             Visibility = "Visible"
                         },
                         new
@@ -12298,6 +12670,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 35,
                             Visibility = "Visible"
                         },
                         new
@@ -12320,6 +12693,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 35,
                             Visibility = "Visible"
                         },
                         new
@@ -12342,6 +12716,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 35,
                             Visibility = "Visible"
                         },
                         new
@@ -12364,6 +12739,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 35,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -12386,6 +12762,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 35,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -12408,6 +12785,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 36,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -12430,6 +12808,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 36,
                             Visibility = "Visible"
                         },
                         new
@@ -12452,6 +12831,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 36,
                             Visibility = "Visible"
                         },
                         new
@@ -12474,6 +12854,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 36,
                             Visibility = "Visible"
                         },
                         new
@@ -12496,6 +12877,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 36,
                             Visibility = "Visible"
                         },
                         new
@@ -12518,6 +12900,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 36,
                             Visibility = "Visible"
                         },
                         new
@@ -12540,6 +12923,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 36,
                             Visibility = "Visible"
                         },
                         new
@@ -12562,6 +12946,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 36,
                             Visibility = "Visible"
                         },
                         new
@@ -12584,6 +12969,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 36,
                             Visibility = "Visible"
                         },
                         new
@@ -12606,6 +12992,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 36,
                             Visibility = "Visible"
                         },
                         new
@@ -12628,6 +13015,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 36,
                             Visibility = "Visible"
                         },
                         new
@@ -12650,6 +13038,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 36,
                             Visibility = "Visible"
                         },
                         new
@@ -12672,6 +13061,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 36,
                             Visibility = "Visible"
                         },
                         new
@@ -12694,6 +13084,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 36,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -12716,6 +13107,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 36,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -12738,6 +13130,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 37,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -12760,6 +13153,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 37,
                             Visibility = "Visible"
                         },
                         new
@@ -12782,6 +13176,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 37,
                             Visibility = "Visible"
                         },
                         new
@@ -12804,6 +13199,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 37,
                             Visibility = "Visible"
                         },
                         new
@@ -12826,6 +13222,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 37,
                             Visibility = "Visible"
                         },
                         new
@@ -12848,6 +13245,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 38,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -12870,6 +13268,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 38,
                             Visibility = "Visible"
                         },
                         new
@@ -12892,6 +13291,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 38,
                             Visibility = "Visible"
                         },
                         new
@@ -12914,6 +13314,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 38,
                             Visibility = "Visible"
                         },
                         new
@@ -12936,6 +13337,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 38,
                             Visibility = "Visible"
                         },
                         new
@@ -12958,6 +13360,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 38,
                             Visibility = "Visible"
                         },
                         new
@@ -12980,6 +13383,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 38,
                             Visibility = "Visible"
                         },
                         new
@@ -13002,6 +13406,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 38,
                             Visibility = "Visible"
                         },
                         new
@@ -13024,6 +13429,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 38,
                             Visibility = "Visible"
                         },
                         new
@@ -13046,6 +13452,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 38,
                             Visibility = "Visible"
                         },
                         new
@@ -13068,6 +13475,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 38,
                             Visibility = "Visible"
                         },
                         new
@@ -13090,6 +13498,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 38,
                             Visibility = "Visible"
                         },
                         new
@@ -13112,6 +13521,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 38,
                             Visibility = "Visible"
                         },
                         new
@@ -13134,6 +13544,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 38,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -13156,6 +13567,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 39,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -13178,6 +13590,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 39,
                             Visibility = "Visible"
                         },
                         new
@@ -13200,6 +13613,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 39,
                             Visibility = "Visible"
                         },
                         new
@@ -13222,6 +13636,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 39,
                             Visibility = "Visible"
                         },
                         new
@@ -13244,6 +13659,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 39,
                             Visibility = "Visible"
                         },
                         new
@@ -13266,6 +13682,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 39,
                             Visibility = "Visible"
                         },
                         new
@@ -13288,6 +13705,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 39,
                             Visibility = "Visible"
                         },
                         new
@@ -13310,6 +13728,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 39,
                             Visibility = "Visible"
                         },
                         new
@@ -13332,6 +13751,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 39,
                             Visibility = "Visible"
                         },
                         new
@@ -13354,6 +13774,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 39,
                             Visibility = "Visible"
                         },
                         new
@@ -13376,6 +13797,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 39,
                             Visibility = "Visible"
                         },
                         new
@@ -13398,6 +13820,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 39,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -13420,6 +13843,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 40,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -13442,6 +13866,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 40,
                             Visibility = "Visible"
                         },
                         new
@@ -13464,6 +13889,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 40,
                             Visibility = "Visible"
                         },
                         new
@@ -13486,6 +13912,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 40,
                             Visibility = "Visible"
                         },
                         new
@@ -13508,6 +13935,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 40,
                             Visibility = "Visible"
                         },
                         new
@@ -13530,6 +13958,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 40,
                             Visibility = "Visible"
                         },
                         new
@@ -13552,6 +13981,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 40,
                             Visibility = "Visible"
                         },
                         new
@@ -13574,6 +14004,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 40,
                             Visibility = "Visible"
                         },
                         new
@@ -13596,6 +14027,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 40,
                             Visibility = "Visible"
                         },
                         new
@@ -13618,6 +14050,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 40,
                             Visibility = "Visible"
                         },
                         new
@@ -13640,6 +14073,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 40,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -13662,6 +14096,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 41,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -13684,6 +14119,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 41,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -13706,6 +14142,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 42,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -13728,6 +14165,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 42,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -13750,6 +14188,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 42,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -13772,6 +14211,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 42,
                             Visibility = "Visible"
                         },
                         new
@@ -13794,6 +14234,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 42,
                             Visibility = "Visible"
                         },
                         new
@@ -13816,6 +14257,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 42,
                             Visibility = "Visible"
                         },
                         new
@@ -13838,6 +14280,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 42,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -13860,6 +14303,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 42,
                             Visibility = "Visible"
                         },
                         new
@@ -13882,6 +14326,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 42,
                             Visibility = "Visible"
                         },
                         new
@@ -13904,6 +14349,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 42,
                             Visibility = "Visible"
                         },
                         new
@@ -13926,6 +14372,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 42,
                             Visibility = "Visible"
                         },
                         new
@@ -13948,6 +14395,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 42,
                             Visibility = "Hidden"
                         },
                         new
@@ -13970,6 +14418,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 42,
                             Visibility = "Hidden"
                         },
                         new
@@ -13992,6 +14441,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 42,
                             Visibility = "Hidden"
                         },
                         new
@@ -14014,6 +14464,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 42,
                             Visibility = "Hidden"
                         },
                         new
@@ -14036,6 +14487,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 42,
                             Visibility = "Hidden"
                         },
                         new
@@ -14058,6 +14510,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 42,
                             Visibility = "Hidden"
                         },
                         new
@@ -14080,6 +14533,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 42,
                             Visibility = "Hidden"
                         },
                         new
@@ -14102,6 +14556,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 42,
                             Visibility = "Hidden"
                         },
                         new
@@ -14124,6 +14579,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 43,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -14146,6 +14602,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 43,
                             Visibility = "Visible"
                         },
                         new
@@ -14168,6 +14625,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 43,
                             Visibility = "Visible"
                         },
                         new
@@ -14190,6 +14648,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 43,
                             Visibility = "Visible"
                         },
                         new
@@ -14212,6 +14671,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 43,
                             Visibility = "Visible"
                         },
                         new
@@ -14234,6 +14694,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 43,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -14256,6 +14717,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 43,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -14278,6 +14740,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 44,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -14300,6 +14763,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 44,
                             Visibility = "Visible"
                         },
                         new
@@ -14322,6 +14786,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 44,
                             Visibility = "Visible"
                         },
                         new
@@ -14344,6 +14809,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 44,
                             Visibility = "Visible"
                         },
                         new
@@ -14366,6 +14832,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 44,
                             Visibility = "Visible"
                         },
                         new
@@ -14388,6 +14855,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 44,
                             Visibility = "Visible"
                         },
                         new
@@ -14410,6 +14878,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 44,
                             Visibility = "Visible"
                         },
                         new
@@ -14432,6 +14901,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 44,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -14454,6 +14924,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 44,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -14476,6 +14947,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 45,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -14498,6 +14970,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 45,
                             Visibility = "Visible"
                         },
                         new
@@ -14520,6 +14993,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 45,
                             Visibility = "Visible"
                         },
                         new
@@ -14542,6 +15016,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 45,
                             Visibility = "Visible"
                         },
                         new
@@ -14564,6 +15039,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 45,
                             Visibility = "Visible"
                         },
                         new
@@ -14586,6 +15062,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 45,
                             Visibility = "Visible"
                         },
                         new
@@ -14608,6 +15085,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 45,
                             Visibility = "Visible"
                         },
                         new
@@ -14630,6 +15108,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 45,
                             Visibility = "Visible"
                         },
                         new
@@ -14652,6 +15131,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 45,
                             Visibility = "Visible"
                         },
                         new
@@ -14674,6 +15154,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 45,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -14696,6 +15177,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 45,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -14718,6 +15200,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 46,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -14740,6 +15223,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 46,
                             Visibility = "Visible"
                         },
                         new
@@ -14762,6 +15246,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 46,
                             Visibility = "Visible"
                         },
                         new
@@ -14784,6 +15269,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 46,
                             Visibility = "Visible"
                         },
                         new
@@ -14806,6 +15292,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 46,
                             Visibility = "Visible"
                         },
                         new
@@ -14828,6 +15315,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 46,
                             Visibility = "Visible"
                         },
                         new
@@ -14850,6 +15338,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 46,
                             Visibility = "Visible"
                         },
                         new
@@ -14872,6 +15361,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 46,
                             Visibility = "Visible"
                         },
                         new
@@ -14894,6 +15384,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 46,
                             Visibility = "Visible"
                         },
                         new
@@ -14916,6 +15407,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 46,
                             Visibility = "Visible"
                         },
                         new
@@ -14938,6 +15430,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 46,
                             Visibility = "Visible"
                         },
                         new
@@ -14960,6 +15453,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 46,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -14982,6 +15476,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 46,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -15004,6 +15499,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 47,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -15026,6 +15522,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 47,
                             Visibility = "Visible"
                         },
                         new
@@ -15048,6 +15545,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 47,
                             Visibility = "Visible"
                         },
                         new
@@ -15070,6 +15568,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 47,
                             Visibility = "Visible"
                         },
                         new
@@ -15092,6 +15591,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 47,
                             Visibility = "Visible"
                         },
                         new
@@ -15114,6 +15614,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 47,
                             Visibility = "Visible"
                         },
                         new
@@ -15136,6 +15637,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 47,
                             Visibility = "Visible"
                         },
                         new
@@ -15158,6 +15660,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 47,
                             Visibility = "Visible"
                         },
                         new
@@ -15180,6 +15683,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 47,
                             Visibility = "Visible"
                         },
                         new
@@ -15202,6 +15706,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 47,
                             Visibility = "Visible"
                         },
                         new
@@ -15224,6 +15729,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 47,
                             Visibility = "Visible"
                         },
                         new
@@ -15246,6 +15752,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 47,
                             Visibility = "Visible"
                         },
                         new
@@ -15268,6 +15775,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 47,
                             Visibility = "Visible"
                         },
                         new
@@ -15290,6 +15798,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 47,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -15312,6 +15821,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 47,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -15334,6 +15844,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 48,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -15356,6 +15867,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 48,
                             Visibility = "Visible"
                         },
                         new
@@ -15378,6 +15890,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 48,
                             Visibility = "Visible"
                         },
                         new
@@ -15400,6 +15913,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 48,
                             Visibility = "Visible"
                         },
                         new
@@ -15422,6 +15936,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 48,
                             Visibility = "Visible"
                         },
                         new
@@ -15444,6 +15959,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 48,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -15466,6 +15982,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 48,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -15488,6 +16005,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 49,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -15510,6 +16028,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 49,
                             Visibility = "Visible"
                         },
                         new
@@ -15532,6 +16051,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 49,
                             Visibility = "Visible"
                         },
                         new
@@ -15554,6 +16074,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 49,
                             Visibility = "Visible"
                         },
                         new
@@ -15576,6 +16097,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 49,
                             Visibility = "Visible"
                         },
                         new
@@ -15598,6 +16120,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 49,
                             Visibility = "Visible"
                         },
                         new
@@ -15620,6 +16143,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 49,
                             Visibility = "Visible"
                         },
                         new
@@ -15642,6 +16166,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 49,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -15664,6 +16189,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 49,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -15686,6 +16212,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 50,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -15708,6 +16235,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 50,
                             Visibility = "Visible"
                         },
                         new
@@ -15730,6 +16258,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 50,
                             Visibility = "Visible"
                         },
                         new
@@ -15752,6 +16281,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 50,
                             Visibility = "Visible"
                         },
                         new
@@ -15774,6 +16304,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 50,
                             Visibility = "Visible"
                         },
                         new
@@ -15796,6 +16327,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 50,
                             Visibility = "Visible"
                         },
                         new
@@ -15818,6 +16350,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 50,
                             Visibility = "Visible"
                         },
                         new
@@ -15840,6 +16373,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 50,
                             Visibility = "Visible"
                         },
                         new
@@ -15862,6 +16396,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 50,
                             Visibility = "Visible"
                         },
                         new
@@ -15884,6 +16419,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 50,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -15906,6 +16442,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 50,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -15928,6 +16465,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 51,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -15950,6 +16488,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 51,
                             Visibility = "Visible"
                         },
                         new
@@ -15972,6 +16511,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 51,
                             Visibility = "Visible"
                         },
                         new
@@ -15994,6 +16534,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 51,
                             Visibility = "Visible"
                         },
                         new
@@ -16016,6 +16557,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 51,
                             Visibility = "Visible"
                         },
                         new
@@ -16038,6 +16580,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 51,
                             Visibility = "Visible"
                         },
                         new
@@ -16060,6 +16603,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 51,
                             Visibility = "Visible"
                         },
                         new
@@ -16082,6 +16626,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 51,
                             Visibility = "Visible"
                         },
                         new
@@ -16104,6 +16649,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 51,
                             Visibility = "Visible"
                         },
                         new
@@ -16126,6 +16672,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 51,
                             Visibility = "Visible"
                         },
                         new
@@ -16148,6 +16695,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 51,
                             Visibility = "Visible"
                         },
                         new
@@ -16170,6 +16718,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 51,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -16192,6 +16741,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 51,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -16214,6 +16764,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 52,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -16236,6 +16787,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 52,
                             Visibility = "Visible"
                         },
                         new
@@ -16258,6 +16810,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 52,
                             Visibility = "Visible"
                         },
                         new
@@ -16280,6 +16833,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 52,
                             Visibility = "Visible"
                         },
                         new
@@ -16302,6 +16856,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 52,
                             Visibility = "Visible"
                         },
                         new
@@ -16324,6 +16879,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 52,
                             Visibility = "Visible"
                         },
                         new
@@ -16346,6 +16902,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 52,
                             Visibility = "Visible"
                         },
                         new
@@ -16368,6 +16925,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 52,
                             Visibility = "Visible"
                         },
                         new
@@ -16390,6 +16948,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 52,
                             Visibility = "Visible"
                         },
                         new
@@ -16412,6 +16971,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 52,
                             Visibility = "Visible"
                         },
                         new
@@ -16434,6 +16994,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 52,
                             Visibility = "Visible"
                         },
                         new
@@ -16456,6 +17017,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 52,
                             Visibility = "Visible"
                         },
                         new
@@ -16478,6 +17040,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 52,
                             Visibility = "Visible"
                         },
                         new
@@ -16500,6 +17063,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 52,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -16522,6 +17086,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 52,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -16544,6 +17109,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 53,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -16566,6 +17132,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 53,
                             Visibility = "Visible"
                         },
                         new
@@ -16588,6 +17155,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 53,
                             Visibility = "Visible"
                         },
                         new
@@ -16610,6 +17178,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 53,
                             Visibility = "Visible"
                         },
                         new
@@ -16632,6 +17201,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 53,
                             Visibility = "Visible"
                         },
                         new
@@ -16654,6 +17224,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 53,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -16676,6 +17247,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 53,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -16698,6 +17270,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 54,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -16720,6 +17293,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 54,
                             Visibility = "Visible"
                         },
                         new
@@ -16742,6 +17316,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 54,
                             Visibility = "Visible"
                         },
                         new
@@ -16764,6 +17339,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 54,
                             Visibility = "Visible"
                         },
                         new
@@ -16786,6 +17362,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 54,
                             Visibility = "Visible"
                         },
                         new
@@ -16808,6 +17385,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 54,
                             Visibility = "Visible"
                         },
                         new
@@ -16830,6 +17408,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 54,
                             Visibility = "Visible"
                         },
                         new
@@ -16852,6 +17431,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 54,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -16874,6 +17454,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 54,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -16896,6 +17477,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 55,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -16918,6 +17500,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 55,
                             Visibility = "Visible"
                         },
                         new
@@ -16940,6 +17523,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 55,
                             Visibility = "Visible"
                         },
                         new
@@ -16962,6 +17546,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 55,
                             Visibility = "Visible"
                         },
                         new
@@ -16984,6 +17569,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 55,
                             Visibility = "Visible"
                         },
                         new
@@ -17006,6 +17592,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 55,
                             Visibility = "Visible"
                         },
                         new
@@ -17028,6 +17615,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 55,
                             Visibility = "Visible"
                         },
                         new
@@ -17050,6 +17638,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 55,
                             Visibility = "Visible"
                         },
                         new
@@ -17072,6 +17661,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 55,
                             Visibility = "Visible"
                         },
                         new
@@ -17094,6 +17684,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 55,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -17116,6 +17707,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 55,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -17138,6 +17730,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 56,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -17160,6 +17753,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 56,
                             Visibility = "Visible"
                         },
                         new
@@ -17182,6 +17776,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 56,
                             Visibility = "Visible"
                         },
                         new
@@ -17204,6 +17799,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 56,
                             Visibility = "Visible"
                         },
                         new
@@ -17226,6 +17822,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 56,
                             Visibility = "Visible"
                         },
                         new
@@ -17248,6 +17845,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 56,
                             Visibility = "Visible"
                         },
                         new
@@ -17270,6 +17868,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 56,
                             Visibility = "Visible"
                         },
                         new
@@ -17292,6 +17891,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 56,
                             Visibility = "Visible"
                         },
                         new
@@ -17314,6 +17914,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 56,
                             Visibility = "Visible"
                         },
                         new
@@ -17336,6 +17937,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 56,
                             Visibility = "Visible"
                         },
                         new
@@ -17358,6 +17960,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 56,
                             Visibility = "Visible"
                         },
                         new
@@ -17380,6 +17983,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 56,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -17402,6 +18006,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 56,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -17424,6 +18029,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 57,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -17446,6 +18052,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 57,
                             Visibility = "Visible"
                         },
                         new
@@ -17468,6 +18075,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 57,
                             Visibility = "Visible"
                         },
                         new
@@ -17490,6 +18098,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 57,
                             Visibility = "Visible"
                         },
                         new
@@ -17512,6 +18121,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 57,
                             Visibility = "Visible"
                         },
                         new
@@ -17534,6 +18144,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 57,
                             Visibility = "Visible"
                         },
                         new
@@ -17556,6 +18167,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 57,
                             Visibility = "Visible"
                         },
                         new
@@ -17578,6 +18190,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 57,
                             Visibility = "Visible"
                         },
                         new
@@ -17600,6 +18213,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 57,
                             Visibility = "Visible"
                         },
                         new
@@ -17622,6 +18236,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 57,
                             Visibility = "Visible"
                         },
                         new
@@ -17644,6 +18259,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 57,
                             Visibility = "Visible"
                         },
                         new
@@ -17666,6 +18282,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 57,
                             Visibility = "Visible"
                         },
                         new
@@ -17688,6 +18305,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 57,
                             Visibility = "Visible"
                         },
                         new
@@ -17710,6 +18328,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 57,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -17732,6 +18351,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 57,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -17754,6 +18374,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 58,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -17776,6 +18397,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 58,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -17798,6 +18420,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 58,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -17820,6 +18443,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 58,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -17842,6 +18466,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 58,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -17864,6 +18489,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 58,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -17886,6 +18512,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 58,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -17908,6 +18535,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 58,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -17930,6 +18558,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 58,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -17952,6 +18581,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 58,
                             Visibility = "Visible"
                         },
                         new
@@ -17974,6 +18604,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 58,
                             Visibility = "Visible"
                         },
                         new
@@ -17996,6 +18627,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 58,
                             Visibility = "Visible"
                         },
                         new
@@ -18018,6 +18650,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 58,
                             Visibility = "Visible"
                         },
                         new
@@ -18040,6 +18673,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 58,
                             Visibility = "Visible"
                         },
                         new
@@ -18062,6 +18696,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 58,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -18084,6 +18719,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 13,
                             Visibility = "Visible"
                         },
                         new
@@ -18106,6 +18742,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 13,
                             Visibility = "Visible"
                         },
                         new
@@ -18128,6 +18765,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 13,
                             Visibility = "Visible"
                         },
                         new
@@ -18150,6 +18788,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 13,
                             Visibility = "Visible"
                         },
                         new
@@ -18172,6 +18811,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 13,
                             Visibility = "Visible"
                         },
                         new
@@ -18194,6 +18834,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 13,
                             Visibility = "Visible"
                         },
                         new
@@ -18216,6 +18857,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 13,
                             Visibility = "Visible"
                         },
                         new
@@ -18238,6 +18880,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 59,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -18260,6 +18903,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 59,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -18282,6 +18926,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 59,
                             Visibility = "Visible"
                         },
                         new
@@ -18304,6 +18949,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 59,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -18326,6 +18972,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "time",
                             Type = "",
+                            ViewId = 59,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -18348,6 +18995,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 59,
                             Visibility = "Visible"
                         },
                         new
@@ -18370,6 +19018,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 59,
                             Visibility = "Visible"
                         },
                         new
@@ -18392,6 +19041,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 59,
                             Visibility = "Visible"
                         },
                         new
@@ -18414,6 +19064,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 59,
                             Visibility = "Visible"
                         },
                         new
@@ -18436,6 +19087,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 59,
                             Visibility = "Visible"
                         },
                         new
@@ -18458,6 +19110,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 59,
                             Visibility = "Visible"
                         },
                         new
@@ -18480,6 +19133,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 59,
                             Visibility = "Visible"
                         },
                         new
@@ -18502,6 +19156,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 59,
                             Visibility = "Visible"
                         },
                         new
@@ -18524,6 +19179,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 59,
                             Visibility = "Visible"
                         },
                         new
@@ -18546,6 +19202,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 59,
                             Visibility = "Visible"
                         },
                         new
@@ -18568,6 +19225,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 59,
                             Visibility = "Visible"
                         },
                         new
@@ -18590,6 +19248,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 60,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -18612,6 +19271,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 60,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -18634,6 +19294,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 60,
                             Visibility = "Visible"
                         },
                         new
@@ -18656,6 +19317,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 60,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -18678,6 +19340,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "time",
                             Type = "",
+                            ViewId = 60,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -18700,6 +19363,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 60,
                             Visibility = "Visible"
                         },
                         new
@@ -18722,6 +19386,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 60,
                             Visibility = "Visible"
                         },
                         new
@@ -18744,6 +19409,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 60,
                             Visibility = "Visible"
                         },
                         new
@@ -18766,6 +19432,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 60,
                             Visibility = "Visible"
                         },
                         new
@@ -18788,6 +19455,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 60,
                             Visibility = "Visible"
                         },
                         new
@@ -18810,6 +19478,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 60,
                             Visibility = "Visible"
                         },
                         new
@@ -18832,6 +19501,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 60,
                             Visibility = "Visible"
                         },
                         new
@@ -18854,6 +19524,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 60,
                             Visibility = "Visible"
                         },
                         new
@@ -18876,6 +19547,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 60,
                             Visibility = "Visible"
                         },
                         new
@@ -18898,6 +19570,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 60,
                             Visibility = "Visible"
                         },
                         new
@@ -18920,6 +19593,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 60,
                             Visibility = "Visible"
                         },
                         new
@@ -18942,6 +19616,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 61,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -18964,6 +19639,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 61,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -18986,6 +19662,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 61,
                             Visibility = "Visible"
                         },
                         new
@@ -19008,6 +19685,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 61,
                             Visibility = "Visible"
                         },
                         new
@@ -19030,6 +19708,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 61,
                             Visibility = "Visible"
                         },
                         new
@@ -19052,6 +19731,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 61,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -19074,6 +19754,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "time",
                             Type = "",
+                            ViewId = 61,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -19096,6 +19777,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 61,
                             Visibility = "Visible"
                         },
                         new
@@ -19118,6 +19800,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 61,
                             Visibility = "Visible"
                         },
                         new
@@ -19140,6 +19823,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 61,
                             Visibility = "Visible"
                         },
                         new
@@ -19162,6 +19846,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 61,
                             Visibility = "Visible"
                         },
                         new
@@ -19184,6 +19869,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 61,
                             Visibility = "Visible"
                         },
                         new
@@ -19206,6 +19892,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 61,
                             Visibility = "Visible"
                         },
                         new
@@ -19228,6 +19915,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 61,
                             Visibility = "Visible"
                         },
                         new
@@ -19250,6 +19938,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 61,
                             Visibility = "Visible"
                         },
                         new
@@ -19272,6 +19961,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 61,
                             Visibility = "Visible"
                         },
                         new
@@ -19294,6 +19984,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 61,
                             Visibility = "Visible"
                         },
                         new
@@ -19316,6 +20007,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 61,
                             Visibility = "Visible"
                         },
                         new
@@ -19338,6 +20030,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 61,
                             Visibility = "Visible"
                         },
                         new
@@ -19360,6 +20053,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 61,
                             Visibility = "Visible"
                         },
                         new
@@ -19382,6 +20076,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 4,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -19404,6 +20099,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "boolean",
                             StorageType = "bit",
                             Type = "",
+                            ViewId = 2,
                             Visibility = "Visible"
                         },
                         new
@@ -19426,6 +20122,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 2,
                             Visibility = "Visible"
                         },
                         new
@@ -19448,6 +20145,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 2,
                             Visibility = "Visible"
                         },
                         new
@@ -19470,6 +20168,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 62,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -19492,6 +20191,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 62,
                             Visibility = "Visible"
                         },
                         new
@@ -19514,6 +20214,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 62,
                             Visibility = "Visible"
                         },
                         new
@@ -19536,6 +20237,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 62,
                             Visibility = "Visible"
                         },
                         new
@@ -19558,6 +20260,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 62,
                             Visibility = "Visible"
                         },
                         new
@@ -19580,6 +20283,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 62,
                             Visibility = "Hidden"
                         },
                         new
@@ -19602,6 +20306,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "boolean",
                             StorageType = "bit",
                             Type = "",
+                            ViewId = 2,
                             Visibility = "Visible"
                         },
                         new
@@ -19624,6 +20329,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "boolean",
                             StorageType = "bit",
                             Type = "",
+                            ViewId = 2,
                             Visibility = "Visible"
                         },
                         new
@@ -19646,6 +20352,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 2,
                             Visibility = "Visible"
                         },
                         new
@@ -19668,6 +20375,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 2,
                             Visibility = "Visible"
                         },
                         new
@@ -19690,6 +20398,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 63,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -19712,6 +20421,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 63,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -19734,6 +20444,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 63,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -19756,6 +20467,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 63,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -19778,6 +20490,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 63,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -19800,6 +20513,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 63,
                             Visibility = "Visible"
                         },
                         new
@@ -19822,6 +20536,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 64,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -19844,6 +20559,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 64,
                             Visibility = "Visible"
                         },
                         new
@@ -19866,6 +20582,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 64,
                             Visibility = "Visible"
                         },
                         new
@@ -19888,6 +20605,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 2,
                             Visibility = "Visible"
                         },
                         new
@@ -19910,6 +20628,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 65,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -19932,6 +20651,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 65,
                             Visibility = "Visible"
                         },
                         new
@@ -19954,6 +20674,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 65,
                             Visibility = "Visible"
                         },
                         new
@@ -19976,6 +20697,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 65,
                             Visibility = "Visible"
                         },
                         new
@@ -19998,6 +20720,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 65,
                             Visibility = "Visible"
                         },
                         new
@@ -20020,6 +20743,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 66,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -20042,6 +20766,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 66,
                             Visibility = "Visible"
                         },
                         new
@@ -20064,6 +20789,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 66,
                             Visibility = "Visible"
                         },
                         new
@@ -20086,6 +20812,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 2,
                             Visibility = "Visible"
                         },
                         new
@@ -20108,6 +20835,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 67,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -20130,6 +20858,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 67,
                             Visibility = "Visible"
                         },
                         new
@@ -20152,6 +20881,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 67,
                             Visibility = "Visible"
                         },
                         new
@@ -20174,6 +20904,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 67,
                             Visibility = "Visible"
                         },
                         new
@@ -20196,6 +20927,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 67,
                             Visibility = "Visible"
                         },
                         new
@@ -20218,6 +20950,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 67,
                             Visibility = "Visible"
                         },
                         new
@@ -20240,6 +20973,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 3,
                             Visibility = "Hidden"
                         },
                         new
@@ -20262,6 +20996,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 37,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -20284,6 +21019,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 68,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -20306,6 +21042,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 68,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -20328,6 +21065,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 68,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -20350,6 +21088,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 68,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -20372,6 +21111,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 68,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -20394,6 +21134,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 68,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -20416,6 +21157,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 68,
                             Visibility = "Visible"
                         },
                         new
@@ -20438,6 +21180,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 68,
                             Visibility = "Visible"
                         },
                         new
@@ -20460,6 +21203,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 68,
                             Visibility = "Visible"
                         },
                         new
@@ -20482,6 +21226,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 68,
                             Visibility = "Visible"
                         },
                         new
@@ -20504,6 +21249,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 69,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -20526,6 +21272,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 69,
                             Visibility = "Visible"
                         },
                         new
@@ -20548,6 +21295,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 69,
                             Visibility = "Visible"
                         },
                         new
@@ -20570,6 +21318,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 69,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -20592,6 +21341,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 69,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -20614,6 +21364,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 69,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -20636,6 +21387,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 69,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -20658,6 +21410,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 70,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -20680,6 +21433,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 70,
                             Visibility = "Visible"
                         },
                         new
@@ -20702,6 +21456,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 70,
                             Visibility = "Visible"
                         },
                         new
@@ -20724,6 +21479,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 70,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -20746,6 +21502,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 70,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -20768,6 +21525,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 70,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -20790,6 +21548,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "smallint",
                             Type = "",
+                            ViewId = 70,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -20812,6 +21571,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 71,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -20834,6 +21594,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 71,
                             Visibility = "Visible"
                         },
                         new
@@ -20856,6 +21617,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "bigint",
                             Type = "",
+                            ViewId = 71,
                             Visibility = "Visible"
                         },
                         new
@@ -20878,6 +21640,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 71,
                             Visibility = "Visible"
                         },
                         new
@@ -20900,6 +21663,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 71,
                             Visibility = "Visible"
                         },
                         new
@@ -20922,6 +21686,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 71,
                             Visibility = "Visible"
                         },
                         new
@@ -20944,6 +21709,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 71,
                             Visibility = "Visible"
                         },
                         new
@@ -20966,6 +21732,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "boolean",
                             StorageType = "bit",
                             Type = "",
+                            ViewId = 71,
                             Visibility = "Visible"
                         },
                         new
@@ -20988,6 +21755,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 71,
                             Visibility = "Hidden"
                         },
                         new
@@ -21010,6 +21778,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "object",
                             StorageType = "(n/a)",
                             Type = "",
+                            ViewId = 71,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -21032,6 +21801,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 69,
                             Visibility = "Visible"
                         },
                         new
@@ -21054,6 +21824,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 71,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -21076,6 +21847,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 71,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -21098,6 +21870,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 72,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -21120,6 +21893,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "bigint",
                             Type = "",
+                            ViewId = 72,
                             Visibility = "Visible"
                         },
                         new
@@ -21142,6 +21916,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 72,
                             Visibility = "Visible"
                         },
                         new
@@ -21164,6 +21939,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 72,
                             Visibility = "Visible"
                         },
                         new
@@ -21186,6 +21962,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 72,
                             Visibility = "Visible"
                         },
                         new
@@ -21208,6 +21985,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 72,
                             Visibility = "Visible"
                         },
                         new
@@ -21230,6 +22008,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 72,
                             Visibility = "Visible"
                         },
                         new
@@ -21252,6 +22031,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 72,
                             Visibility = "Visible"
                         },
                         new
@@ -21274,6 +22054,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 72,
                             Visibility = "Visible"
                         },
                         new
@@ -21296,6 +22077,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 72,
                             Visibility = "Visible"
                         },
                         new
@@ -21318,6 +22100,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 72,
                             Visibility = "Visible"
                         },
                         new
@@ -21340,6 +22123,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 72,
                             Visibility = "Visible"
                         },
                         new
@@ -21362,6 +22146,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 72,
                             Visibility = "Visible"
                         },
                         new
@@ -21384,6 +22169,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 72,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -21406,6 +22192,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 73,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -21428,6 +22215,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 73,
                             Visibility = "Visible"
                         },
                         new
@@ -21450,6 +22238,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 73,
                             Visibility = "Visible"
                         },
                         new
@@ -21472,6 +22261,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "smallint",
                             Type = "",
+                            ViewId = 73,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -21494,6 +22284,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 73,
                             Visibility = "Visible"
                         },
                         new
@@ -21516,6 +22307,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 73,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -21538,6 +22330,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 73,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -21560,6 +22353,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 73,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -21582,6 +22376,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 71,
                             Visibility = "Visible"
                         },
                         new
@@ -21604,6 +22399,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 71,
                             Visibility = "Visible"
                         },
                         new
@@ -21626,6 +22422,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 69,
                             Visibility = "Visible"
                         },
                         new
@@ -21648,6 +22445,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 73,
                             Visibility = "Visible"
                         },
                         new
@@ -21670,6 +22468,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "smallint",
                             Type = "",
+                            ViewId = 73,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -21692,6 +22491,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 74,
                             Visibility = "Visible"
                         },
                         new
@@ -21714,6 +22514,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 74,
                             Visibility = "Visible"
                         },
                         new
@@ -21736,6 +22537,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 74,
                             Visibility = "Visible"
                         },
                         new
@@ -21758,6 +22560,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 74,
                             Visibility = "Visible"
                         },
                         new
@@ -21780,6 +22583,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Currency",
+                            ViewId = 74,
                             Visibility = "Visible"
                         },
                         new
@@ -21802,6 +22606,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 74,
                             Visibility = "Visible"
                         },
                         new
@@ -21824,6 +22629,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 74,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -21846,6 +22652,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 74,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -21868,6 +22675,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 74,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -21890,6 +22698,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 74,
                             Visibility = "Visible"
                         },
                         new
@@ -21912,6 +22721,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Boolean",
                             StorageType = "bit",
                             Type = "",
+                            ViewId = 74,
                             Visibility = "Visible"
                         },
                         new
@@ -21934,6 +22744,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Boolean",
                             StorageType = "bit",
                             Type = "",
+                            ViewId = 74,
                             Visibility = "Visible"
                         },
                         new
@@ -21956,6 +22767,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "bigint",
                             Type = "",
+                            ViewId = 75,
                             Visibility = "Visible"
                         },
                         new
@@ -21978,6 +22790,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 75,
                             Visibility = "Visible"
                         },
                         new
@@ -22000,6 +22813,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 75,
                             Visibility = "Visible"
                         },
                         new
@@ -22022,6 +22836,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 75,
                             Visibility = "Visible"
                         },
                         new
@@ -22044,6 +22859,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 75,
                             Visibility = "Visible"
                         },
                         new
@@ -22066,6 +22882,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 75,
                             Visibility = "Visible"
                         },
                         new
@@ -22088,6 +22905,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Currency",
+                            ViewId = 75,
                             Visibility = "Visible"
                         },
                         new
@@ -22110,6 +22928,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 75,
                             Visibility = "Visible"
                         },
                         new
@@ -22132,6 +22951,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 75,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -22154,6 +22974,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 75,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -22176,6 +22997,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 75,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -22198,6 +23020,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 75,
                             Visibility = "Visible"
                         },
                         new
@@ -22220,6 +23043,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Boolean",
                             StorageType = "bit",
                             Type = "",
+                            ViewId = 75,
                             Visibility = "Visible"
                         },
                         new
@@ -22242,6 +23066,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Boolean",
                             StorageType = "bit",
                             Type = "",
+                            ViewId = 75,
                             Visibility = "Visible"
                         },
                         new
@@ -22264,6 +23089,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "bigint",
                             Type = "",
+                            ViewId = 74,
                             Visibility = "Visible"
                         },
                         new
@@ -22286,6 +23112,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 74,
                             Visibility = "Visible"
                         },
                         new
@@ -22308,6 +23135,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 76,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -22330,6 +23158,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "object",
                             StorageType = "(n/a)",
                             Type = "",
+                            ViewId = 76,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -22352,6 +23181,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 76,
                             Visibility = "Visible"
                         },
                         new
@@ -22374,6 +23204,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 76,
                             Visibility = "Visible"
                         },
                         new
@@ -22396,6 +23227,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 76,
                             Visibility = "Hidden"
                         },
                         new
@@ -22418,6 +23250,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 76,
                             Visibility = "Hidden"
                         },
                         new
@@ -22440,6 +23273,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 76,
                             Visibility = "Hidden"
                         },
                         new
@@ -22462,6 +23296,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 76,
                             Visibility = "Hidden"
                         },
                         new
@@ -22484,6 +23319,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 76,
                             Visibility = "Hidden"
                         },
                         new
@@ -22506,6 +23342,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 76,
                             Visibility = "Hidden"
                         },
                         new
@@ -22528,6 +23365,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 72,
                             Visibility = "Visible"
                         },
                         new
@@ -22550,6 +23388,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 72,
                             Visibility = "Visible"
                         },
                         new
@@ -22572,6 +23411,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 76,
                             Visibility = "Visible"
                         },
                         new
@@ -22594,6 +23434,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 76,
                             Visibility = "Visible"
                         },
                         new
@@ -22616,6 +23457,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 76,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -22638,6 +23480,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 76,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -22660,6 +23503,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 77,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -22682,6 +23526,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Object",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 77,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -22704,6 +23549,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "boolean",
                             StorageType = "bit",
                             Type = "",
+                            ViewId = 77,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -22726,6 +23572,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 77,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -22748,6 +23595,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 77,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -22770,6 +23618,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 77,
                             Visibility = "Visible"
                         },
                         new
@@ -22792,6 +23641,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 77,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -22814,6 +23664,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 77,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -22836,6 +23687,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 77,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -22858,6 +23710,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 77,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -22880,6 +23733,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 77,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -22902,6 +23756,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 77,
                             Visibility = "Visible"
                         },
                         new
@@ -22924,6 +23779,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 77,
                             Visibility = "Visible"
                         },
                         new
@@ -22946,6 +23802,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 77,
                             Visibility = "Hidden"
                         },
                         new
@@ -22968,6 +23825,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 77,
                             Visibility = "Hidden"
                         },
                         new
@@ -22990,6 +23848,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 77,
                             Visibility = "Hidden"
                         },
                         new
@@ -23012,6 +23871,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 77,
                             Visibility = "Hidden"
                         },
                         new
@@ -23034,6 +23894,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 77,
                             Visibility = "Hidden"
                         },
                         new
@@ -23056,6 +23917,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 77,
                             Visibility = "Hidden"
                         },
                         new
@@ -23078,6 +23940,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "money",
                             Type = "Money",
+                            ViewId = 77,
                             Visibility = "Visible"
                         },
                         new
@@ -23100,6 +23963,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 77,
                             Visibility = "Visible"
                         },
                         new
@@ -23122,6 +23986,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 77,
                             Visibility = "Visible"
                         },
                         new
@@ -23144,6 +24009,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 6,
                             Visibility = "Visible"
                         },
                         new
@@ -23166,6 +24032,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 7,
                             Visibility = "Visible"
                         },
                         new
@@ -23188,6 +24055,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 8,
                             Visibility = "Visible"
                         },
                         new
@@ -23210,6 +24078,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 70,
                             Visibility = "Visible"
                         },
                         new
@@ -23232,6 +24101,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 73,
                             Visibility = "Visible"
                         },
                         new
@@ -23254,6 +24124,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 70,
                             Visibility = "Hidden"
                         },
                         new
@@ -23276,6 +24147,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 70,
                             Visibility = "Hidden"
                         },
                         new
@@ -23298,6 +24170,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 70,
                             Visibility = "Hidden"
                         },
                         new
@@ -23320,6 +24193,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 70,
                             Visibility = "Hidden"
                         },
                         new
@@ -23342,6 +24216,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 73,
                             Visibility = "Hidden"
                         },
                         new
@@ -23364,6 +24239,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 73,
                             Visibility = "Hidden"
                         },
                         new
@@ -23386,6 +24262,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 73,
                             Visibility = "Hidden"
                         },
                         new
@@ -23408,6 +24285,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 73,
                             Visibility = "Hidden"
                         },
                         new
@@ -23430,6 +24308,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 30,
                             Visibility = "Hidden"
                         },
                         new
@@ -23452,6 +24331,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 30,
                             Visibility = "Hidden"
                         },
                         new
@@ -23474,6 +24354,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 30,
                             Visibility = "Hidden"
                         },
                         new
@@ -23496,6 +24377,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 30,
                             Visibility = "Hidden"
                         },
                         new
@@ -23518,6 +24400,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 31,
                             Visibility = "Hidden"
                         },
                         new
@@ -23540,6 +24423,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 31,
                             Visibility = "Hidden"
                         },
                         new
@@ -23562,6 +24446,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 31,
                             Visibility = "Hidden"
                         },
                         new
@@ -23584,6 +24469,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 31,
                             Visibility = "Hidden"
                         },
                         new
@@ -23606,6 +24492,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 1,
                             Visibility = "Hidden"
                         },
                         new
@@ -23628,6 +24515,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 1,
                             Visibility = "Hidden"
                         },
                         new
@@ -23650,6 +24538,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 1,
                             Visibility = "Hidden"
                         },
                         new
@@ -23672,6 +24561,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 1,
                             Visibility = "Hidden"
                         },
                         new
@@ -23694,6 +24584,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 7,
                             Visibility = "Hidden"
                         },
                         new
@@ -23716,6 +24607,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 7,
                             Visibility = "Hidden"
                         },
                         new
@@ -23738,6 +24630,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 7,
                             Visibility = "Hidden"
                         },
                         new
@@ -23760,6 +24653,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 7,
                             Visibility = "Hidden"
                         },
                         new
@@ -23782,6 +24676,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 6,
                             Visibility = "Hidden"
                         },
                         new
@@ -23804,6 +24699,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 6,
                             Visibility = "Hidden"
                         },
                         new
@@ -23826,6 +24722,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 6,
                             Visibility = "Hidden"
                         },
                         new
@@ -23848,6 +24745,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 6,
                             Visibility = "Hidden"
                         },
                         new
@@ -23870,6 +24768,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 8,
                             Visibility = "Hidden"
                         },
                         new
@@ -23892,6 +24791,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 8,
                             Visibility = "Hidden"
                         },
                         new
@@ -23914,6 +24814,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 8,
                             Visibility = "Hidden"
                         },
                         new
@@ -23936,6 +24837,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 8,
                             Visibility = "Hidden"
                         },
                         new
@@ -23958,6 +24860,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 3,
                             Visibility = "Hidden"
                         },
                         new
@@ -23980,6 +24883,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 3,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -24002,6 +24906,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 78,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -24024,6 +24929,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 78,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -24046,6 +24952,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 78,
                             Visibility = "Visible"
                         },
                         new
@@ -24068,6 +24975,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 78,
                             Visibility = "Visible"
                         },
                         new
@@ -24090,6 +24998,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 78,
                             Visibility = "Visible"
                         },
                         new
@@ -24112,6 +25021,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 100001,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -24134,6 +25044,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 100001,
                             Visibility = "Visible"
                         },
                         new
@@ -24156,6 +25067,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 100001,
                             Visibility = "Visible"
                         },
                         new
@@ -24169,7 +25081,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             GroupName = "",
                             IsDynamic = false,
                             IsFixedLength = false,
-                            IsNullable = false,
+                            IsNullable = true,
                             Length = 1024,
                             MinLength = 0,
                             ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -24178,6 +25090,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 100001,
                             Visibility = "Visible"
                         },
                         new
@@ -24191,7 +25104,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             GroupName = "",
                             IsDynamic = false,
                             IsFixedLength = false,
-                            IsNullable = false,
+                            IsNullable = true,
                             Length = 64,
                             MinLength = 0,
                             ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -24200,6 +25113,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 100001,
                             Visibility = "Visible"
                         },
                         new
@@ -24213,7 +25127,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             GroupName = "",
                             IsDynamic = false,
                             IsFixedLength = false,
-                            IsNullable = false,
+                            IsNullable = true,
                             Length = 64,
                             MinLength = 0,
                             ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -24222,6 +25136,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 100001,
                             Visibility = "Visible"
                         },
                         new
@@ -24235,7 +25150,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             GroupName = "",
                             IsDynamic = false,
                             IsFixedLength = false,
-                            IsNullable = false,
+                            IsNullable = true,
                             Length = 64,
                             MinLength = 0,
                             ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -24244,6 +25159,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 100001,
                             Visibility = "Visible"
                         },
                         new
@@ -24254,7 +25170,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             DisplayIndex = (short)7,
                             DotNetType = "System.Boolean",
                             Expression = "",
-                            GroupName = "",
+                            GroupName = "IsActive",
                             IsDynamic = false,
                             IsFixedLength = false,
                             IsNullable = false,
@@ -24266,6 +25182,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "boolean",
                             StorageType = "bit",
                             Type = "",
+                            ViewId = 100001,
                             Visibility = "Visible"
                         },
                         new
@@ -24288,6 +25205,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 100001,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -24310,6 +25228,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 100001,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -24332,6 +25251,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "",
                             StorageType = "",
                             Type = "",
+                            ViewId = 100001,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -24354,6 +25274,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 100001,
                             Visibility = "Hidden"
                         },
                         new
@@ -24376,6 +25297,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 100002,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -24398,6 +25320,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 100002,
                             Visibility = "Visible"
                         },
                         new
@@ -24420,6 +25343,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 100002,
                             Visibility = "Visible"
                         },
                         new
@@ -24442,6 +25366,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 100002,
                             Visibility = "Visible"
                         },
                         new
@@ -24464,6 +25389,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 100002,
                             Visibility = "Visible"
                         },
                         new
@@ -24486,6 +25412,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "smallint",
                             Type = "",
+                            ViewId = 100002,
                             Visibility = "Visible"
                         },
                         new
@@ -24508,6 +25435,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "boolean",
                             StorageType = "bit",
                             Type = "",
+                            ViewId = 100002,
                             Visibility = "Visible"
                         },
                         new
@@ -24530,6 +25458,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 100002,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -24552,6 +25481,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 100002,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -24574,6 +25504,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "",
+                            ViewId = 100002,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -24596,6 +25527,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 100002,
                             Visibility = "Hidden"
                         },
                         new
@@ -24618,6 +25550,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 100003,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -24640,6 +25573,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 100003,
                             Visibility = "Visible"
                         },
                         new
@@ -24662,6 +25596,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 100003,
                             Visibility = "Visible"
                         },
                         new
@@ -24684,6 +25619,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 100003,
                             Visibility = "Visible"
                         },
                         new
@@ -24706,6 +25642,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "smallint",
                             Type = "",
+                            ViewId = 100003,
                             Visibility = "Visible"
                         },
                         new
@@ -24728,6 +25665,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 100003,
                             Visibility = "Visible"
                         },
                         new
@@ -24750,6 +25688,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 100003,
                             Visibility = "Visible"
                         },
                         new
@@ -24772,6 +25711,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "boolean",
                             StorageType = "bit",
                             Type = "",
+                            ViewId = 100003,
                             Visibility = "Visible"
                         },
                         new
@@ -24794,6 +25734,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 100003,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -24816,6 +25757,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 100003,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -24838,6 +25780,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 100004,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -24860,6 +25803,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 100004,
                             Visibility = "Visible"
                         },
                         new
@@ -24882,6 +25826,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 100004,
                             Visibility = "Visible"
                         },
                         new
@@ -24904,6 +25849,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 100004,
                             Visibility = "Visible"
                         },
                         new
@@ -24926,6 +25872,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "smallint",
                             Type = "",
+                            ViewId = 100004,
                             Visibility = "Visible"
                         },
                         new
@@ -24948,6 +25895,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "boolean",
                             StorageType = "bit",
                             Type = "",
+                            ViewId = 100004,
                             Visibility = "Visible"
                         },
                         new
@@ -24970,6 +25918,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 100004,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -24992,6 +25941,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 100004,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -25014,6 +25964,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 100004,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -25036,6 +25987,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 100004,
                             Visibility = "Hidden"
                         },
                         new
@@ -25058,6 +26010,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 100005,
                             Visibility = "AlwaysVisible"
                         },
                         new
@@ -25080,6 +26033,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 100005,
                             Visibility = "Visible"
                         },
                         new
@@ -25102,6 +26056,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 100005,
                             Visibility = "Visible"
                         },
                         new
@@ -25124,6 +26079,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "string",
                             StorageType = "nvarchar",
                             Type = "",
+                            ViewId = 100005,
                             Visibility = "Visible"
                         },
                         new
@@ -25146,6 +26102,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "boolean",
                             StorageType = "bit",
                             Type = "",
+                            ViewId = 100005,
                             Visibility = "Visible"
                         },
                         new
@@ -25168,6 +26125,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "",
                             StorageType = "",
                             Type = "",
+                            ViewId = 100005,
                             Visibility = "Visible"
                         },
                         new
@@ -25190,6 +26148,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "number",
                             StorageType = "int",
                             Type = "",
+                            ViewId = 100005,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -25212,6 +26171,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "",
                             StorageType = "",
                             Type = "",
+                            ViewId = 100005,
                             Visibility = "AlwaysHidden"
                         },
                         new
@@ -25234,6 +26194,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             ScriptType = "Date",
                             StorageType = "datetime",
                             Type = "Default",
+                            ViewId = 100005,
                             Visibility = "Hidden"
                         });
                 });
@@ -25299,6 +26260,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 1,
                             HotKey = "",
                             IconName = "folder-close",
+                            Index = 1,
                             ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RouteUrl = "",
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
@@ -25557,6 +26519,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 23,
                             HotKey = "",
                             IconName = "folder-close",
+                            Index = 3,
                             ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RouteUrl = "",
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
@@ -25603,6 +26566,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 27,
                             HotKey = "",
                             IconName = "folder-close",
+                            Index = 4,
                             ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RouteUrl = "",
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
@@ -25670,9 +26634,54 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                         },
                         new
                         {
+                            Id = 33,
+                            HotKey = "",
+                            IconName = "folder-close",
+                            Index = 0,
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RouteUrl = "",
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            TitleKey = "Profile"
+                        },
+                        new
+                        {
+                            Id = 34,
+                            HotKey = "",
+                            IconName = "eye-open",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ParentId = 33,
+                            RouteUrl = "/admin/changePassword",
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            TitleKey = "ChangePassword"
+                        },
+                        new
+                        {
+                            Id = 35,
+                            HotKey = "Ctrl+Shift+X",
+                            IconName = "log-out",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ParentId = 33,
+                            RouteUrl = "/logout",
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            TitleKey = "LogOut"
+                        },
+                        new
+                        {
+                            Id = 36,
+                            HotKey = "",
+                            IconName = "tasks",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ParentId = 33,
+                            RouteUrl = "/login",
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            TitleKey = "ChangeCompany"
+                        },
+                        new
+                        {
                             Id = 37,
                             HotKey = "",
                             IconName = "folder-close",
+                            Index = 5,
                             ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RouteUrl = "",
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
@@ -25850,6 +26859,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                             Id = 52,
                             HotKey = "",
                             IconName = "folder-close",
+                            Index = 2,
                             ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RouteUrl = "",
                             RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
@@ -35633,7 +36643,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 {
                     b.HasOne("SPPC.Tadbir.Model.Config.Setting", "Parent")
                         .WithMany()
-                        .HasForeignKey("ParentID")
+                        .HasForeignKey("ParentId")
                         .HasConstraintName("FK_Config_Setting_Config_Parent");
 
                     b.Navigation("Parent");
@@ -35813,7 +36823,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations.System
                 {
                     b.HasOne("SPPC.Tadbir.Model.Metadata.View", "View")
                         .WithMany("Columns")
-                        .HasForeignKey("ViewID")
+                        .HasForeignKey("ViewId")
                         .HasConstraintName("FK_Metadata_Column_Metadata_View");
 
                     b.Navigation("View");

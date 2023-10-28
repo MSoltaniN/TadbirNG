@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Corporate;
-using SPPC.Tadbir.Model.ProductScope;
 
 namespace SPPC.Tadbir.Persistence.Seeding
 {

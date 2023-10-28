@@ -36,7 +36,9 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="modelBuilder">Builder instance used for mapping definitions</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
             modelBuilder.ApplyConfiguration(new VersionConfiguration());
+            modelBuilder.ApplyConfiguration(new SysSettingConfiguration());
             modelBuilder.ApplyConfiguration(new CompanyDbConfiguration());
             modelBuilder.ApplyConfiguration(new PersonConfiguration());
 
@@ -52,6 +54,8 @@ namespace SPPC.Tadbir.Persistence
 
             modelBuilder.ApplyConfiguration(new LocaleConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new UserRoleConfiguration());
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
 
             modelBuilder.ApplyConfiguration(new ViewConfiguration());
             modelBuilder.ApplyConfiguration(new ColumnConfiguration());

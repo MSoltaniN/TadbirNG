@@ -10,8 +10,8 @@ using SPPC.Tadbir.Persistence;
 namespace SPPC.Tadbir.Web.Api.Migrations
 {
     [DbContext(typeof(TadbirContext))]
-    [Migration("20231023094833_Initial")]
-    partial class Initial
+    [Migration("20231028164647_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -4564,8 +4564,9 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("datetime")
                         .HasDefaultValueSql("(getdate())");
 
-                    b.Property<int?>("ParentID")
-                        .HasColumnType("int");
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int")
+                        .HasColumnName("ParentId");
 
                     b.Property<Guid>("RowGuid")
                         .ValueGeneratedOnAdd()
@@ -4595,9 +4596,164 @@ namespace SPPC.Tadbir.Web.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ParentID");
+                    b.HasIndex("ParentId");
 
                     b.ToTable("Setting", "Config");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DefaultValues = "{\"useLeafDetails\": true, \"useLeafCostCenters\": true,\"useLeafProjects\": true}",
+                            DescriptionKey = "AccountRelationsSettingsDescription",
+                            IsStandalone = true,
+                            ModelType = "RelationsConfig",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            ScopeType = (short)1,
+                            TitleKey = "AccountRelationsSettings",
+                            Type = (short)2,
+                            Values = "{\"useLeafDetails\": true, \"useLeafCostCenters\": true,\"useLeafProjects\": true}"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DefaultValues = "{\"defaultDateRange\": \"FiscalStartToFiscalEnd\"}",
+                            DescriptionKey = "QuickReportSettingsDescription",
+                            IsStandalone = true,
+                            ModelType = "DateRangeConfig",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            ScopeType = (short)0,
+                            TitleKey = "DateRangeFilterSettings",
+                            Type = (short)2,
+                            Values = "{\"defaultDateRange\": \"FiscalStartToFiscalEnd\"}"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            DefaultValues = "{\"useSeparator\": true, \"separatorMode\": \"UseCustom\", \"separatorSymbol\": \", \", \"decimalPrecision\": 0, \"maxPrecision\": 8}",
+                            DescriptionKey = "NumberCurrencySettingsDescription",
+                            IsStandalone = true,
+                            ModelType = "NumberDisplayConfig",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            ScopeType = (short)0,
+                            TitleKey = "NumberCurrencySettings",
+                            Type = (short)2,
+                            Values = "{\"useSeparator\": true, \"separatorMode\": \"UseCustom\", \"separatorSymbol\": \",\" , \"decimalPrecision\": 0, \"maxPrecision\": 8}"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            DefaultValues = "{}",
+                            DescriptionKey = "ViewTreeSettingsDescription",
+                            IsStandalone = false,
+                            ModelType = "ViewTreeConfig",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            ScopeType = (short)2,
+                            TitleKey = "ViewTreeSettings",
+                            Type = (short)2,
+                            Values = "{}"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            DefaultValues = "{}",
+                            DescriptionKey = "QuickSearchSettingsDescription",
+                            IsStandalone = false,
+                            ModelType = "QuickSearchConfig",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            ScopeType = (short)2,
+                            TitleKey = "QuickSearchSettings",
+                            Type = (short)3,
+                            Values = "{}"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            DefaultValues = "{\"defaultCurrencyNameKey\":\"CUnit_IranianRial\",\"defaultDecimalCount\":0,\"defaultCalendar\":0,\"defaultCalendars\": [{\"language\":\"fa\", \"calendar\":0}, {\"language\":\"en\", \"calendar\":1}],\"usesDefaultCoding\":true,\"inventoryMode\": 1}",
+                            DescriptionKey = "SystemConfigurationDescription",
+                            IsStandalone = true,
+                            ModelType = "SystemConfig",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            ScopeType = (short)1,
+                            TitleKey = "SystemConfigurationSettings",
+                            Type = (short)2,
+                            Values = "{\"defaultCurrencyNameKey\":\"CUnit_IranianRial\",\"defaultDecimalCount\":0,\"defaultCalendar\":0,\"defaultCalendars\": [{\"language\":\"fa\", \"calendar\":0}, {\"language\":\"en\", \"calendar\":1}],\"usesDefaultCoding\":true,\"inventoryMode\": 1}"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            DefaultValues = "{\"openingAsFirstVoucher\":false,\"startTurnoverAsInitBalance\":false}",
+                            DescriptionKey = "FinanceReportSettingsDescription",
+                            IsStandalone = true,
+                            ModelType = "FinanceReportConfig",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            ScopeType = (short)1,
+                            TitleKey = "FinanceReportSettings",
+                            Type = (short)2,
+                            Values = "{\"openingAsFirstVoucher\":false,\"startTurnoverAsInitBalance\":false}"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            DefaultValues = "{}",
+                            IsStandalone = false,
+                            ModelType = "FormLabelConfig",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            ScopeType = (short)3,
+                            TitleKey = "FormLabelSettings",
+                            Type = (short)2,
+                            Values = "{}"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            DefaultValues = "{}",
+                            DescriptionKey = "UserProfileSettingsDescription",
+                            IsStandalone = false,
+                            ModelType = "UserProfileConfig",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            ScopeType = (short)1,
+                            TitleKey = "UserProfileSettings",
+                            Type = (short)3,
+                            Values = "{}"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            DefaultValues = "{\"registerFlowConfig\":{\"confirmAfterSave\":true, \"approveAfterConfirm\": true, \"registerAfterApprove\": true},\"registerConfig\":{\"registerOnLastValidVoucher\": true, \"registerOnCreatedVoucher\": false, \"checkedVoucher\": false}}",
+                            DescriptionKey = "ReceiptSettingsDescription",
+                            IsStandalone = true,
+                            ModelType = "ReceiptConfig",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            ScopeType = (short)1,
+                            TitleKey = "ReceiptSettings",
+                            Type = (short)2,
+                            Values = "{\"registerFlowConfig\":{\"confirmAfterSave\":true, \"approveAfterConfirm\": true, \"registerAfterApprove\": true},\"registerConfig\":{\"registerWithLastValidVoucher\": true, \"registerWithNewCreatedVoucher\": false, \"checkedVoucher\": false}}"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            DefaultValues = "{\"registerFlowConfig\":{\"confirmAfterSave\":true, \"approveAfterConfirm\": true, \"registerAfterApprove\": true},\"registerConfig\":{\"registerOnLastValidVoucher\": true, \"registerOnCreatedVoucher\": false, \"checkedVoucher\": false}}",
+                            DescriptionKey = "PaymentSettingsDescription",
+                            IsStandalone = true,
+                            ModelType = "PaymentSettings",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            ScopeType = (short)1,
+                            TitleKey = "PaymentSettings",
+                            Type = (short)2,
+                            Values = "{\"registerFlowConfig\":{\"confirmAfterSave\":true, \"approveAfterConfirm\": true, \"registerAfterApprove\": true},\"registerConfig\":{\"registerWithLastValidVoucher\": true, \"registerWithNewCreatedVoucher\": false, \"checkedVoucher\": false}}"
+                        });
                 });
 
             modelBuilder.Entity("SPPC.Tadbir.Model.Config.UserSetting", b =>
@@ -4760,6 +4916,52 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ViewSetting", "Config");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DefaultValues = "{\"viewId\":1,\"maxDepth\":3,\"levels\":[{\"no\":1,\"name\":\"LevelGeneral\",\"codeLength\":3,\"isEnabled\": true,\"isUsed\":true},{\"no\":2,\"name\":\"LevelAuxiliary\",\"codeLength\":3,\"isEnabled\": true,\"isUsed\":true},{\"no\":3,\"name\":\"LevelDetail\",\"codeLength\":4,\"isEnabled\": true,\"isUsed\":true},{\"no\":4,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":5,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":6,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":7,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":8,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":9,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":10,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":11,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":12,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":13,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":14,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":15,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":16,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false}]}",
+                            ModelType = "ViewTreeConfig",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            SettingId = 5,
+                            Values = "{\"viewId\":1,\"maxDepth\":3,\"levels\":[{\"no\":1,\"name\":\"LevelGeneral\",\"codeLength\":3,\"isEnabled\": true,\"isUsed\":true},{\"no\":2,\"name\":\"LevelAuxiliary\",\"codeLength\":3,\"isEnabled\": true,\"isUsed\":true},{\"no\":3,\"name\":\"LevelDetail\",\"codeLength\":4,\"isEnabled\": true,\"isUsed\":true},{\"no\":4,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":5,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":6,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":7,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":8,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":9,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":10,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":11,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":12,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":13,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":14,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":15,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":16,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false}]}",
+                            ViewId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DefaultValues = "{\"viewId\":6,\"maxDepth\":4,\"levels\":[{\"no\":1,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":2,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":3,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":4,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":5,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":6,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":7,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":8,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":9,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":10,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":11,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":12,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":13,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":14,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":15,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":16,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false}]}",
+                            ModelType = "ViewTreeConfig",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            SettingId = 5,
+                            Values = "{\"viewId\":6,\"maxDepth\":4,\"levels\":[{\"no\":1,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":2,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":3,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":4,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":5,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":6,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":7,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":8,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":9,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":10,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":11,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":12,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":13,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":14,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":15,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":16,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false}]}",
+                            ViewId = 6
+                        },
+                        new
+                        {
+                            Id = 3,
+                            DefaultValues = "{\"viewId\":7,\"maxDepth\":4,\"levels\":[{\"no\":1,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":2,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":3,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":4,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":5,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":6,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":7,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":8,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":9,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":10,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":11,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":12,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":13,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":14,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":15,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":16,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false}]}",
+                            ModelType = "ViewTreeConfig",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            SettingId = 5,
+                            Values = "{\"viewId\":7,\"maxDepth\":4,\"levels\":[{\"no\":1,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":2,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":3,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":4,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":5,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":6,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":7,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":8,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":9,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":10,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":11,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":12,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":13,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":14,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":15,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":16,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false}]}",
+                            ViewId = 7
+                        },
+                        new
+                        {
+                            Id = 4,
+                            DefaultValues = "{\"viewId\":8,\"maxDepth\":4,\"levels\":[{\"no\":1,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":2,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":3,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":4,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":5,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":6,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":7,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":8,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":9,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":10,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":11,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":12,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":13,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":14,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":15,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":16,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false}]}",
+                            ModelType = "ViewTreeConfig",
+                            ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RowGuid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            SettingId = 5,
+                            Values = "{\"viewId\":8,\"maxDepth\":4,\"levels\":[{\"no\":1,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":2,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":3,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":4,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":5,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":6,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":7,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":8,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":9,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":10,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":11,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":12,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":13,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":14,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":15,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":16,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false}]}",
+                            ViewId = 8
+                        });
                 });
 
             modelBuilder.Entity("SPPC.Tadbir.Model.Core.DocumentStatus", b =>
@@ -6172,6 +6374,9 @@ namespace SPPC.Tadbir.Web.Api.Migrations
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime");
+
+                    b.Property<int>("InventoryMode")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("ModifiedDate")
                         .ValueGeneratedOnAdd()
@@ -9006,7 +9211,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 {
                     b.HasOne("SPPC.Tadbir.Model.Config.Setting", "Parent")
                         .WithMany()
-                        .HasForeignKey("ParentID")
+                        .HasForeignKey("ParentId")
                         .HasConstraintName("FK_Config_Setting_Config_Parent");
 
                     b.Navigation("Parent");

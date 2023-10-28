@@ -41,6 +41,8 @@ namespace SPPC.Tadbir.Persistence
         {
             var entityTypes = modelBuilder.Model.GetEntityTypes();
 
+            modelBuilder.ApplyConfiguration(new SettingConfiguration());
+            modelBuilder.ApplyConfiguration(new ViewSettingConfiguration());
             modelBuilder.ApplyConfiguration(new SubSystemConfiguration());
             modelBuilder.ApplyConfiguration(new OperationSourceTypeConfiguration());
             modelBuilder.ApplyConfiguration(new OperationSourceConfiguration());

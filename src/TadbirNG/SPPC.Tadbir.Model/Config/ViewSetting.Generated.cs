@@ -11,6 +11,7 @@
 // ------------------------------------------------------------------------------
 
 using System;
+using System.ComponentModel.DataAnnotations;
 using SPPC.Framework.Domain;
 
 namespace SPPC.Tadbir.Model.Config
@@ -28,7 +29,7 @@ namespace SPPC.Tadbir.Model.Config
             ModelType = String.Empty;
             Values = String.Empty;
             DefaultValues = String.Empty;
-            ModifiedDate = DateTime.Now;
+            //ModifiedDate = DateTime.Now;
         }
 
         /// <summary>
@@ -49,11 +50,13 @@ namespace SPPC.Tadbir.Model.Config
         /// <summary>
         /// ریز اطلاعات تنظیمات که با فرمت مشخصی ذخیره و بازیابی می شود
         /// </summary>
+        [MaxLength]
         public virtual string Values { get; set; }
 
         /// <summary>
         /// ریز اطلاعات تنظیمات پیش فرض که با فرمت مشخصی ذخیره و بازیابی می شود
         /// </summary>
+        [MaxLength]
         public virtual string DefaultValues { get; set; }
     }
 }

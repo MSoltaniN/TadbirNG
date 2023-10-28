@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SPPC.Tadbir.Web.Api.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -236,6 +236,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 {
                     FiscalPeriodId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    InventoryMode = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -359,6 +360,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 {
                     SettingId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    ParentId = table.Column<int>(type: "int", nullable: true),
                     Subsystem = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
                     TitleKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     Type = table.Column<short>(type: "smallint", nullable: false),
@@ -368,7 +370,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     DefaultValues = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false),
                     DescriptionKey = table.Column<string>(type: "nvarchar(1028)", maxLength: 1028, nullable: true),
                     IsStandalone = table.Column<bool>(type: "bit", nullable: false),
-                    ParentID = table.Column<int>(type: "int", nullable: true),
                     rowguid = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
                     ModifiedDate = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "(getdate())")
                 },
@@ -377,7 +378,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     table.PrimaryKey("PK_Setting", x => x.SettingId);
                     table.ForeignKey(
                         name: "FK_Config_Setting_Config_Parent",
-                        column: x => x.ParentID,
+                        column: x => x.ParentId,
                         principalSchema: "Config",
                         principalTable: "Setting",
                         principalColumn: "SettingId",
@@ -2463,6 +2464,37 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 });
 
             migrationBuilder.InsertData(
+                schema: "Config",
+                table: "Setting",
+                columns: new[] { "SettingId", "DefaultValues", "DescriptionKey", "IsStandalone", "ModelType", "ParentId", "ScopeType", "Subsystem", "TitleKey", "Type", "Values" },
+                values: new object[,]
+                {
+                    { 1, "{\"useLeafDetails\": true, \"useLeafCostCenters\": true,\"useLeafProjects\": true}", "AccountRelationsSettingsDescription", true, "RelationsConfig", null, (short)1, null, "AccountRelationsSettings", (short)2, "{\"useLeafDetails\": true, \"useLeafCostCenters\": true,\"useLeafProjects\": true}" },
+                    { 2, "{\"defaultDateRange\": \"FiscalStartToFiscalEnd\"}", "QuickReportSettingsDescription", true, "DateRangeConfig", null, (short)0, null, "DateRangeFilterSettings", (short)2, "{\"defaultDateRange\": \"FiscalStartToFiscalEnd\"}" },
+                    { 3, "{\"useSeparator\": true, \"separatorMode\": \"UseCustom\", \"separatorSymbol\": \", \", \"decimalPrecision\": 0, \"maxPrecision\": 8}", "NumberCurrencySettingsDescription", true, "NumberDisplayConfig", null, (short)0, null, "NumberCurrencySettings", (short)2, "{\"useSeparator\": true, \"separatorMode\": \"UseCustom\", \"separatorSymbol\": \",\" , \"decimalPrecision\": 0, \"maxPrecision\": 8}" },
+                    { 5, "{}", "ViewTreeSettingsDescription", false, "ViewTreeConfig", null, (short)2, null, "ViewTreeSettings", (short)2, "{}" },
+                    { 6, "{}", "QuickSearchSettingsDescription", false, "QuickSearchConfig", null, (short)2, null, "QuickSearchSettings", (short)3, "{}" },
+                    { 8, "{\"defaultCurrencyNameKey\":\"CUnit_IranianRial\",\"defaultDecimalCount\":0,\"defaultCalendar\":0,\"defaultCalendars\": [{\"language\":\"fa\", \"calendar\":0}, {\"language\":\"en\", \"calendar\":1}],\"usesDefaultCoding\":true,\"inventoryMode\": 1}", "SystemConfigurationDescription", true, "SystemConfig", null, (short)1, null, "SystemConfigurationSettings", (short)2, "{\"defaultCurrencyNameKey\":\"CUnit_IranianRial\",\"defaultDecimalCount\":0,\"defaultCalendar\":0,\"defaultCalendars\": [{\"language\":\"fa\", \"calendar\":0}, {\"language\":\"en\", \"calendar\":1}],\"usesDefaultCoding\":true,\"inventoryMode\": 1}" },
+                    { 9, "{\"openingAsFirstVoucher\":false,\"startTurnoverAsInitBalance\":false}", "FinanceReportSettingsDescription", true, "FinanceReportConfig", null, (short)1, null, "FinanceReportSettings", (short)2, "{\"openingAsFirstVoucher\":false,\"startTurnoverAsInitBalance\":false}" },
+                    { 10, "{}", null, false, "FormLabelConfig", null, (short)3, null, "FormLabelSettings", (short)2, "{}" },
+                    { 11, "{}", "UserProfileSettingsDescription", false, "UserProfileConfig", null, (short)1, null, "UserProfileSettings", (short)3, "{}" },
+                    { 12, "{\"registerFlowConfig\":{\"confirmAfterSave\":true, \"approveAfterConfirm\": true, \"registerAfterApprove\": true},\"registerConfig\":{\"registerOnLastValidVoucher\": true, \"registerOnCreatedVoucher\": false, \"checkedVoucher\": false}}", "ReceiptSettingsDescription", true, "ReceiptConfig", null, (short)1, null, "ReceiptSettings", (short)2, "{\"registerFlowConfig\":{\"confirmAfterSave\":true, \"approveAfterConfirm\": true, \"registerAfterApprove\": true},\"registerConfig\":{\"registerWithLastValidVoucher\": true, \"registerWithNewCreatedVoucher\": false, \"checkedVoucher\": false}}" },
+                    { 13, "{\"registerFlowConfig\":{\"confirmAfterSave\":true, \"approveAfterConfirm\": true, \"registerAfterApprove\": true},\"registerConfig\":{\"registerOnLastValidVoucher\": true, \"registerOnCreatedVoucher\": false, \"checkedVoucher\": false}}", "PaymentSettingsDescription", true, "PaymentSettings", null, (short)1, null, "PaymentSettings", (short)2, "{\"registerFlowConfig\":{\"confirmAfterSave\":true, \"approveAfterConfirm\": true, \"registerAfterApprove\": true},\"registerConfig\":{\"registerWithLastValidVoucher\": true, \"registerWithNewCreatedVoucher\": false, \"checkedVoucher\": false}}" }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "Config",
+                table: "ViewSetting",
+                columns: new[] { "ViewSettingId", "DefaultValues", "ModelType", "SettingId", "Values", "ViewId" },
+                values: new object[,]
+                {
+                    { 1, "{\"viewId\":1,\"maxDepth\":3,\"levels\":[{\"no\":1,\"name\":\"LevelGeneral\",\"codeLength\":3,\"isEnabled\": true,\"isUsed\":true},{\"no\":2,\"name\":\"LevelAuxiliary\",\"codeLength\":3,\"isEnabled\": true,\"isUsed\":true},{\"no\":3,\"name\":\"LevelDetail\",\"codeLength\":4,\"isEnabled\": true,\"isUsed\":true},{\"no\":4,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":5,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":6,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":7,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":8,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":9,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":10,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":11,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":12,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":13,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":14,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":15,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":16,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false}]}", "ViewTreeConfig", 5, "{\"viewId\":1,\"maxDepth\":3,\"levels\":[{\"no\":1,\"name\":\"LevelGeneral\",\"codeLength\":3,\"isEnabled\": true,\"isUsed\":true},{\"no\":2,\"name\":\"LevelAuxiliary\",\"codeLength\":3,\"isEnabled\": true,\"isUsed\":true},{\"no\":3,\"name\":\"LevelDetail\",\"codeLength\":4,\"isEnabled\": true,\"isUsed\":true},{\"no\":4,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":5,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":6,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":7,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":8,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":9,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":10,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":11,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":12,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":13,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":14,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":15,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":16,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false}]}", 1 },
+                    { 2, "{\"viewId\":6,\"maxDepth\":4,\"levels\":[{\"no\":1,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":2,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":3,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":4,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":5,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":6,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":7,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":8,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":9,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":10,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":11,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":12,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":13,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":14,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":15,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":16,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false}]}", "ViewTreeConfig", 5, "{\"viewId\":6,\"maxDepth\":4,\"levels\":[{\"no\":1,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":2,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":3,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":4,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":5,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":6,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":7,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":8,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":9,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":10,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":11,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":12,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":13,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":14,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":15,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":16,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false}]}", 6 },
+                    { 3, "{\"viewId\":7,\"maxDepth\":4,\"levels\":[{\"no\":1,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":2,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":3,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":4,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":5,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":6,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":7,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":8,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":9,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":10,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":11,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":12,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":13,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":14,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":15,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":16,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false}]}", "ViewTreeConfig", 5, "{\"viewId\":7,\"maxDepth\":4,\"levels\":[{\"no\":1,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":2,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":3,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":4,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":5,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":6,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":7,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":8,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":9,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":10,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":11,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":12,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":13,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":14,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":15,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":16,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false}]}", 7 },
+                    { 4, "{\"viewId\":8,\"maxDepth\":4,\"levels\":[{\"no\":1,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":2,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":3,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":4,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":5,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":6,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":7,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":8,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":9,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":10,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":11,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":12,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":13,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":14,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":15,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":16,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false}]}", "ViewTreeConfig", 5, "{\"viewId\":8,\"maxDepth\":4,\"levels\":[{\"no\":1,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":2,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":3,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":4,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":true,\"isUsed\":false},{\"no\":5,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":6,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":7,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":8,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":9,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":10,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":11,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":12,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":13,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":14,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":15,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false},{\"no\":16,\"name\":\"LevelX\",\"codeLength\":4,\"isEnabled\":false,\"isUsed\":false}]}", 8 }
+                });
+
+            migrationBuilder.InsertData(
                 schema: "Core",
                 table: "Version",
                 columns: new[] { "VersionId", "ModifiedDate", "Number", "rowguid" },
@@ -2480,10 +2512,9 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 columns: new[] { "EntityTypeId", "Description", "Name" },
                 values: new object[,]
                 {
-                    { 2, "", "AccountCollectionAccount" },
                     { 1, "", "Account" },
                     { 100004, "", "Attribute" },
-                    { 100002, "", "Unit" },
+                    { 100003, "", "Property" },
                     { 100001, "", "Brand" },
                     { 25, "", "Payment" },
                     { 24, "", "Receipt" },
@@ -2492,9 +2523,10 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     { 21, "", "CheckBook" },
                     { 20, "", "Widget" },
                     { 19, "", "DashboardTab" },
-                    { 100003, "", "Property" },
+                    { 100002, "", "Unit" },
                     { 17, "", "Voucher" },
                     { 18, "", "DraftVoucher" },
+                    { 2, "", "AccountCollectionAccount" },
                     { 4, "", "AccountGroup" },
                     { 6, "", "CostCenter" },
                     { 7, "", "Currency" },
@@ -2510,9 +2542,14 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Metadata",
                 table: "Operation",
                 columns: new[] { "OperationId", "Description", "Name" },
+                values: new object[] { 71, "", "CreateAccountLine" });
+
+            migrationBuilder.InsertData(
+                schema: "Metadata",
+                table: "Operation",
+                columns: new[] { "OperationId", "Description", "Name" },
                 values: new object[,]
                 {
-                    { 71, "", "CreateAccountLine" },
                     { 65, "", "DisconnectFromCheck" },
                     { 70, "", "AggregateAccountLines" },
                     { 69, "", "RemoveInvalidAccountLines" },
@@ -2527,19 +2564,11 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     { 58, "", "PrintPreview" },
                     { 55, "", "ExportRates" },
                     { 54, "", "Export" },
-                    { 53, "", "GroupNormalize" }
-                });
-
-            migrationBuilder.InsertData(
-                schema: "Metadata",
-                table: "Operation",
-                columns: new[] { "OperationId", "Description", "Name" },
-                values: new object[,]
-                {
+                    { 53, "", "GroupNormalize" },
                     { 72, "", "EditAccountLine" },
                     { 63, "", "UndoCancelPage" },
                     { 73, "", "DeleteAccountLine" },
-                    { 84, "", "PrintPreviewCashAccountLines" },
+                    { 85, "", "FilterCashAccountLines" },
                     { 75, "", "PrintAccountLines" },
                     { 93, "", "UndoRegister" },
                     { 92, "", "PrintPreviewForm" },
@@ -2550,7 +2579,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     { 87, "", "RemoveInvalidCashAccountLines" },
                     { 86, "", "ExportCashAccountLines" },
                     { 74, "", "GroupDeleteAccountLines" },
-                    { 85, "", "FilterCashAccountLines" },
+                    { 52, "", "Normalize" },
                     { 83, "", "PrintCashAccountLines" },
                     { 82, "", "GroupDeleteCashAccountLines" },
                     { 81, "", "DeleteCashAccountLine" },
@@ -2559,10 +2588,18 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     { 78, "", "ExportAccountLines" },
                     { 77, "", "FilterAccountLines" },
                     { 76, "", "PrintPreviewAccountLines" },
-                    { 52, "", "Normalize" },
+                    { 84, "", "PrintPreviewCashAccountLines" },
                     { 51, "", "GroupUndoConfirm" },
                     { 48, "", "GroupFinalize" },
-                    { 49, "", "GroupUndoFinalize" },
+                    { 49, "", "GroupUndoFinalize" }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "Metadata",
+                table: "Operation",
+                columns: new[] { "OperationId", "Description", "Name" },
+                values: new object[,]
+                {
                     { 17, "", "Finalize" },
                     { 16, "", "UndoApprove" },
                     { 15, "", "Approve" },
@@ -2577,15 +2614,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     { 6, "", "Print" },
                     { 5, "", "Filter" },
                     { 4, "", "Delete" },
-                    { 3, "", "Edit" }
-                });
-
-            migrationBuilder.InsertData(
-                schema: "Metadata",
-                table: "Operation",
-                columns: new[] { "OperationId", "Description", "Name" },
-                values: new object[,]
-                {
+                    { 3, "", "Edit" },
                     { 2, "", "Create" },
                     { 1, "", "View" },
                     { 18, "", "UndoFinalize" },
@@ -2593,15 +2622,15 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     { 11, "", "Check" },
                     { 21, "", "GroupDelete" },
                     { 20, "", "QuickReportDesign" },
+                    { 47, "", "GroupUndoCheck" },
                     { 46, "", "GroupCheck" },
                     { 45, "", "ViewRates" },
                     { 44, "", "GroupDeleteRates" },
                     { 43, "", "PrintRates" },
                     { 42, "", "DeleteRate" },
                     { 41, "", "EditRate" },
-                    { 40, "", "CreateRate" },
                     { 39, "", "GroupDeleteLines" },
-                    { 47, "", "GroupUndoCheck" },
+                    { 40, "", "CreateRate" },
                     { 37, "", "EditLine" },
                     { 36, "", "CreateLine" },
                     { 35, "", "RoleAccess" },
@@ -2619,18 +2648,26 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 columns: new[] { "OperationSourceId", "Description", "Name" },
                 values: new object[,]
                 {
-                    { 15, "", "CheckBookReport" },
+                    { 6, "", "BalanceByAccount" },
+                    { 15, "", "CheckBookReport" }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "Metadata",
+                table: "OperationSource",
+                columns: new[] { "OperationSourceId", "Description", "Name" },
+                values: new object[,]
+                {
                     { 13, "", "SystemIssue" },
                     { 12, "", "BalanceSheet" },
                     { 11, "", "AccountRelations" },
                     { 10, "", "ProfitLoss" },
-                    { 6, "", "BalanceByAccount" },
+                    { 1, "", "Journal" },
                     { 5, "", "ItemBalance" },
                     { 4, "", "TestBalance" },
                     { 3, "", "CurrencyBook" },
                     { 2, "", "AccountBook" },
-                    { 9, "", "EnvironmentParams" },
-                    { 1, "", "Journal" }
+                    { 9, "", "EnvironmentParams" }
                 });
 
             migrationBuilder.InsertData(
@@ -2650,21 +2687,11 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 columns: new[] { "SubsystemId", "Name" },
                 values: new object[,]
                 {
-                    { 100000, "ProductScope" },
-                    { 1, "Administration" }
+                    { 1, "Administration" },
+                    { 2, "Accounting" },
+                    { 3, "Treasury" },
+                    { 100000, "ProductScope" }
                 });
-
-            migrationBuilder.InsertData(
-                schema: "Metadata",
-                table: "Subsystem",
-                columns: new[] { "SubsystemId", "Name" },
-                values: new object[] { 2, "Accounting" });
-
-            migrationBuilder.InsertData(
-                schema: "Metadata",
-                table: "Subsystem",
-                columns: new[] { "SubsystemId", "Name" },
-                values: new object[] { 3, "Treasury" });
 
             migrationBuilder.InsertData(
                 schema: "Config",
@@ -3597,10 +3624,10 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 column: "WidgetId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Setting_ParentID",
+                name: "IX_Setting_ParentId",
                 schema: "Config",
                 table: "Setting",
-                column: "ParentID");
+                column: "ParentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SourceApp_BranchId",
