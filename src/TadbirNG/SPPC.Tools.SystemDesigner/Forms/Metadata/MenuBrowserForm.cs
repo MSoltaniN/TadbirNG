@@ -176,7 +176,6 @@ namespace SPPC.Tools.SystemDesigner.Forms
         {
             int? permissionId = row.ValueOrDefault<int>("PermissionID");
             int? parentId = row.ValueOrDefault<int>("ParentID");
-            var v = row.ValueOrDefault("Index");
             return new CommandViewModel()
             {
                 Id = row.ValueOrDefault<int>("CommandID"),
